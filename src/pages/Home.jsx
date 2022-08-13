@@ -56,15 +56,13 @@ const Home = () => {
   
     return (
       <HomeWrapper>
-        <input type="text"></input>
-        <button>제출</button>
-        <div>
+        <div >
             {data.pages?.map((page, index) => (
-              <React.Fragment key={index} >
+              <div key={index} >
                   {page.posts.map((post) => (
                     <PostingCard key={post.posting_id} post={post}></PostingCard>
                   ))}
-              </React.Fragment>
+              </div>
             ))}
         </div>
         {isFetchingNextPage ? <div>로딩중입니다1!!!!</div>: <div ref={ref} style={{height:"100px"}}></div>}
@@ -76,4 +74,5 @@ export default Home;
 
 const HomeWrapper = styled.div`
   width:100%;
+  margin:0 auto;
 `

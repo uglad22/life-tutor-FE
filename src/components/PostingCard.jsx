@@ -15,10 +15,11 @@ const PostingCard = ({post}) => {
 export default PostingCard;
 
 const PostingCardWrapper = styled.div`
-    width:70vw;
+    width:calc(100vw - 40px);
     height:50vh;
     background:yellow;
     padding:20px;
     box-sizing:border-box;
     border:1px solid gray;
+    margin:0 auto;
 `

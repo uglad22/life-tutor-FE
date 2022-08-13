@@ -31,7 +31,7 @@ export default App;
 
 const Content = styled.div`
   background:blue;
-  width:calc(100vw * 0.9);
-  max-width:500px;
+  width:100vw;
+  max-width:400px;
   margin:0 auto;
 `
