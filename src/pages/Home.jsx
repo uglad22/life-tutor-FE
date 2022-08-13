@@ -56,15 +56,13 @@ const Home = () => {
   
     return (
       <HomeWrapper>
-        <div >
             {data.pages?.map((page, index) => (
-              <div key={index} >
+              <Page key={index} >
                   {page.posts.map((post) => (
                     <PostingCard key={post.posting_id} post={post}></PostingCard>
                   ))}
-              </div>
+              </Page>
             ))}
-        </div>
         {isFetchingNextPage ? <div>로딩중입니다1!!!!</div>: <div ref={ref} style={{height:"100px"}}></div>}
         </HomeWrapper>
     );
@@ -73,6 +71,15 @@ const Home = () => {
 export default Home;
 
 const HomeWrapper = styled.div`
+  display:flex;
+  flex-direction:column;
+  gap:20px;
   width:100%;
   margin:0 auto;
+`
+
+const Page = styled.div`
+  display:flex;
+  flex-direction:column;
+  gap:20px;
 `

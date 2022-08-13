@@ -15,8 +15,8 @@ const PostingCard = ({post}) => {
 export default PostingCard;
 
 const PostingCardWrapper = styled.div`
-    width:calc(100vw - 40px);
-    height:50vh;
+    width:calc(100% - 40px);
+    
     background:yellow;
     padding:20px;
     box-sizing:border-box;
