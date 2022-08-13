@@ -1,23 +1,20 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { useParams, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { BsChevronLeft } from "react-icons/bs";
 
 // TODO:
-// 작성자 본인이면 게시글, 댓글 수정/삭제 버튼 보이게 > 닉네임으로 비교?
-// 대나무숲 상세페이지 response > imgUrl, username?
-// 댓글 작성날짜시간 ? response 추가요청 : 시간표시없이
-// 대나무숲 상세페이지 불러올때 댓글 id가 유저 id 인지 댓글 아이디인지
-// 만약 댓글 아이디이면 유저네임은 댓글에 표시를? or 유저 아이디이면 댓글 아이디는?
-// 댓글 공감기능?
+// 2. 댓글 작성날짜시간
 
 const Detail = () => {
   const params = useParams();
   const comment_ref = useRef();
   const navigate = useNavigate();
   const postingId = params.postingId;
-  const [addComment, setAddComment] = useState(null);
+  const queryClient = useQueryClient();
+  const loginNickname = window.localStorage.getItem("nickname");
 
   const getPost = async () => {
     // const res = await axios.get(`/api/board/detail/${postingId}`);
@@ -31,45 +28,103 @@ const Detail = () => {
 
   console.log(data);
 
-//   FIXME: 본인확인후 게시글, 댓글 수정 삭제버튼 렌더링
+
+
   const editPostingHandler = async () => {
-    await axios.put(`/api/board/${postingId}`);
-    // FIXME: 수정버튼 클릭시 수정할 페이지 이동
-    // navigate("");
+    // navigate(`/edit/${postingId}`);
   };
 
   const deletePostingHandler = async () => {
-    // await axios.delete(`/api/board/${postingId}`);
+    await axios.delete(`/api/board/${postingId}`);
     navigate("/");
   };
 
-  const contentlikeHandler = async () => {
-    // await axios.post(`/adi/board/${postingId}/likes`);
+
+
+  // const contentlikeHandler = async () => {
+    // if (data.isLike === true) {
+    // await axios.delete(`/api/board/${postingId}/likes`);
+    // } else {
+    // await axios.post(`/api/board/${postingId}/likes`);
+    // }
+  //   alert("게시글 좋아요 버튼");
+  // };
+
+  const contentLike = async () => {
+    if (data.isLike === true) {
+    return await axios.delete(`/api/board/${postingId}/likes`);
+    } else {
+    return await axios.post(`/api/board/${postingId}/likes`);
+    }
   }
 
-  const commentAddHandler = async () => {
-    let comment = { content: comment_ref.current.value };
-    // await axios.post(`/api/board/${postingId}/comment`, comment);
-    setAddComment(comment_ref.current.value);
-    comment_ref.current.value = "";
+  const { mutate : contentlikeHandler } = useMutation(contentLike, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("post");
+    }
+  })
+
+
+  
+  // const commentAddHandler = async (comment) => {
+    //   // await axios.post(`/api/board/${postingId}/comment`, comment);
+    //   comment_ref.current.value = "";
+    // };
+
+  const addComment = async (comment) => {
+    console.log(comment);
+    return await axios.post(`/api/board/${postingId}/comment`, comment);
+  }
+
+  const { mutate : commentAddHandler } = useMutation(addComment, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("post");
+      comment_ref.current.value = "";
+    }
+  })
+
+
+
+  const commentEditHandler = async (commentId) => {
+    // FIXME: 코멘트 content 데이터 넣어서 put
+    // 댓글 수정 어떻게?
+    // await axios.put(`/api/board/${postingId}/comment/${commentId}`);
+    console.log(commentId);
+    console.log("댓글 수정버튼");
   };
 
-  const commentEditHandler = async () => {
-    // FIXME: commentId 붙여서 API url 수정
-    // await axios.put(`/api/board/${postingId}/comment/${코멘트아이디}`);
-    alert("댓글이 수정되었습니다.");
+  const commentDelHandler = async (commentId) => {
+    await axios.delete(`/api/board/${postingId}/comment/${commentId}`);
+    console.log(commentId);
+    console.log("댓글 삭제버튼");
   };
 
-  const commentDelHandler = async () => {
-    // await axios.delete(`/api/board/${postingId}/comment/${코멘트아이디}`);
-    alert("댓글이 삭제되었습니다.");
-  };
 
-  const commentlikeHandler = async () => {
-    console.log("댓글공감");
-  };
 
-  useEffect(() => {}, [addComment]);
+  // const commentlikeHandler = async (commentIdx) => {
+    // if (data.comments[commentIdx].isLike === true) {
+    //   await axios.delete(`/api/comment/${data.comments[commentIdx].id}/likes`);
+    // } else {
+    //   await axios.post(`/api/comment/${data.comments[commentIdx].id}/likes`);
+    // }
+  //   console.log(commentIdx);
+  //   console.log("댓글공감");
+  // };
+
+  const commentLike = async (commentIdx) => {
+    console.log(commentIdx);
+    if (data.comments[commentIdx].isLike === true) {
+      return await axios.delete(`/api/comment/${data.comments[commentIdx].id}/likes`);
+    } else {
+      return await axios.post(`/api/comment/${data.comments[commentIdx].id}/likes`);
+    }
+  }
+
+  const { mutate:commentlikeHandler } = useMutation(commentLike, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("post");
+    }
+  })
 
   return (
     <>
@@ -79,85 +134,112 @@ const Detail = () => {
             navigate(-1);
           }}
         >
-          뒤로가기
+          <BsChevronLeft />
         </BackBtn>
+        <HeaderInfo>본문 상세</HeaderInfo>
         <EditAndDelBtn>
-          <EditBtn
-            onClick={() => {
-              editPostingHandler();
-            }}
-          >
-            수정
-          </EditBtn>
-          <DelBtn
-            onClick={() => {
-              deletePostingHandler();
-            }}
-          >
-            삭제
-          </DelBtn>
+          {data.nickname && loginNickname ? (
+            <>
+              <EditBtn
+                onClick={() => {
+                  editPostingHandler();
+                }}
+              >
+                수정
+              </EditBtn>
+              <DelBtn
+                onClick={() => {
+                  deletePostingHandler();
+                }}
+              >
+                삭제
+              </DelBtn>
+            </>
+          ) : null}
         </EditAndDelBtn>
       </HeaderBox>
       <ContentBox>
         <Title>
-          <h3>제목</h3>
-          <p>{data.title}</p>
+          <h3>{data.title}</h3>
+          <p></p>
         </Title>
         <Content>
           <h3>내용</h3>
-          {data.imgUrl && <p>{data.imgUrl}</p>}
+          {data.imgUrl && <img src={data.imgUrl} alt="userimage" />}
           <p>{data.content}</p>
-          {/* <p>{data.hashtag.map = (d) => {
-                return 
-            }}</p> */}
+          {data.hashtag.map((d, idx) => (
+            <p key={idx}>{d}</p>
+          ))}
         </Content>
-        <ContentLikeBtn onClick={() => {contentlikeHandler()}}>좋아요</ContentLikeBtn>
+        {data.nickname && loginNickname ? (
+          <>
+            <ContentLikeBtn>좋아요</ContentLikeBtn>
+          </>
+        ) : (
+          <>
+            <ContentLikeBtn
+              onClick={() => {
+                contentlikeHandler();
+              }}
+            >
+              좋아요
+            </ContentLikeBtn>
+          </>
+        )}
       </ContentBox>
 
       <CommentBox>
-        <CommentAddBox>
-          <input type="text" ref={comment_ref} />
-          <CommentAddBtn
-            onClick={() => {
-              commentAddHandler();
-            }}
-          >
-            댓글 추가
-          </CommentAddBtn>
-        </CommentAddBox>
         <CommentListBox>
           {data.comments.map((d, idx) => (
             <Comment key={idx}>
               <CommentIdAndLike>
-                <CommentId>{d.id}</CommentId>
+                <CommentId>{d.nickname}</CommentId>
                 <CommentEditDelAndLike>
-                  <CommentEdit
-                    onClick={() => {
-                      commentEditHandler();
-                    }}
-                  >
-                    수정
-                  </CommentEdit>
-                  <CommentDel
-                    onClick={() => {
-                      commentDelHandler();
-                    }}
-                  >
-                    삭제
-                  </CommentDel>
-                  <CommentLikeBtn
-                    onClick={() => {
-                        commentlikeHandler();
-                    }}
-                  >
-                    공감하기
-                  </CommentLikeBtn>
+                  {d.nickname && loginNickname ? (
+                    <>
+                      <CommentEdit
+                        onClick={() => {
+                          commentEditHandler(`${d.id}`);
+                        }}
+                      >
+                        수정
+                      </CommentEdit>
+                      <CommentDel
+                        onClick={() => {
+                          commentDelHandler(`${d.id}`);
+                        }}
+                      >
+                        삭제
+                      </CommentDel>
+                    </>
+                  ) : (
+                    <>
+                      <CommentLikeBtn
+                        onClick={() => {
+                          commentlikeHandler(`${idx}`);
+                        }}
+                      >
+                        공감하기
+                      </CommentLikeBtn>
+                    </>
+                  )}
                 </CommentEditDelAndLike>
               </CommentIdAndLike>
               <div>{d.content}</div>
             </Comment>
           ))}
         </CommentListBox>
+        <CommentAddBox>
+          <input type="text" ref={comment_ref} />
+          <CommentAddBtn
+            onClick={() => {
+              const comment = { "content": comment_ref.current.value };
+              commentAddHandler(comment);
+            }}
+          >
+            댓글 추가
+          </CommentAddBtn>
+        </CommentAddBox>
       </CommentBox>
     </>
   );
@@ -167,25 +249,33 @@ export default Detail;
 
 const HeaderBox = styled.div`
   width: 100%;
-  height: 3rem;
-  background: #f1f1f1;
+  height: 95px;
   display: flex;
+  align-items: flex-end;
   justify-content: space-between;
+  border-bottom: 0.5px solid #d3d3d3;
 `;
 
 const BackBtn = styled.div`
-  width: 20%;
-  height: 3rem;
+  margin: 0 0 16px 20px;
+  font-size: 25px;
   display: flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  border: 1px solid #e1e1e1;
+`;
+
+const HeaderInfo = styled.div`
+  position: absolute;
+  left: 159px;
+  top: 57px;
+  width: 69px;
+  height: 27px;
 `;
 
 const EditAndDelBtn = styled.div`
-  width: 30%;
-  height: 3rem;
+  margin: 0 20px 16px 0;
+  gap: 10px;
   display: flex;
 `;
 
@@ -195,7 +285,6 @@ const EditBtn = styled.div`
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  border: 1px solid #e1e1e1;
   justify-content: center;
 `;
 
@@ -205,7 +294,6 @@ const DelBtn = styled.div`
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  border: 1px solid #e1e1e1;
   justify-content: center;
 `;
 
@@ -219,10 +307,6 @@ const Title = styled.div`
   text-align: left;
   padding: 0.5rem;
   h3 {
-    margin: 0;
-    padding: 0;
-  }
-  p {
     margin: 0;
     padding: 0;
   }

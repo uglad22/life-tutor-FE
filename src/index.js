@@ -19,14 +19,14 @@ const queryClient = new QueryClient({
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.Suspense fallback={<Loading />}>
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={true} />
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+  <BrowserRouter>
+  <React.Suspense fallback={<Loading/>}>
+  <QueryClientProvider client={queryClient}>
+    <ReactQueryDevtools initialIsOpen={true} />
+    <App />
     </QueryClientProvider>
-  </React.Suspense>
+    </React.Suspense>
+    </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function
