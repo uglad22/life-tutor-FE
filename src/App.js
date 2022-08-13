@@ -1,5 +1,7 @@
 import React from 'react';
+import styled from 'styled-components';
 import Home from './pages/Home';
+import { Routes, Route } from 'react-router-dom';
 import instance from './shared/axios';
 
 function App() {
@@ -14,10 +16,22 @@ function App() {
   
   return (
     <div className="App">
-        <button onClick={tempLogin}>임시 로그인하기</button>
-        <Home></Home>
+        {/* <button onClick={tempLogin}>임시 로그인하기</button> */}
+        <Content>
+          <Routes>
+            <Route path="/home/:category" element={<Home/>}></Route>
+          </Routes>
+        </Content>
+        
     </div>
   );
 }
 
 export default App;
+
+const Content = styled.div`
+  background:blue;
+  width:calc(100vw * 0.9);
+  max-width:500px;
+  margin:0 auto;
+`

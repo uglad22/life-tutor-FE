@@ -1,8 +1,11 @@
 import instance from "./axios";
 
 export const postingsAPI = {
-    fetchPostingsList: () => {
-        return instance.get('/apimainpostings') // FIXME: URL 바꾸기
+    fetchPostingsListWithScroll: async (pageParams) => {
+        const res = await instance.get(`/api/main/postings?page=${pageParams}&size=3`);// FIXME: URL 바꾸기
+        const { content } = res.data;
+        const { last } = res.data;
+        return { posts:content, nextPage: pageParams + 1, isLast:last}
     },
 }
 

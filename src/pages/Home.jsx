@@ -11,15 +11,15 @@ import instance from '../shared/axios';
 
 const Home = () => {
   const queryClient = useQueryClient();
-  const fetchPostList = async (pageParam) => {
-    const res = await instance.get(
-      `/api/main/postings?page=${pageParam}&size=3`
-    )
-    console.log(res.data.content)
-    const { content } = res.data;
-    const { last } = res.data;
-    return { posts:content, nextPage: pageParam + 1, isLast:last}
-  }
+  // const fetchPostingsList = async (pageParam) => {
+  //   const res = await instance.get(
+  //     `/api/main/postings?page=${pageParam}&size=3`
+  //   )
+  //   console.log(res.data.content)
+  //   const { content } = res.data;
+  //   const { last } = res.data;
+  //   return { posts:content, nextPage: pageParam + 1, isLast:last}
+  // }
 
 
     const { ref, inView} = useInView();
@@ -37,7 +37,7 @@ const Home = () => {
     // );
     const { data, fetchNextPage, isFetchingNextPage, refetch } = useInfiniteQuery(
       ['postList'],
-      ({ pageParam = 0 }) => fetchPostList(pageParam),
+      ({ pageParam = 0 }) => postingsAPI.fetchPostingsListWithScroll(pageParam),
       {
         getNextPageParam: (lastPage) =>
           !lastPage.isLast ? lastPage.nextPage : undefined,
@@ -49,11 +49,13 @@ const Home = () => {
     );
 
     useEffect(()=> {
-      if(inView) fetchNextPage();
+      if(inView){
+        fetchNextPage();
+      } 
     }, [inView])    
   
     return (
-      <div className="App">
+      <HomeWrapper>
         <input type="text"></input>
         <button>제출</button>
         <div>
@@ -65,9 +67,13 @@ const Home = () => {
               </React.Fragment>
             ))}
         </div>
-        {isFetchingNextPage ? <div>로딩중입니다1!!!!</div>: <div ref={ref}></div>}
-      </div>
+        {isFetchingNextPage ? <div>로딩중입니다1!!!!</div>: <div ref={ref} style={{height:"100px"}}></div>}
+        </HomeWrapper>
     );
 }
 
 export default Home;
+
+const HomeWrapper = styled.div`
+  width:100%;
+`
