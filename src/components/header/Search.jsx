@@ -1,11 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
 
 const Search = () => {
-
+    const location = useLocation();
+    const pathname = location.pathname;
+    if(!pathname.includes('/home/')) return null;
 
     return(
-  
         <SearchWrapper>
             <input type="text" placeholder='해시태그 검색'></input>
         </SearchWrapper>
@@ -19,7 +21,7 @@ const SearchWrapper = styled.form`
     display:flex;
     flex-direction:column;
     justify-content:flex-end;
-    margin-top:20px;
+    margin-top:40px;
     height:60px;
     width:calc(100% - 40px);
     /* background:blue; */
@@ -32,4 +34,8 @@ const SearchWrapper = styled.form`
         box-sizing:border-box;
         
     }
+`
+
+const EmptyContainer = styled.div`
+   height:40px; 
 `

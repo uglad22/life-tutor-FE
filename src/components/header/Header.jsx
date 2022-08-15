@@ -9,6 +9,7 @@ const Header = () => {
     return(
         <HeaderWrapper>
             <PageTitle></PageTitle>
+            <Search></Search>
         </HeaderWrapper>
     )
 }

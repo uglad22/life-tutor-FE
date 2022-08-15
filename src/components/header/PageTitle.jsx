@@ -1,9 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
 import { MdArrowBackIosNew } from 'react-icons/md';
 
 const PageTitle = () => {
-    
+    const location = useLocation();
+    const pathname = location.pathname;
+    if(pathname === '/home/postings') return null;
 
     return(
         <PageTitleWrapper>
