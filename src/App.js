@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Home from './pages/Home';
+import Header from './components/header/Header';
 import Navigation from './components/nav/Navigation';
 import { Routes, Route } from 'react-router-dom';
 import instance from './shared/axios';
@@ -18,6 +19,7 @@ function App() {
   return (
     <div className="App">
         {/* <button onClick={tempLogin}>임시 로그인하기</button> */}
+        <Header/>
         <Content>
           <Routes>
             <Route path="/home/:category" element={<Home/>}></Route>
@@ -32,6 +34,7 @@ function App() {
 export default App;
 
 const Content = styled.div`
+  padding-top:80px;
   width:100vw;
   max-width:400px;
   margin:0 auto;
