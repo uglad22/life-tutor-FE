@@ -1,25 +1,31 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { BiHomeAlt, BiEdit } from 'react-icons/bi';
 import { BsChatLeft, BsPerson } from 'react-icons/bs';
 
 const Navigation = () => {
+    const navContentRef = useRef(null);
 
     const navigate = useNavigate();
 
     const iconClickEventByLoginUser = (e) => {
+        const childNodes = navContentRef.current.children;
+        for(let i of childNodes) {
+            i.classList.remove('clicked');
+        }
+        e.currentTarget.classList.add('clicked');
         navigate(e.currentTarget.dataset.url);
     }
 
 
     return(
         <NavigationWrapper>
-            <NavigationContent>
-                <Link to="/home/postings"><BiHomeAlt></BiHomeAlt></Link>
-                <Link to="/home/rooms"><BsChatLeft></BsChatLeft></Link>
-                <BiEdit data-url="/posting" onClick={iconClickEventByLoginUser}></BiEdit>
-                <BsPerson data-url="/mypage" onClick={iconClickEventByLoginUser}></BsPerson>
+            <NavigationContent ref={navContentRef}>
+                <p className="clicked" data-url="/home/postings" onClick={iconClickEventByLoginUser}><BiHomeAlt></BiHomeAlt></p>
+                <p data-url="home/rooms" onClick={iconClickEventByLoginUser}><BsChatLeft></BsChatLeft></p>
+                <p data-url="/posting" onClick={iconClickEventByLoginUser}><BiEdit></BiEdit></p>
+                <p data-url="/mypage" onClick={iconClickEventByLoginUser}><BsPerson></BsPerson></p>
             </NavigationContent>
         </NavigationWrapper>
     )
@@ -47,4 +53,13 @@ const NavigationContent = styled.div`
     height:100%;
     border-top:2px solid lightgray;
     background:white;
+
+    p {
+        cursor:pointer;
+        font-size:1.5rem;
+    }
+
+    .clicked {
+        color:blue;
+    }
 `
