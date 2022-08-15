@@ -36,6 +36,7 @@ const Home = () => {
         onSuccess:(data) => {
           console.log(data);
         },
+        retry:false
       },
     );
 

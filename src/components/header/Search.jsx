@@ -21,10 +21,10 @@ const SearchWrapper = styled.form`
     display:flex;
     flex-direction:column;
     justify-content:flex-end;
-    margin-top:40px;
+    
     height:60px;
     width:calc(100% - 40px);
-    max-width:400px;
+    max-width:480px;
     /* background:blue; */
     margin:0 auto;
     

@@ -38,6 +38,6 @@ export default App;
 
 const Content = styled.div`
   width:100vw;
-  max-width:400px;
+  max-width:480px;
   margin:0 auto;
 `

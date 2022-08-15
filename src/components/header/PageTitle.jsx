@@ -26,7 +26,7 @@ export default PageTitle;
 
 const PageTitleWrapper = styled.div`
     width:100%;
-    max-width:400px;
+    max-width:480px;
     margin:0 auto;
     /* background:blue; */
     /* display:flex; */
