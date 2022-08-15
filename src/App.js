@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Home from './pages/Home';
+import Navigation from './components/nav/Navigation';
 import { Routes, Route } from 'react-router-dom';
 import instance from './shared/axios';
 
@@ -22,6 +23,7 @@ function App() {
             <Route path="/home/:category" element={<Home/>}></Route>
           </Routes>
         </Content>
+        <Navigation/>
         
     </div>
   );
@@ -30,7 +32,6 @@ function App() {
 export default App;
 
 const Content = styled.div`
-  background:blue;
   width:100vw;
   max-width:400px;
   margin:0 auto;

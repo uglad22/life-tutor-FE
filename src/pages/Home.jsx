@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useQueryClient, useQuery, useInfiniteQuery } from '@tanstack/react-query';
+import { useLocation, useParams } from 'react-router-dom';
 import { roomsAPI, postingsAPI } from '../shared/api';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -10,19 +11,9 @@ import instance from '../shared/axios';
 
 
 const Home = () => {
+  const paramCategory = useParams().category;
   const queryClient = useQueryClient();
-  // const fetchPostingsList = async (pageParam) => {
-  //   const res = await instance.get(
-  //     `/api/main/postings?page=${pageParam}&size=3`
-  //   )
-  //   console.log(res.data.content)
-  //   const { content } = res.data;
-  //   const { last } = res.data;
-  //   return { posts:content, nextPage: pageParam + 1, isLast:last}
-  // }
-
-
-    const { ref, inView} = useInView();
+  const { ref, inView} = useInView();
 
     // const { data, fetchNextPage, isFetchingNextPage, refetch } = useInfiniteQuery(
     //   ['posts'],
@@ -36,7 +27,7 @@ const Home = () => {
     //   },
     // );
     const { data, fetchNextPage, isFetchingNextPage, refetch } = useInfiniteQuery(
-      ['postList'],
+      ['cardList', paramCategory],
       ({ pageParam = 0 }) => postingsAPI.fetchPostingsListWithScroll(pageParam),
       {
         getNextPageParam: (lastPage) =>

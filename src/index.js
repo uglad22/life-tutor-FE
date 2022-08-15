@@ -22,7 +22,7 @@ root.render(
   <BrowserRouter>
   <React.Suspense fallback={<Loading/>}>
   <QueryClientProvider client={queryClient}>
-    <ReactQueryDevtools initialIsOpen={true} />
+    {/* <ReactQueryDevtools initialIsOpen={true} /> */}
     <App />
     </QueryClientProvider>
     </React.Suspense>
