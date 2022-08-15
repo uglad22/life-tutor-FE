@@ -5,6 +5,7 @@ import { roomsAPI, postingsAPI } from '../shared/api';
 import styled from 'styled-components';
 import { useInView } from 'react-intersection-observer';
 import PostingCard from '../components/card/PostingCard';
+import Header from '../components/header/Header';
 import instance from '../shared/axios';
 
 
@@ -27,7 +28,7 @@ const Home = () => {
     // );
     const { data, fetchNextPage, isFetchingNextPage, refetch } = useInfiniteQuery(
       ['cardList', paramCategory],
-      ({ pageParam = 0 }) => postingsAPI.fetchPostingsListWithScroll(pageParam),
+      ({ pageParam = 0 }) => postingsAPI.fetchPostingsListWithScroll(pageParam, paramCategory),
       {
         getNextPageParam: (lastPage) =>
           !lastPage.isLast ? lastPage.nextPage : undefined,
@@ -46,10 +47,11 @@ const Home = () => {
   
     return (
       <HomeWrapper>
+        <Header/>
             {data.pages?.map((page, index) => (
               <Page key={index} >
                   {page.posts.map((post) => (
-                    <PostingCard key={post.posting_id} post={post}></PostingCard>
+                    paramCategory==='postings'?<PostingCard key={post.posting_id} post={post}></PostingCard>:null //FIXME: 채팅방 리스트 불러오기 API가 구현되면 null 대신에 ChatroomCard 컴포넌트로 렌더링
                   ))}
               </Page>
             ))}
@@ -66,6 +68,8 @@ const HomeWrapper = styled.div`
   gap:20px;
   width:100%;
   margin:0 auto;
+  padding-top:100px;
+  //TODO: 헤더의 개수에 따라 padding-top값 조정하기
 `
 
 const Page = styled.div`
