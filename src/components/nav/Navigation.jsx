@@ -1,16 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { BiHomeAlt, BiEdit } from 'react-icons/bi';
 import { BsChatLeft, BsPerson } from 'react-icons/bs';
 
 const Navigation = () => {
 
 
+
     return(
         <NavigationWrapper>
             <NavigationContent>
-                <BiHomeAlt></BiHomeAlt>
-                <BsChatLeft></BsChatLeft>
+                <Link to="/home/postings"><BiHomeAlt></BiHomeAlt></Link>
+                <Link to="/home/rooms"><BsChatLeft></BsChatLeft></Link>
                 <BiEdit></BiEdit>
                 <BsPerson></BsPerson>
             </NavigationContent>
@@ -25,11 +27,9 @@ const NavigationWrapper = styled.div`
     bottom:0;
     left:0;
     width:100%;
-    max-width:400px;
     margin:0 auto;
     height:60px;
-    background:white;
-    border-top:2px solid lightgray;
+    
 `
 
 const NavigationContent = styled.div`
@@ -38,5 +38,8 @@ const NavigationContent = styled.div`
     justify-content:space-between;
     margin:0 auto;
     width:calc(100% - 40px);
+    max-width:400px;
     height:100%;
+    border-top:2px solid lightgray;
+    background:white;
 `
