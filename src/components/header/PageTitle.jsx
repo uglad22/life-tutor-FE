@@ -1,18 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { MdArrowBackIosNew } from 'react-icons/md';
 
-const PageTitle = () => {
+const PageTitle = ({ title, isAction }) => {
     const location = useLocation();
+    const navigate = useNavigate();
     const pathname = location.pathname;
-    if(pathname === '/home/postings') return null;
+    if(pathname === '/home/postings') return <PageTitleEmpty/>;
 
     return(
         <PageTitleWrapper>
             <PageTitleContent>
-                <div><p><MdArrowBackIosNew/></p></div>
-                <h2>본문 상세</h2>
+                <div onClick={()=>navigate(-1)}><p><MdArrowBackIosNew/></p></div>
+                <h2>{title}</h2>
                 <div className='header-actions'>
                     <p>수정</p>
                 </div>
@@ -34,6 +35,9 @@ const PageTitleWrapper = styled.div`
     p {
         margin:0;
     }
+    .header-actions {
+        visibility:hidden;
+    }
 `
 
 const PageTitleContent = styled.div`
@@ -45,4 +49,8 @@ const PageTitleContent = styled.div`
     align-items:center;
     justify-content:space-between;
     
+`
+
+const PageTitleEmpty = styled.div`
+    height:20px;
 `

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Home from './pages/Home';
 import Header from './components/header/Header';
+import Post from './pages/Post';
 import Navigation from './components/nav/Navigation';
 import { Routes, Route } from 'react-router-dom';
 import instance from './shared/axios';
@@ -17,12 +18,14 @@ function App() {
   }
   
   return (
+    // TODO: 로그인 유무에 따라 url 직접 접근 차단 또는 허용하는 기능 구현(react-router로)
     <div className="App">
         {/* <button onClick={tempLogin}>임시 로그인하기</button> */}
-        <Header/>
+        {/* <Header/> */}
         <Content>
           <Routes>
             <Route path="/home/:category" element={<Home/>}></Route>
+            <Route path="/posting" element={<Post/>}/>
           </Routes>
         </Content>
         <Navigation/>
@@ -34,7 +37,6 @@ function App() {
 export default App;
 
 const Content = styled.div`
-  padding-top:80px;
   width:100vw;
   max-width:400px;
   margin:0 auto;

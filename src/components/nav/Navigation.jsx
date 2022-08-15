@@ -1,11 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BiHomeAlt, BiEdit } from 'react-icons/bi';
 import { BsChatLeft, BsPerson } from 'react-icons/bs';
 
 const Navigation = () => {
 
+    const navigate = useNavigate();
+
+    const iconClickEventByLoginUser = (e) => {
+        navigate(e.currentTarget.dataset.url);
+    }
 
 
     return(
@@ -13,8 +18,8 @@ const Navigation = () => {
             <NavigationContent>
                 <Link to="/home/postings"><BiHomeAlt></BiHomeAlt></Link>
                 <Link to="/home/rooms"><BsChatLeft></BsChatLeft></Link>
-                <BiEdit></BiEdit>
-                <BsPerson></BsPerson>
+                <BiEdit data-url="/posting" onClick={iconClickEventByLoginUser}></BiEdit>
+                <BsPerson data-url="/mypage" onClick={iconClickEventByLoginUser}></BsPerson>
             </NavigationContent>
         </NavigationWrapper>
     )

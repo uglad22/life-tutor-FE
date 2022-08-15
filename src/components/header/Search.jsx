@@ -24,6 +24,7 @@ const SearchWrapper = styled.form`
     margin-top:40px;
     height:60px;
     width:calc(100% - 40px);
+    max-width:400px;
     /* background:blue; */
     margin:0 auto;
     
