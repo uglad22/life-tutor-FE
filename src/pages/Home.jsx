@@ -3,9 +3,8 @@ import { useQueryClient, useQuery, useInfiniteQuery } from '@tanstack/react-quer
 import { useLocation, useParams } from 'react-router-dom';
 import { roomsAPI, postingsAPI } from '../shared/api';
 import styled from 'styled-components';
-import axios from 'axios';
 import { useInView } from 'react-intersection-observer';
-import PostingCard from '../components/PostingCard';
+import PostingCard from '../components/card/PostingCard';
 import instance from '../shared/axios';
 
 
