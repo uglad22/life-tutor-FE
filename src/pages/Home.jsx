@@ -1,31 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useQueryClient, useQuery, useInfiniteQuery } from '@tanstack/react-query';
-import { useLocation, useParams } from 'react-router-dom';
-import { roomsAPI, postingsAPI } from '../shared/api';
+import { useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
+import { postingsAPI } from '../shared/api';
 import styled from 'styled-components';
 import { useInView } from 'react-intersection-observer';
 import PostingCard from '../components/card/PostingCard';
 import Header from '../components/header/Header';
-import instance from '../shared/axios';
+
 
 
 
 const Home = () => {
-  const paramCategory = useParams().category;
-  const queryClient = useQueryClient();
-  const { ref, inView} = useInView();
+    const paramCategory = useParams().category;
+    const queryClient = useQueryClient();
+    const { ref, inView} = useInView();
 
-    // const { data, fetchNextPage, isFetchingNextPage, refetch } = useInfiniteQuery(
-    //   ['posts'],
-    //   ({ pageParam = 1 }) => fetchPostList(pageParam),
-    //   {
-    //     // lastPage >> 저번 페이지에서 가져온 정보
-    //     // 저번 페이지의 isLast 값이 false라면 undefined를 반환하고
-    //     // hasNextPage를 false로 설정
-    //     getNextPageParam: (lastPage) =>
-    //       !lastPage.isLast ? lastPage.nextPage : undefined,
-    //   },
-    // );
     const { data, fetchNextPage, isFetchingNextPage, refetch } = useInfiniteQuery(
       ['cardList', paramCategory],
       ({ pageParam = 0 }) => postingsAPI.fetchPostingsListWithScroll(pageParam, paramCategory),

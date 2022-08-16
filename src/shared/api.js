@@ -8,9 +8,3 @@ export const postingsAPI = {
         return { posts:content, nextPage: pageParams + 1, isLast:last}
     },
 }
-
-export const roomsAPI = {
-    fetchRoomsList: () => {
-        return instance.get('/apimainrooms') // FIXME: URL 바꾸기
-    }
-}
