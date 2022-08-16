@@ -9,7 +9,7 @@ const Navigation = () => {
 
     const navigate = useNavigate();
 
-    const iconClickEventByLoginUser = (e) => {
+    const iconClickHandler = (e) => {
         const childNodes = navContentRef.current.children;
         for(let i of childNodes) {
             i.classList.remove('clicked');
@@ -22,10 +22,10 @@ const Navigation = () => {
     return(
         <NavigationWrapper>
             <NavigationContent ref={navContentRef}>
-                <p className="clicked" data-url="/home/postings" onClick={iconClickEventByLoginUser}><BiHomeAlt></BiHomeAlt></p>
-                <p data-url="home/rooms" onClick={iconClickEventByLoginUser}><BsChatLeft></BsChatLeft></p>
-                <p data-url="/posting" onClick={iconClickEventByLoginUser}><BiEdit></BiEdit></p>
-                <p data-url="/mypage" onClick={iconClickEventByLoginUser}><BsPerson></BsPerson></p>
+                <p className="clicked" data-url="/home/postings" onClick={iconClickHandler}><BiHomeAlt></BiHomeAlt></p>
+                <p data-url="home/rooms" onClick={iconClickHandler}><BsChatLeft></BsChatLeft></p>
+                <p data-url="/posting" onClick={iconClickHandler}><BiEdit></BiEdit></p>
+                <p data-url="/mypage" onClick={iconClickHandler}><BsPerson></BsPerson></p>
             </NavigationContent>
         </NavigationWrapper>
     )
@@ -49,7 +49,7 @@ const NavigationContent = styled.div`
     justify-content:space-between;
     margin:0 auto;
     width:calc(100% - 40px);
-    max-width:400px;
+    max-width:480px;
     height:100%;
     border-top:2px solid lightgray;
     background:white;
