@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
+import { submitDataContext } from '../components/context/SubmitDataProvider';
 import Header from '../components/header/Header';
 
 const validation = (hashtagInput) => {
@@ -9,12 +10,22 @@ const validation = (hashtagInput) => {
 
 const Post = () => {
     const [hashInput, setHashInput] = useState('');
-    const [hashtags, setHashtags] = useState([]);
+    const context = useContext(submitDataContext);
+    const { postData } = context.state;
+    const { title, posting_content } = postData;
+    const { setPostData } = context.actions;
 
     const changeHashInput = (e) => {
         setHashInput(e.target.value);
     }
 
+    const changeTextData = (e) => {
+        // context의 state를 변경
+        // 글을 등록할 때 context의 state를 서버에 request body로 보내기 때문
+        setPostData({...postData, [e.target.name]:e.target.value});
+    }
+
+    // velog 처럼 해시태그 추가할 때 스페이스바 누르면 추가되는 기능
     const keyupSpace = (e) => {
         if(e.code === "Space") {
             const valid = validation(hashInput.trim());
@@ -23,7 +34,8 @@ const Post = () => {
                 return;
             }
             else {
-                setHashtags([...hashtags, hashInput]);
+                // 스페이스바로 추가하면 공백문자가 포함되기 때문에 trim()을 해줌
+                setPostData({...postData, hashtag:[...postData.hashtag, hashInput.trim()]})
                 setHashInput('');
             }
             
@@ -31,25 +43,30 @@ const Post = () => {
         else return;
     }
 
+    // 해시태그 추가
     const hashtagSubmit = (e) => {
         e.preventDefault();
         const valid = validation(hashInput);
         if(!valid) return;
-        setHashtags([...hashtags, hashInput]);
+        setPostData({...postData, hashtag:[...postData.hashtag, hashInput.trim()]})
         setHashInput('');
     }
     return(
         <PostWrapper>
             <Header title="글쓰기" isAction={true}/>
             <PostContent>
-                <input type="text" placeholder='제목을 입력해주세요.'></input>
+                <input 
+                type="text" placeholder='제목을 입력해주세요.' value={title}
+                name="title" onChange={changeTextData}></input>
                 <hr></hr>
-                <textarea placeholder="내용을 입력해주세요."></textarea>
+                <textarea placeholder="내용을 입력해주세요." value={posting_content}
+                name="posting_content" onChange={changeTextData}></textarea>
                 {/* <hr></hr> */}
                 <HashTagForm onSubmit={hashtagSubmit}>
-                    <input type="text" placeholder="해시태그 입력 후 엔터 또는 스페이스" onChange={changeHashInput} value={hashInput} onKeyUp={keyupSpace}></input>
+                    <input type="text" placeholder="해시태그 입력 후 엔터 또는 스페이스"
+                    onChange={changeHashInput} value={hashInput} onKeyUp={keyupSpace}></input>
                     <div className='hashtag-viewer'>
-                        {hashtags.map((tag, index) => <p key={index} idx={index}>{tag}</p>)}
+                        {postData.hashtag.map((tag, index) => <p key={index} idx={index}>{tag}</p>)}
                     </div>
                 </HashTagForm>
             </PostContent>
