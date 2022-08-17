@@ -79,7 +79,7 @@ const Signup = () => {
     const submitId = async () => {
         if (emailcheck !== '') {
             try {
-                const res = await instance.get(`/api/users/${emailcheck}`);
+                const res = await instance.get(`/api/users/email/${email_ref.current.value}`);
                 console.log(res);
                 alert('사용 가능한 ID 입니다!');
             //   navigate('/login');
@@ -94,7 +94,7 @@ const Signup = () => {
     const submitNickName = async () => {
         if (nicknamecheck !== '') {
             try {
-                const res = await instance.get(`/api/users/${nicknamecheck}`);
+                const res = await instance.get(`/api/users/nickname/${nickname_ref.current.value}`);
                 console.log(res);
                 alert('사용 가능한 닉네임 입니다!');
             //   navigate('/login');
