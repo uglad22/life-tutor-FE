@@ -40,7 +40,7 @@ const Post = () => {
     }
     return(
         <PostWrapper>
-            <Header title="글쓰기"/>
+            <Header title="글쓰기" isAction={true}/>
             <PostContent>
                 <input type="text" placeholder='제목을 입력해주세요.'></input>
                 <hr></hr>
