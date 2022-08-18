@@ -1,12 +1,13 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import Home from './pages/Home';
 import Header from './components/header/Header';
 import Post from './pages/Post';
 import Navigation from './components/nav/Navigation';
 import { Routes, Route } from 'react-router-dom';
-import instance from './shared/axios';
 import axios from 'axios';
+import GlobalStyle from './style/GlobalStyle';
+import theme from './style/theme';
 
 function App() {
 
@@ -17,8 +18,10 @@ function App() {
   
   return (
     // TODO: 로그인 유무에 따라 url 직접 접근 차단 또는 허용하는 기능 구현(react-router로)
+    <ThemeProvider theme={theme}>
     <div className="App">
-        <button onClick={tempLogin} style={{paddingTop:"200px"}}>임시 로그인하기</button>
+        <GlobalStyle/>
+        {/* <button onClick={tempLogin} style={{paddingTop:"200px"}}>임시 로그인하기</button> */}
         {/* <Header/> */}
         <Content>
           <Routes>
@@ -29,6 +32,7 @@ function App() {
         <Navigation/>
         
     </div>
+    </ThemeProvider>
   );
 }
 
