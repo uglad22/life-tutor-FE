@@ -22,17 +22,23 @@ const PostingCard = ({post}) => {
 export default PostingCard;
 
 const PostingCardWrapper = styled.div`
-    width:calc(100% - 40px);
+    width:100%;
     border-radius:10px;
-    background:lightgray;
+    background:white;
     padding:20px;
     box-sizing:border-box;
-    border:1px solid gray;
+    /* border:1px solid gray; */
     margin:0 auto;
+    box-shadow: 1px 1px 1px lightgray;
+    hr {
+        width:100%;
+        background:${({ theme }) => theme.colors.hrGray};
+    }
 `
 
 const PostingCardTitle = styled.h2`
-    margin:0;
+    font-size:20px;
+    margin-bottom:15px;
 `
 
 const PostingCardContent = styled.p`

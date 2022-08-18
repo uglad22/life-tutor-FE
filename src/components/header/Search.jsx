@@ -9,7 +9,14 @@ const Search = () => {
 
     return(
         <SearchWrapper>
-            <input type="text" placeholder='해시태그 검색'></input>
+            <div className='temp'>
+            <div className='search-icon'>
+            <svg width="30" height="30" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.6715 16.0839L14.1874 12.5986C16.7944 9.11501 16.0835 4.17776 12.5996 1.57096C9.11577 -1.03583 4.17811 -0.325041 1.5711 3.15854C-1.03592 6.64213 -0.325068 11.5794 3.15881 14.1862C5.95734 16.2802 9.80107 16.2802 12.5996 14.1862L16.0853 17.6715C16.5233 18.1095 17.2335 18.1095 17.6715 17.6715C18.1095 17.2335 18.1095 16.5234 17.6715 16.0854L17.6715 16.0839ZM7.90827 13.5135C4.81197 13.5135 2.30195 11.0037 2.30195 7.90761C2.30195 4.81157 4.81197 2.30176 7.90827 2.30176C11.0046 2.30176 13.5146 4.81157 13.5146 7.90761C13.5113 11.0023 11.0032 13.5102 7.90827 13.5135Z" fill="#3549FF" fill-opacity="0.6"/>
+            </svg>
+            </div>
+                <input type="text" placeholder='ex) 개발자'></input>
+            </div>
         </SearchWrapper>
         
     )
@@ -18,6 +25,7 @@ const Search = () => {
 export default Search;
 
 const SearchWrapper = styled.form`
+    /* position:relative; */
     display:flex;
     flex-direction:column;
     justify-content:flex-end;
@@ -27,16 +35,40 @@ const SearchWrapper = styled.form`
     max-width:480px;
     /* background:blue; */
     margin:0 auto;
+
+    .temp {
+        position:relative;
+        /* height:100%; */
+    }
+
+    .search-icon {
+        /* background:red; */
+        position:absolute;
+        top:8px;
+        left:15px;
+        background: ${({ theme }) => theme.colors.searchBlue};
+    }
     
     input {
-        height:90%;
+        height:46px;
         width:100%;
-        border-radius:10px;
+        border-radius:30px;
         box-sizing:border-box;
-        
+        font-weight:600;
+        background: ${({ theme }) => theme.colors.searchBlue};
+        color:${({ theme }) => theme.colors.darkGray};
+        border:2px solid lightgray;
+        padding-left:60px;
+        font-size:20px;
     }
-`
+    input:focus {
+        outline:none;
+        border-color: ${({ theme }) => theme.colors.mainBlue};
+    }
+    
 
-const EmptyContainer = styled.div`
-   height:40px; 
+    // placeholder 색상 변경
+    input::placeholder {color:#CBCBCB;}
+    input::-webkit-input-placeholder {color:#CBCBCB;}
+    input:-ms-input-placeholder {color:#CBCBCB;}
 `

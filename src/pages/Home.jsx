@@ -58,7 +58,7 @@ const HomeWrapper = styled.div`
   gap:20px;
   width:100%;
   margin:0 auto;
-  padding-top:100px;
+  padding-top:87px;
   //TODO: 헤더의 개수에 따라 padding-top값 조정하기
 `
 

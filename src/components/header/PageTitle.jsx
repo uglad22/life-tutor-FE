@@ -41,8 +41,8 @@ const PageTitle = ({ title, isAction }) => {
     return(
         <PageTitleWrapper>
             <PageTitleContent>
-                <div onClick={()=>navigate(-1)}><p><MdArrowBackIosNew/></p></div>
-                <h2>{title}</h2>
+                <div className='back-icon' onClick={()=>navigate(-1)}><p><MdArrowBackIosNew/></p></div>
+                <p>{title}</p>
                 <HeaderActions isShow={isAction}>
                     {pathname==="/posting"?<p onClick={postSubmitHandler}>제출</p>:null}
                     {/* TODO: action이 필요한 페이지의 케이스를 위와 같이 다룸 */}
@@ -70,15 +70,28 @@ const PageTitleWrapper = styled.div`
 const PageTitleContent = styled.div`
     width:calc(100% - 40px);
     margin:0 auto;
-    /* background:red; */
     height:100%;
     display:flex;
     align-items:center;
     justify-content:space-between;
+
+    .back-icon p{
+        font-size:20px;
+    }
+
+    p {
+        font-size:16px;
+        letter-spacing:-0.3px;
+        font-weight:600;
+    }
     
 `
 
 const HeaderActions = styled.div`
+    color:${({ theme }) => theme.colors.mainBlue};
+    font-size:16px;
+    letter-spacing:-0.3px;
+    font-weight:600;
     p {
         cursor:pointer;
     }
@@ -92,5 +105,5 @@ const HeaderActions = styled.div`
 `
 
 const PageTitleEmpty = styled.div`
-    height:20px;
+    height:27px;
 `

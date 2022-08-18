@@ -40,6 +40,7 @@ const NavigationWrapper = styled.div`
     width:100%;
     margin:0 auto;
     height:60px;
+    background:white;
     
 `
 
@@ -51,7 +52,6 @@ const NavigationContent = styled.div`
     width:calc(100% - 40px);
     max-width:480px;
     height:100%;
-    border-top:2px solid lightgray;
     background:white;
 
     p {
