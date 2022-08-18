@@ -1,18 +1,26 @@
 import React, { useContext } from 'react';
 import { submitDataContext } from '../context/SubmitDataProvider';
 import styled, { css } from 'styled-components';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { MdArrowBackIosNew } from 'react-icons/md';
+import { postings } from '../../shared/api';
 
 
 const PageTitle = ({ title, isAction }) => {
+    const queryClient = useQueryClient();
     const location = useLocation();
     const navigate = useNavigate();
     const pathname = location.pathname;
     const context = useContext(submitDataContext);
-    if(pathname === '/home/postings') return <PageTitleEmpty/>;
-    
+
+    const { mutate:submitPosting, isError:mutateError } = useMutation(postings.postPosting, {
+        onSuccess: ({data}) => {
+            console.log(data);
+            queryClient.invalidateQueries(["cardList", "postings"]);
+            navigate('/home/postings');
+        }
+    });
 
     const postSubmitHandler = () => {
         //TODO: useMutation 사용해서 글 작성
@@ -21,11 +29,15 @@ const PageTitle = ({ title, isAction }) => {
             title,
             posting_content,
             hashtag,
+            imgUrl:'shdlfl'
         }
-
         console.log(newData);
+        submitPosting(newData);
     }
 
+    
+    if(mutateError) return <p>error</p>
+    if(pathname === '/home/postings') return <PageTitleEmpty/>;
     return(
         <PageTitleWrapper>
             <PageTitleContent>
@@ -52,10 +64,6 @@ const PageTitleWrapper = styled.div`
     border-bottom:1px solid lightgray;
     p {
         margin:0;
-    }
-    .header-actions {
-        /* visibility:hidden; */
-        
     }
 `
 
