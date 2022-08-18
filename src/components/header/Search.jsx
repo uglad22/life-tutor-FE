@@ -61,12 +61,12 @@ const SearchWrapper = styled.form`
         width:100%;
         border-radius:30px;
         box-sizing:border-box;
-        font-weight:600;
+        /* font-weight:600; */
         background: ${({ theme }) => theme.colors.searchBlue};
         color:${({ theme }) => theme.colors.darkGray};
         border:2px solid lightgray;
         padding-left:65px;
-        font-size:20px;
+        font-size:17px;
     }
     input:focus {
         outline:none;

@@ -55,7 +55,7 @@ export default Home;
 const HomeWrapper = styled.div`
   display:flex;
   flex-direction:column;
-  gap:20px;
+  gap:10px;
   width:100%;
   margin:0 auto;
   padding-top:87px;
@@ -65,5 +65,5 @@ const HomeWrapper = styled.div`
 const Page = styled.div`
   display:flex;
   flex-direction:column;
-  gap:20px;
+  gap:10px;
 `
