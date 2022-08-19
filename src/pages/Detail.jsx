@@ -1,12 +1,21 @@
-import React, { useRef } from "react";
-import axios from "axios";
+import React, { useRef, useState } from "react";
+import instance from "../shared/axios";
 import styled from "styled-components";
 import { useParams, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BsChevronLeft } from "react-icons/bs";
 
+
 // TODO:
 // 2. 댓글 작성날짜시간
+// 좋아요 했던 게시글 표시 (스테이트) ? 옵셔널체이닝
+// https://mockapi.io/
+
+// useState 함수형
+// const [isLike, setIsLike] = useState(() => {
+//   if(data.isLike) return true;
+//   else return false;
+// })
 
 const Detail = () => {
   const params = useParams();
@@ -17,8 +26,7 @@ const Detail = () => {
   const loginNickname = window.localStorage.getItem("nickname");
 
   const getPost = async () => {
-    // const res = await axios.get(`/api/board/detail/${postingId}`);
-    const res = await axios.get(`http://localhost:5001/board/${postingId}`);
+    const res = await instance.get(`/api/board/detail/${postingId}`);
     return res.data;
   };
 
@@ -35,26 +43,18 @@ const Detail = () => {
   };
 
   const deletePostingHandler = async () => {
-    await axios.delete(`/api/board/${postingId}`);
-    navigate("/");
+    const result = window.confirm("게시글을 삭제하시겠습니까?");
+    if (result) {
+      await instance.delete(`/api/board/${postingId}`);
+      return navigate("/");
+    }
   };
-
-
-
-  // const contentlikeHandler = async () => {
-    // if (data.isLike === true) {
-    // await axios.delete(`/api/board/${postingId}/likes`);
-    // } else {
-    // await axios.post(`/api/board/${postingId}/likes`);
-    // }
-  //   alert("게시글 좋아요 버튼");
-  // };
 
   const contentLike = async () => {
     if (data.isLike === true) {
-    return await axios.delete(`/api/board/${postingId}/likes`);
+    return await instance.delete(`/api/board/${postingId}/likes`);
     } else {
-    return await axios.post(`/api/board/${postingId}/likes`);
+    return await instance.post(`/api/board/${postingId}/likes`);
     }
   }
 
@@ -64,16 +64,9 @@ const Detail = () => {
     }
   })
 
-
-  
-  // const commentAddHandler = async (comment) => {
-    //   // await axios.post(`/api/board/${postingId}/comment`, comment);
-    //   comment_ref.current.value = "";
-    // };
-
   const addComment = async (comment) => {
     console.log(comment);
-    return await axios.post(`/api/board/${postingId}/comment`, comment);
+    return await instance.post(`/api/board/${postingId}/comment`, comment);
   }
 
   const { mutate : commentAddHandler } = useMutation(addComment, {
@@ -87,36 +80,32 @@ const Detail = () => {
 
   const commentEditHandler = async (commentId) => {
     // FIXME: 코멘트 content 데이터 넣어서 put
-    // 댓글 수정 어떻게?
+    // 댓글 수정 > 유튜브, 페이스북처럼 수정하는 댓글 밑에 인풋박스 생성
     // await axios.put(`/api/board/${postingId}/comment/${commentId}`);
     console.log(commentId);
     console.log("댓글 수정버튼");
   };
 
-  const commentDelHandler = async (commentId) => {
-    await axios.delete(`/api/board/${postingId}/comment/${commentId}`);
+  const deleteComment = async (commentId) => {
+    await instance.delete(`/api/board/${postingId}/comment/${commentId}`);
     console.log(commentId);
     console.log("댓글 삭제버튼");
-  };
+  }
 
+  const { mutate : commentDelHandler } = useMutation(deleteComment, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("post");
+      comment_ref.current.value = "";
+    }
+  })
 
-
-  // const commentlikeHandler = async (commentIdx) => {
-    // if (data.comments[commentIdx].isLike === true) {
-    //   await axios.delete(`/api/comment/${data.comments[commentIdx].id}/likes`);
-    // } else {
-    //   await axios.post(`/api/comment/${data.comments[commentIdx].id}/likes`);
-    // }
-  //   console.log(commentIdx);
-  //   console.log("댓글공감");
-  // };
 
   const commentLike = async (commentIdx) => {
     console.log(commentIdx);
     if (data.comments[commentIdx].isLike === true) {
-      return await axios.delete(`/api/comment/${data.comments[commentIdx].id}/likes`);
+      return await instance.delete(`/api/comment/${data.comments[commentIdx].id}/likes`);
     } else {
-      return await axios.post(`/api/comment/${data.comments[commentIdx].id}/likes`);
+      return await instance.post(`/api/comment/${data.comments[commentIdx].id}/likes`);
     }
   }
 
