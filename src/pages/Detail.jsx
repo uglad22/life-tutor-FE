@@ -17,6 +17,7 @@ import { BsChevronLeft } from "react-icons/bs";
 //   else return false;
 // })
 
+
 const Detail = () => {
   const params = useParams();
   const comment_ref = useRef();
