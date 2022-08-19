@@ -1,43 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { useQueryClient, useQuery, useInfiniteQuery } from '@tanstack/react-query';
-import { roomsAPI, postingsAPI } from '../shared/api';
+import { useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
+import { postingsAPI } from '../shared/api';
 import styled from 'styled-components';
-import axios from 'axios';
 import { useInView } from 'react-intersection-observer';
-import PostingCard from '../components/PostingCard';
-import instance from '../shared/axios';
+import PostingCard from '../components/card/PostingCard';
+import Header from '../components/header/Header';
+
 
 
 
 const Home = () => {
-  const queryClient = useQueryClient();
-  // const fetchPostingsList = async (pageParam) => {
-  //   const res = await instance.get(
-  //     `/api/main/postings?page=${pageParam}&size=3`
-  //   )
-  //   console.log(res.data.content)
-  //   const { content } = res.data;
-  //   const { last } = res.data;
-  //   return { posts:content, nextPage: pageParam + 1, isLast:last}
-  // }
-
-
+    const paramCategory = useParams().category;
+    const queryClient = useQueryClient();
     const { ref, inView} = useInView();
 
-    // const { data, fetchNextPage, isFetchingNextPage, refetch } = useInfiniteQuery(
-    //   ['posts'],
-    //   ({ pageParam = 1 }) => fetchPostList(pageParam),
-    //   {
-    //     // lastPage >> 저번 페이지에서 가져온 정보
-    //     // 저번 페이지의 isLast 값이 false라면 undefined를 반환하고
-    //     // hasNextPage를 false로 설정
-    //     getNextPageParam: (lastPage) =>
-    //       !lastPage.isLast ? lastPage.nextPage : undefined,
-    //   },
-    // );
     const { data, fetchNextPage, isFetchingNextPage, refetch } = useInfiniteQuery(
-      ['postList'],
-      ({ pageParam = 0 }) => postingsAPI.fetchPostingsListWithScroll(pageParam),
+      ['cardList', paramCategory],
+      ({ pageParam = 0 }) => postingsAPI.fetchPostingsListWithScroll(pageParam, paramCategory),
       {
         getNextPageParam: (lastPage) =>
           !lastPage.isLast ? lastPage.nextPage : undefined,
@@ -45,6 +25,7 @@ const Home = () => {
         onSuccess:(data) => {
           console.log(data);
         },
+        retry:false
       },
     );
 
@@ -56,17 +37,14 @@ const Home = () => {
   
     return (
       <HomeWrapper>
-        <input type="text"></input>
-        <button>제출</button>
-        <div>
+        <Header/>
             {data.pages?.map((page, index) => (
-              <React.Fragment key={index} >
+              <Page key={index} >
                   {page.posts.map((post) => (
-                    <PostingCard key={post.posting_id} post={post}></PostingCard>
+                    paramCategory==='postings'?<PostingCard key={post.posting_id} post={post}></PostingCard>:null //FIXME: 채팅방 리스트 불러오기 API가 구현되면 null 대신에 ChatroomCard 컴포넌트로 렌더링
                   ))}
-              </React.Fragment>
+              </Page>
             ))}
-        </div>
         {isFetchingNextPage ? <div>로딩중입니다1!!!!</div>: <div ref={ref} style={{height:"100px"}}></div>}
         </HomeWrapper>
     );
@@ -75,5 +53,17 @@ const Home = () => {
 export default Home;
 
 const HomeWrapper = styled.div`
+  display:flex;
+  flex-direction:column;
+  gap:10px;
   width:100%;
+  margin:0 auto;
+  padding-top:87px;
+  //TODO: 헤더의 개수에 따라 padding-top값 조정하기
+`
+
+const Page = styled.div`
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 `

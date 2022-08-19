@@ -8,5 +8,6 @@
 6. react-icons
 7. react-intersection-observer
 8. moment
+9. Material UI
 
 PR하시면 저한테 말씀해주세요!
