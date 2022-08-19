@@ -1,6 +1,8 @@
+
 import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import Home from './pages/Home';
+import Detail from "./pages/Detail";
 import Header from './components/header/Header';
 import Post from './pages/Post';
 import Navigation from './components/nav/Navigation';
@@ -22,6 +24,7 @@ function App() {
         <Content>
           <Routes>
             <Route path="/home/:category" element={<Home/>}></Route>
+            <Route path="/detail/:postingId" element={<Detail />} />
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>
             <Route
@@ -40,7 +43,6 @@ function App() {
 export default App;
 
 const Content = styled.div`
-
   width:100vw;
   max-width:480px;
   margin:0 auto;
