@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import NomalBadge from '../hashtag/NomalBadge';
+import { AiOutlineLike } from 'react-icons/ai';
+import { IoChatboxEllipsesOutline } from 'react-icons/io5';
 
 const PostingCard = ({post}) => {
 
@@ -9,15 +12,25 @@ const PostingCard = ({post}) => {
             <PostingCardTitle>{post.title}</PostingCardTitle>
             <PostingCardContent>{post.posting_content}</PostingCardContent>
             <PostingCardHashtagArea>
-                {post.hashtag.map((item, index) => <p key={index}>{item}</p>)}
+                {post.hashtag.map((item, index) => <NomalBadge key={index}>{`#${item}`}</NomalBadge>)}
             </PostingCardHashtagArea>
             <PostingCardUserInfo>
-                <p>{post.nickname}</p><p style={{color:"#3549FF"}}>주니어</p>
+                <p style={{color:"#656565"}}>{post.nickname}</p>
+                <p style={{color:"#3549FF"}}>주니어</p>
             </PostingCardUserInfo>
             </PostingCardBody>
             <HRDiv/>
             <PostingCardFooter>
-                <div className='posting-actions-icon'><p>100</p><p>100</p></div>
+                <div className='posting-actions-icon'>
+                    <p className='posting-actions-icon-wrapper posting-actions-icon-like'>
+                        <AiOutlineLike/>
+                        100
+                    </p>
+                    <p className='posting-actions-icon-wrapper'>
+                        <IoChatboxEllipsesOutline/>
+                        100
+                    </p>
+                </div>
                 <div className='posting-time'><p>1시간 전</p></div>
             </PostingCardFooter>
         </PostingCardWrapper>
@@ -79,18 +92,20 @@ const HRDiv = styled.div`
 
 const PostingCardUserInfo = styled.div`
     display:flex;
-    gap:10px;
+    gap:8px;
     width:100%;
     p {
         margin:0;
         color:gray;
-        font-weight:bold;
+        font-weight:700;
+        font-size:13px;
     }
 `
 
 const PostingCardFooter = styled.div`
     display:flex;
     padding:0 20px 20px 20px;
+    align-items:center;
     p {
         margin:0;
         color:gray;
@@ -99,6 +114,22 @@ const PostingCardFooter = styled.div`
         display:flex;
         gap:10px;
         flex:1;
+
+        .posting-actions-icon-wrapper {
+            display:flex;
+            align-items:center;
+            gap:3px;
+        }
+
+        .posting-actions-icon-like {
+            /* color:blue; */
+        }
+    }
+    .posting-time {
+        color:${({theme}) => theme.colors.darkGray};
+        font-weight:500;
+        font-size:12px;
+        letter-spacing:-0.3px;
     }
 
 `
