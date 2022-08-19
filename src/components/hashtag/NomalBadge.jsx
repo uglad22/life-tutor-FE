@@ -6,7 +6,7 @@ const NomalBadge = ({ children }) => {
     
     return (
         <Stack direction="row" spacing={1}>
-          <Chip label={children} sx={{background:"#3549FF", color:"white"}}/>
+          <Chip label={children} sx={{background:"#3549FF", color:"white", fontSize:"12px"}}/>
         </Stack>
       );
 }

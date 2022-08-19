@@ -12,7 +12,7 @@ const PostingCard = ({post}) => {
             <PostingCardTitle>{post.title}</PostingCardTitle>
             <PostingCardContent>{post.posting_content}</PostingCardContent>
             <PostingCardHashtagArea>
-                {post.hashtag.map((item, index) => <NomalBadge key={index}>{`#${item}`}</NomalBadge>)}
+                {post.hashtag.map((item, index) => <NomalBadge key={index}>{`# ${item}`}</NomalBadge>)}
             </PostingCardHashtagArea>
             <PostingCardUserInfo>
                 <p style={{color:"#656565"}}>{post.nickname}</p>

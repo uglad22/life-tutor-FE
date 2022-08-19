@@ -77,5 +77,5 @@ const SearchWrapper = styled.form`
     // placeholder 색상 변경
     input::placeholder {color:#CBCBCB;}
     input::-webkit-input-placeholder {color:#CBCBCB;}
-    input:-ms-input-placeholder {color:#CBCBCB;}
+    input::-ms-input-placeholder {color:#CBCBCB;}
 `
