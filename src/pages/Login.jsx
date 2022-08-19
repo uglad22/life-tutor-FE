@@ -23,6 +23,9 @@ const Login = () => {
 
             try {
                 const res = await instance.post('/api/login', login_data);
+                const token = res.headers.authorization;
+        
+                localStorage.setItem("Authorization", token);
                 console.log(res);
                 alert('환영합니다!');
             //   navigate('/main');
