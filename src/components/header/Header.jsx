@@ -22,7 +22,9 @@ const HeaderWrapper = styled.div`
     left:0;
     /* height:60px; */
     width:100%;
-    /* max-width:480px; */
+    max-width:480px;
+    left: 50%;
+    transform: translate(-50%, 0);
     margin:0 auto;
     background:white;
     

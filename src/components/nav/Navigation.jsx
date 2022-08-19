@@ -59,6 +59,9 @@ const NavigationWrapper = styled.div`
     bottom:0;
     left:0;
     width:100%;
+    max-width:480px;
+    left: 50%;
+    transform: translate(-50%, 0);
     margin:0 auto;
     height:71px;
     background:white;
