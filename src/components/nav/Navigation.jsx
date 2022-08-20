@@ -25,7 +25,12 @@ const Navigation = () => {
         const childNodes = navContentRef.current.children;
         const navIndexInfo = [...IndexInfo];
         const index = navIndexInfo.findIndex((item) => item.path === pathname);
-        childNodes[index].classList.add('clicked');
+        if(index !== -1) childNodes[index].classList.add('clicked');
+        else {
+            for(let i of childNodes) {
+                i.classList.remove('clicked');
+            }
+        }
     }, [])
 
 
