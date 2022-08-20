@@ -33,6 +33,7 @@ const Navigation = () => {
         }
     }, [])
 
+    if(pathname.includes('detail')) return null;
 
     return(
         <NavigationWrapper>
