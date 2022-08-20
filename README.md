@@ -9,5 +9,8 @@
 7. react-intersection-observer
 8. moment
 9. Material UI
+10. stompjs
+11. sockjs-client
+12. net
 
 PR하시면 저한테 말씀해주세요!
