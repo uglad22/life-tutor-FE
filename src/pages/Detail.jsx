@@ -1,13 +1,17 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import instance from "../shared/axios";
 import styled from "styled-components";
+import NomalBadge from '../components/hashtag/NomalBadge';
 import { useParams, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BsChevronLeft } from "react-icons/bs";
+import axios from "axios";
+import { AiOutlineLike } from 'react-icons/ai';
+import { IoChatboxEllipsesOutline } from 'react-icons/io5';
 
 
 // TODO:
-// 2. 댓글 작성날짜시간
+// FIXME: 작성날짜시간 ex. ~시간전, ~일전
 // 좋아요 했던 게시글 표시 (스테이트) ? 옵셔널체이닝
 // https://mockapi.io/
 
@@ -27,7 +31,8 @@ const Detail = () => {
   const loginNickname = window.localStorage.getItem("nickname");
 
   const getPost = async () => {
-    const res = await instance.get(`/api/board/detail/${postingId}`);
+    // const res = await instance.get(`/api/board/detail/${postingId}`);
+    const res = await axios.get(`https://62ff3c5934344b6431f5091f.mockapi.io/posting/${postingId}`);
     return res.data;
   };
 
@@ -149,21 +154,31 @@ const Detail = () => {
         </EditAndDelBtn>
       </HeaderBox>
       <ContentBox>
-        <Title>
-          <h3>{data.title}</h3>
-          <p></p>
-        </Title>
-        <Content>
-          <h3>내용</h3>
-          {data.imgUrl && <img src={data.imgUrl} alt="userimage" />}
-          <p>{data.content}</p>
-          {data.hashtag.map((d, idx) => (
-            <p key={idx}>{d}</p>
-          ))}
-        </Content>
-        {data.nickname && loginNickname ? (
+        <TitleAndWriterBox>
+          <Title>
+            <p>{data.title}</p>
+          </Title>
+          <WriterAndTimeBox>
+            <Writer>
+              <p>{data.nickname}</p>
+              <p>{data.user_type}</p>
+            </Writer>
+            <TimeBox>{data.date.substr(0, 10)}</TimeBox>
+          </WriterAndTimeBox>
+        </TitleAndWriterBox>
+        <ContentAndHashtagBox>
+          <Content>
+            <p>{data.posting_content}</p>
+          </Content>
+          <Hashtag>
+            {data.hashtag.map((d, idx) => (
+              <NomalBadge key={idx}>#{d}</NomalBadge>
+            ))}
+          </Hashtag>
+        </ContentAndHashtagBox>
+        {/* {data.nickname && loginNickname ? (
           <>
-            <ContentLikeBtn>좋아요</ContentLikeBtn>
+            <ContentLikeBtn><AiOutlineLike /></ContentLikeBtn>
           </>
         ) : (
           <>
@@ -172,15 +187,43 @@ const Detail = () => {
                 contentlikeHandler();
               }}
             >
-              좋아요
+              <AiOutlineLike />
             </ContentLikeBtn>
           </>
+        )} */}
+        <CommentCountAndLikeCountBox>
+          <CommentCount>
+            <IoChatboxEllipsesOutline />{data.comments.length}
+          </CommentCount>
+        {data.nickname && loginNickname ? (
+          <>
+            <ContentLikeFalseBtn><AiOutlineLike />{data.like_count}</ContentLikeFalseBtn>
+          </>
+        ) : (
+          data.isLike ? (
+          <>
+            <ContentLikeTrueBtn onClick={() => {
+                contentlikeHandler();
+              }}>
+              <AiOutlineLike />{data.like_count}
+            </ContentLikeTrueBtn>
+          </>
+          ):(
+          <>
+            <ContentLikeFalseBtn onClick={() => {
+                contentlikeHandler();
+              }}>
+              <AiOutlineLike />{data.like_count}
+            </ContentLikeFalseBtn>
+          </>
+          )
         )}
+        </CommentCountAndLikeCountBox>
       </ContentBox>
 
       <CommentBox>
         <CommentListBox>
-          {data.comments.map((d, idx) => (
+          {/* {data.comments.map((d, idx) => (
             <Comment key={idx}>
               <CommentIdAndLike>
                 <CommentId>{d.nickname}</CommentId>
@@ -217,6 +260,48 @@ const Detail = () => {
               </CommentIdAndLike>
               <div>{d.content}</div>
             </Comment>
+          ))} */}
+          {data.comments.map((d, idx) => (
+            <Comment key={idx}>
+              <CommentWriter>
+                <p>{d.nickname}닉네임</p>
+                <p>{d.user_type}유저타입</p>
+              </CommentWriter>
+              <CommentContent>{d.content}댓글내용</CommentContent>
+              <CommentLikeAndEditDelBox>
+                {d.nickname != loginNickname ? (
+                  <>
+                  <DateAndLikeBox>
+                    <p>{d.date}</p>
+                    <p><AiOutlineLike />{d.like_count}</p>
+                  </DateAndLikeBox>
+                  <CommentEditAndDelBox>
+                    <CommentEdit
+                        onClick={() => {
+                          commentEditHandler(`${d.id}`);
+                        }}
+                      >
+                        수정
+                      </CommentEdit>
+                      <CommentDel
+                        onClick={() => {
+                          commentDelHandler(`${d.id}`);
+                        }}
+                      >
+                        삭제
+                      </CommentDel>
+                    </CommentEditAndDelBox>
+                  </>
+                ) : (
+                  <>
+                  <DateAndLikeBox>
+                    <p>{d.date}</p>
+                    <p><AiOutlineLike />{d.like_count}</p>
+                  </DateAndLikeBox>
+                  </>
+                )}
+              </CommentLikeAndEditDelBox>
+            </Comment>
           ))}
         </CommentListBox>
         <CommentAddBox>
@@ -244,6 +329,7 @@ const HeaderBox = styled.div`
   align-items: flex-end;
   justify-content: space-between;
   border-bottom: 0.5px solid #d3d3d3;
+  box-sizing: border-box;
 `;
 
 const BackBtn = styled.div`
@@ -288,47 +374,150 @@ const DelBtn = styled.div`
 `;
 
 const ContentBox = styled.div`
-  width: 90%;
-  margin: 0 auto;
+  background: white;
+  width: 100%;
+  border-bottom: 2px solid #D3D3D3;
+`;
+
+const TitleAndWriterBox = styled.div`
+  border-bottom: 0.5px solid #E6E6E6;
+  padding-bottom: 20px;
 `;
 
 const Title = styled.div`
-  width: calc(100% - 1rem);
   text-align: left;
-  padding: 0.5rem;
-  h3 {
-    margin: 0;
+  p {
+    margin: 25px 20px;
     padding: 0;
+    font-weight:500;
+    font-size:20px;
   }
 `;
 
-const Content = styled.div`
-  width: calc(100% - 1rem);
-  text-align: left;
-  padding: 0.5rem;
-  h3 {
-    margin: 0;
-    padding: 0;
+const WriterAndTimeBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 0px 20px;
+  color: #656565;
+`;
+
+const Writer = styled.div`
+  display: flex;
+  gap: 10px;
+  font-weight: bold;
+  p:last-child {
+    color: #3549FF;
   }
+`;
+
+const TimeBox = styled.div`
+`;
+
+const ContentAndHashtagBox = styled.div`
+  text-align: left;
+  border-bottom: 0.5px solid #E6E6E6;
+  padding-bottom: 15px;
+  box-sizing: border-box;
   p {
     margin: 0;
     padding: 0;
   }
 `;
 
-const ContentLikeBtn = styled.div`
-  width: 4rem;
+const Content = styled.div`
+  margin: 20px;
+  min-height: 200px;
+`;
+
+const Hashtag = styled.div`
+  display: flex;
+  gap: 7px;
+  margin: 20px;
+  font-size: 25px;
+`;
+
+const CommentCountAndLikeCountBox = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 20px;
+  gap: 30px;
+  font-size: 20px;
+`;
+
+const CommentCount = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`;
+
+const ContentLikeTrueBtn = styled.div`
   padding: 0.3rem;
-  border: 1px solid #aaa;
-  box-sizing: border-box;
+  color: #3549FF;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`;
+
+const ContentLikeFalseBtn = styled.div`
+  padding: 0.3rem;
+  color: #656565;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 `;
 
 const CommentBox = styled.div`
+  background: white;
+  border-top: 9px solid #EEEEEE;
+`;
+
+const CommentListBox = styled.div`
   width: 90%;
+  margin: 0 auto;
+`;
+
+const Comment = styled.div`
+  width: 100%;
+  text-align: left;
+  line-height: 2rem;
   margin: 1rem auto;
+  border: 1px solid #eee;
+  box-sizing: border-box;
+`;
+
+const CommentWriter = styled.div`
+  display: flex;
+  gap: 7px;
+  font-weight: bold;
+  font-size: 15px;
+  color: #656565;
+  p:last-child {
+    color: #3549FF;
+  }
+`;
+
+const CommentContent = styled.div`
+  font-size: 16px;
+`;
+
+const CommentLikeAndEditDelBox = styled.div`
+  display: flex;
+  justify-content: space-between;  
+`;
+
+const CommentEditAndDelBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const DateAndLikeBox = styled.div`
+  display: flex;
 `;
 
 const CommentAddBox = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
   display: flex;
   justify-content: space-between;
   input {
@@ -340,20 +529,6 @@ const CommentAddBtn = styled.div`
   border: 1px solid #bbb;
   box-sizing: border-box;
   width: 30vw;
-`;
-
-const CommentListBox = styled.div`
-  width: 90%;
-  height: 10rem;
-  margin: 0 auto;
-`;
-
-const Comment = styled.div`
-  width: 100%;
-  text-align: left;
-  margin: 1rem auto;
-  border: 1px solid #eee;
-  box-sizing: border-box;
 `;
 
 const CommentIdAndLike = styled.div`
