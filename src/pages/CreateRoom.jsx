@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Header from '../components/header/Header';
 import DeletableBadge from '../components/hashtag/DeletableBadge';
@@ -49,6 +49,13 @@ const CreateRoom = () => {
     const createButtonClickHandler = () => {
         createRoom(inputs.titleInput, hashtag);
     }
+
+    useEffect(()=> {
+        return(()=> {
+            setInputs({titleInput:"", hashtagInput:""});
+            setHashtag([]);
+        })
+    }, [])
 
     if(createRoomError) return <p>에러</p>
     return(

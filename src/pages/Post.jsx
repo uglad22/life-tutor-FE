@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { WhiteBackground, HRLineDiv } from '../style/sharedStyle'
 import { submitDataContext } from '../components/context/SubmitDataProvider';
@@ -63,8 +63,13 @@ const Post = () => {
             setPostData({...postData, hashtag:[...postData.hashtag, hashInput.trim()]})
             setHashInput('');
         }
-        
     }
+
+    useEffect(() => {
+        return(() => {
+            setPostData({title:'', posting_content:'', hashtag:[]})
+        })
+    }, [])
     return(
         <WhiteBackground>
         <PostWrapper>
