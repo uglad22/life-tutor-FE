@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { BiHomeAlt, BiEdit } from 'react-icons/bi';
 import { BsChatLeft, BsPerson } from 'react-icons/bs';
 
@@ -8,7 +8,8 @@ const Navigation = () => {
     const navContentRef = useRef(null);
 
     const navigate = useNavigate();
-
+    const location = useLocation();
+    const pathname = location.pathname;
     const iconClickHandler = (e) => {
         const childNodes = navContentRef.current.children;
         for(let i of childNodes) {
@@ -18,7 +19,7 @@ const Navigation = () => {
         navigate(e.currentTarget.dataset.url);
     }
 
-
+    if(pathname.includes('detail')) return null;
     return(
         <NavigationWrapper>
             <NavigationContent ref={navContentRef}>
