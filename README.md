@@ -12,5 +12,6 @@
 10. stompjs
 11. sockjs-client
 12. net
+13. framer-motion
 
 PR하시면 저한테 말씀해주세요!
