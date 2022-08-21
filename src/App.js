@@ -6,7 +6,7 @@ import Post from './pages/Post';
 import CreateRoom from './pages/CreateRoom';
 import ChatRoom from './pages/ChatRoom';
 import Navigation from './components/nav/Navigation';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import instance from './shared/axios';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
@@ -14,11 +14,15 @@ import KakaoLogin from './components/KakaoLogin';
 import GlobalStyle from './style/GlobalStyle';
 import theme from './style/theme';
 import { userContext } from './components/context/UserProvider';
+import Splash from './pages/Splash';
+import { AnimatePresence } from 'framer-motion';
+
 
 
 function App() {
 
   const context = useContext(userContext);
+  const location = useLocation();
   const { userInfo } = context.state;
   const { setUserInfo } = context.actions;
 
@@ -48,8 +52,11 @@ function App() {
     <ThemeProvider theme={theme}>
     <div className="App">
         <GlobalStyle/>
+        
         <Content>
-          <Routes>
+        <AnimatePresence exitBeforeEnter>
+          <Routes key={location.pathname} location={location}>
+            <Route path="/" element={<Splash/>}/>
             <Route path="/home/:category" element={<Home/>}></Route>
             <Route path="/detail/:postingId" element={<Detail />} />
             <Route path="/signup" element={<Signup />}></Route>
@@ -62,7 +69,9 @@ function App() {
             <Route path="/create/room" element={<CreateRoom/>}/>
             <Route path="/detail/room/chat" element={<ChatRoom/>}/>
           </Routes>
+          </AnimatePresence>  
         </Content>
+        
         <Navigation/>
     </div>
     </ThemeProvider>
