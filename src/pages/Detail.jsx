@@ -8,6 +8,7 @@ import { BsChevronLeft } from "react-icons/bs";
 import axios from "axios";
 import { AiOutlineLike } from 'react-icons/ai';
 import { IoChatboxEllipsesOutline } from 'react-icons/io5';
+import { BiRightArrowCircle } from 'react-icons/bi';
 
 
 // TODO:
@@ -176,21 +177,6 @@ const Detail = () => {
             ))}
           </Hashtag>
         </ContentAndHashtagBox>
-        {/* {data.nickname && loginNickname ? (
-          <>
-            <ContentLikeBtn><AiOutlineLike /></ContentLikeBtn>
-          </>
-        ) : (
-          <>
-            <ContentLikeBtn
-              onClick={() => {
-                contentlikeHandler();
-              }}
-            >
-              <AiOutlineLike />
-            </ContentLikeBtn>
-          </>
-        )} */}
         <CommentCountAndLikeCountBox>
           <CommentCount>
             <IoChatboxEllipsesOutline />{data.comments.length}
@@ -223,44 +209,6 @@ const Detail = () => {
 
       <CommentBox>
         <CommentListBox>
-          {/* {data.comments.map((d, idx) => (
-            <Comment key={idx}>
-              <CommentIdAndLike>
-                <CommentId>{d.nickname}</CommentId>
-                <CommentEditDelAndLike>
-                  {d.nickname && loginNickname ? (
-                    <>
-                      <CommentEdit
-                        onClick={() => {
-                          commentEditHandler(`${d.id}`);
-                        }}
-                      >
-                        수정
-                      </CommentEdit>
-                      <CommentDel
-                        onClick={() => {
-                          commentDelHandler(`${d.id}`);
-                        }}
-                      >
-                        삭제
-                      </CommentDel>
-                    </>
-                  ) : (
-                    <>
-                      <CommentLikeBtn
-                        onClick={() => {
-                          commentlikeHandler(`${idx}`);
-                        }}
-                      >
-                        공감하기
-                      </CommentLikeBtn>
-                    </>
-                  )}
-                </CommentEditDelAndLike>
-              </CommentIdAndLike>
-              <div>{d.content}</div>
-            </Comment>
-          ))} */}
           {data.comments.map((d, idx) => (
             <Comment key={idx}>
               <CommentWriter>
@@ -269,12 +217,12 @@ const Detail = () => {
               </CommentWriter>
               <CommentContent>{d.content}댓글내용</CommentContent>
               <CommentLikeAndEditDelBox>
-                {d.nickname != loginNickname ? (
+                {d.nickname && loginNickname ? (
                   <>
-                  <DateAndLikeBox>
+                  <CommentDateAndLikeBox>
                     <p>{d.date}</p>
-                    <p><AiOutlineLike />{d.like_count}</p>
-                  </DateAndLikeBox>
+                    <CommentLikeFalseBtn><AiOutlineLike />{d.like_count}</CommentLikeFalseBtn>
+                  </CommentDateAndLikeBox>
                   <CommentEditAndDelBox>
                     <CommentEdit
                         onClick={() => {
@@ -293,29 +241,45 @@ const Detail = () => {
                     </CommentEditAndDelBox>
                   </>
                 ) : (
+                  d.isLike === true ? (
                   <>
-                  <DateAndLikeBox>
-                    <p>{d.date}</p>
-                    <p><AiOutlineLike />{d.like_count}</p>
-                  </DateAndLikeBox>
+                    <CommentDateAndLikeBox>
+                      <p>{d.date}</p>
+                      <CommentLikeTrueBtn onClick={() => {
+                        commentlikeHandler(`${d.id}`);
+                      }}><AiOutlineLike />{d.like_count}</CommentLikeTrueBtn>
+                    </CommentDateAndLikeBox>
                   </>
+                  ) : (
+                  <>
+                    <CommentDateAndLikeBox>
+                      <p>{d.date}</p>
+                      <CommentLikeFalseBtn onClick={() => {
+                        commentlikeHandler(`${d.id}`);
+                        }}><AiOutlineLike />{d.like_count}</CommentLikeFalseBtn>
+                    </CommentDateAndLikeBox>
+                  </>)
+                  
                 )}
               </CommentLikeAndEditDelBox>
             </Comment>
           ))}
         </CommentListBox>
-        <CommentAddBox>
-          <input type="text" ref={comment_ref} />
+      </CommentBox>
+      
+      <CommentAddBox>
+        <CommentInputBox>
+          <input type="text" placeholder="댓글을 남겨주세요." ref={comment_ref} />
           <CommentAddBtn
             onClick={() => {
               const comment = { "content": comment_ref.current.value };
               commentAddHandler(comment);
             }}
           >
-            댓글 추가
+            <BiRightArrowCircle />
           </CommentAddBtn>
+        </CommentInputBox>
         </CommentAddBox>
-      </CommentBox>
     </>
   );
 };
@@ -356,6 +320,7 @@ const EditAndDelBtn = styled.div`
 `;
 
 const EditBtn = styled.div`
+  cursor: pointer;
   width: 50%;
   height: 3rem;
   display: flex;
@@ -365,6 +330,7 @@ const EditBtn = styled.div`
 `;
 
 const DelBtn = styled.div`
+  cursor: pointer;
   width: 50%;
   height: 3rem;
   display: flex;
@@ -442,6 +408,7 @@ const CommentCountAndLikeCountBox = styled.div`
   margin: 20px;
   gap: 30px;
   font-size: 20px;
+  color: #656565;
 `;
 
 const CommentCount = styled.div`
@@ -469,6 +436,7 @@ const ContentLikeFalseBtn = styled.div`
 const CommentBox = styled.div`
   background: white;
   border-top: 9px solid #EEEEEE;
+  margin-bottom: 63px;
 `;
 
 const CommentListBox = styled.div`
@@ -481,7 +449,6 @@ const Comment = styled.div`
   text-align: left;
   line-height: 2rem;
   margin: 1rem auto;
-  border: 1px solid #eee;
   box-sizing: border-box;
 `;
 
@@ -505,57 +472,79 @@ const CommentLikeAndEditDelBox = styled.div`
   justify-content: space-between;  
 `;
 
+const CommentDateAndLikeBox = styled.div`
+  display: flex;
+  gap: 10px;
+  color: #656565;
+  p:last-child {
+    display:flex;
+    align-items: center;
+    gap: 3px;
+  }
+`;
+
+
 const CommentEditAndDelBox = styled.div`
   display: flex;
   justify-content: space-between;
+  gap: 10px;
+  color: #3549FF;
 `;
 
-const DateAndLikeBox = styled.div`
+const CommentEdit = styled.div`
+`;
+
+const CommentDel = styled.div`
+`;
+
+const CommentLikeFalseBtn = styled.div`
+  cursor: pointer;
   display: flex;
+  align-items: center;
+  gap: 3px;
+`;
+
+const CommentLikeTrueBtn = styled.div`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  color: #3549FF;
 `;
 
 const CommentAddBox = styled.div`
+  background: #EFEFEF;
+  width: 100%;
+  height: 63px;
   position: fixed;
   bottom: 0;
   left: 0;
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+`;
+
+const CommentInputBox = styled.div`
+  width: 90%;
+  height: 44px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #D8D8D8;
+  border-radius: 30px;
+  gap: 5px;
+  background: white;
   input {
-    width: 70vw;
+    border: none;
+    width: 80%;
+    height: 30px;
+    background: transparent;
   }
 `;
 
 const CommentAddBtn = styled.div`
-  border: 1px solid #bbb;
-  box-sizing: border-box;
-  width: 30vw;
-`;
-
-const CommentIdAndLike = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const CommentId = styled.div`
-  font-weight: 600;
-`;
-
-const CommentEditDelAndLike = styled.div`
-  display: flex;
-  gap: 0.3rem;
-`;
-
-const CommentEdit = styled.div`
-  box-sizing: border-box;
-  border: 1px solid #eee;
-`;
-
-const CommentDel = styled.div`
-  box-sizing: border-box;
-  border: 1px solid #eee;
-`;
-
-const CommentLikeBtn = styled.div`
-  box-sizing: border-box;
-  border: 1px solid #eee;
+  margin-top: 5px;
+  cursor: pointer;
+  color: #3549FF;
+  font-size: 30px;
 `;
