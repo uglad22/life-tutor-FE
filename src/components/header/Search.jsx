@@ -68,11 +68,6 @@ const SearchWrapper = styled.form`
         padding-left:65px;
         font-size:17px;
     }
-    input:focus {
-        outline:none;
-        border-color: ${({ theme }) => theme.colors.mainBlue};
-    }
-    
 
     // placeholder 색상 변경
     input::placeholder {color:#CBCBCB;}
