@@ -9,6 +9,16 @@ export const postingsAPI = { // FIXME: 이름 변경하기
     },
 }
 
+export const chatroomAPI = {
+    createChatRoom: async (title, hashtag) => {
+        console.log(title);
+        console.log(hashtag);
+        const newData = {title, hashtag:hashtag};
+        const res = await instance.post('api/chat/room', newData);
+        return res.data;
+    }
+}
+
 export const postings = {
     postPosting: async (newData) => {
         const res = await instance.post('/api/board', newData);
