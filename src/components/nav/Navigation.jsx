@@ -21,15 +21,17 @@ const Navigation = () => {
 
     useEffect(()=> {
         if(pathname === "/" || pathname.includes("/detail")) return;
+
         const childNodes = navContentRef.current.children;
         const navIndexInfo = [...IndexInfo];
         const index = navIndexInfo.findIndex((item) => item.path === pathname);
-        if(index !== -1) childNodes[index].classList.add('clicked');
-        else {
-            for(let i of childNodes) {
-                i.classList.remove('clicked');
-            }
+        
+        for(let i of childNodes) {
+            i.classList.remove('clicked');
         }
+        
+        if(index !== -1) childNodes[index].classList.add('clicked');
+        
     }, [pathname])
 
     if(pathname.includes("/detail")) return null;
