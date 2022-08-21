@@ -2,7 +2,6 @@ import moment from "moment"
 
 export const editPostingTime = (timeValue) => {
     const diffSeconds = moment().diff(moment(timeValue), "seconds");
-    console.log(diffSeconds);
     if(diffSeconds <= 60) return `방금 전`;
     else if(diffSeconds > 60 && diffSeconds < (60 * 60)) {
         let diffMin = moment().diff(moment(timeValue), "minutes");
@@ -26,4 +25,9 @@ export const editPostingTime = (timeValue) => {
             return `${diffDay}일 전`;
         }
     }
+}
+
+export const hashtagValidation = (hashtagInput) => {
+    if(!hashtagInput) return false;
+    return true;
 }

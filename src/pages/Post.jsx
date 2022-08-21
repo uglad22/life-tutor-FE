@@ -4,11 +4,7 @@ import { WhiteBackground, HRLineDiv } from '../style/sharedStyle'
 import { submitDataContext } from '../components/context/SubmitDataProvider';
 import Header from '../components/header/Header';
 import DeletableBadge from '../components/hashtag/DeletableBadge';
-
-const validation = (hashtagInput) => {
-    if(!hashtagInput) return false;
-    return true;
-}
+import { hashtagValidation } from '../shared/sharedFn';
 
 const Post = () => {
     const [hashInput, setHashInput] = useState('');
@@ -30,8 +26,13 @@ const Post = () => {
     // velog 처럼 해시태그 추가할 때 스페이스바 누르면 추가되는 기능
     const keyupSpace = (e) => {
         if(e.code === "Space") {
-            const valid = validation(hashInput.trim());
+            const valid = hashtagValidation(hashInput.trim());
             if(!valid) {
+                setHashInput('');
+                return;
+            }
+            else if(postData.hashtag.length === 3) {
+                alert("해시태그는 3개까지 등록 가능합니다.");
                 setHashInput('');
                 return;
             }
@@ -48,10 +49,21 @@ const Post = () => {
     // 해시태그 추가
     const hashtagSubmit = (e) => {
         e.preventDefault();
-        const valid = validation(hashInput);
-        if(!valid) return;
-        setPostData({...postData, hashtag:[...postData.hashtag, hashInput.trim()]})
-        setHashInput('');
+        const valid = hashtagValidation(hashInput);
+        if(!valid){
+            setHashInput('');
+            return;
+        } 
+        else if(postData.hashtag.length === 3) {
+            alert("해시태그는 3개까지 등록 가능합니다.");
+            setHashInput('');
+            return;
+        }
+        else {
+            setPostData({...postData, hashtag:[...postData.hashtag, hashInput.trim()]})
+            setHashInput('');
+        }
+        
     }
     return(
         <WhiteBackground>

@@ -7,6 +7,7 @@ import { WhiteBackground } from '../style/sharedStyle'
 import { useMutation } from '@tanstack/react-query';
 
 import { chatroomAPI } from '../shared/api';
+import { hashtagValidation } from '../shared/sharedFn';
 
 const CreateRoom = () => {
     const [inputs, setInputs] = useState({
@@ -27,9 +28,22 @@ const CreateRoom = () => {
 
     const hashtagSubmitHandler = (e) => {
         e.preventDefault();
-        setHashtag([...hashtag, inputs.hashtagInput]);
-        console.log(hashtag);
-        setInputs({...inputs, hashtagInput:""});
+        const valid = hashtagValidation(inputs.hashtagInput);
+        if(!valid) {
+            setInputs({...inputs, hashtagInput:""});
+            return;
+        }
+        else if(hashtag.length === 3) {
+            alert('해시태그는 3개까지 등록 가능합니다.');
+            setInputs({...inputs, hashtagInput:""});
+            return;
+        }
+        else {
+            setHashtag([...hashtag, inputs.hashtagInput]);
+            console.log(hashtag);
+            setInputs({...inputs, hashtagInput:""});
+        }
+        
     }
 
     const createButtonClickHandler = () => {
