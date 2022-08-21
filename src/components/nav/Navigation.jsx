@@ -2,8 +2,6 @@ import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import IndexInfo from './NavIndexInfo';
-import { BiHomeAlt, BiEdit } from 'react-icons/bi';
-import { BsChatLeft, BsPerson } from 'react-icons/bs';
 
 const Navigation = () => {
     const navContentRef = useRef(null);
@@ -22,6 +20,7 @@ const Navigation = () => {
     }
 
     useEffect(()=> {
+        if(pathname === "/" || pathname.includes("/detail")) return;
         const childNodes = navContentRef.current.children;
         const navIndexInfo = [...IndexInfo];
         const index = navIndexInfo.findIndex((item) => item.path === pathname);
@@ -31,9 +30,10 @@ const Navigation = () => {
                 i.classList.remove('clicked');
             }
         }
-    }, [])
+    }, [pathname])
 
-    if(pathname.includes('detail')) return null;
+    if(pathname.includes("/detail")) return null;
+    else if(pathname === "/") return null;
 
     return(
         <NavigationWrapper>
