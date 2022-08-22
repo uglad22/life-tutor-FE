@@ -11,11 +11,6 @@ const Navigation = () => {
     const pathname = location.pathname;
 
     const iconClickHandler = (e) => {
-        const childNodes = navContentRef.current.children;
-        for(let i of childNodes) {
-            i.classList.remove('clicked');
-        }
-        e.currentTarget.classList.add('clicked');
         navigate(e.currentTarget.dataset.url);
     }
 
