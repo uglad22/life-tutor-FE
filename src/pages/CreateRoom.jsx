@@ -40,14 +40,17 @@ const CreateRoom = () => {
         }
         else {
             setHashtag([...hashtag, inputs.hashtagInput]);
-            console.log(hashtag);
             setInputs({...inputs, hashtagInput:""});
         }
         
     }
 
     const createButtonClickHandler = () => {
-        createRoom(inputs.titleInput, hashtag);
+        if(!inputs.titleInput) {
+            alert("제목을 입력해주세요!");
+            return;
+        }
+        createRoom({title:inputs.titleInput, hashtag});
     }
 
     useEffect(()=> {
