@@ -12,10 +12,9 @@ import Header from '../components/header/Header';
 
 const Home = () => {
     const paramCategory = useParams().category;
-    const queryClient = useQueryClient();
     const { ref, inView} = useInView();
 
-    const { data, fetchNextPage, isFetchingNextPage, refetch } = useInfiniteQuery(
+    const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
       ['cardList', paramCategory],
       ({ pageParam = 0 }) => postingsAPI.fetchPostingsListWithScroll(pageParam, paramCategory),
       {
