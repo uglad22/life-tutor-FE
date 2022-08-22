@@ -7,7 +7,7 @@ const Splash = () => {
     const navigate = useNavigate();
     useEffect(()=> {
         setTimeout(()=> {
-            navigate("/home/postings");
+            navigate("/viewer/posting/list");
         }, 4000)
     }, [])
     return (

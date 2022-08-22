@@ -18,7 +18,7 @@ const PageTitle = ({ title, isAction }) => {
         onSuccess: ({data}) => {
             console.log(data);
             queryClient.invalidateQueries(["cardList", "postings"]);
-            navigate('/home/postings');
+            navigate('/viewer/posting/list');
         }
     });
 
@@ -37,7 +37,7 @@ const PageTitle = ({ title, isAction }) => {
 
     
     if(mutateError) return <p>error</p>
-    if(pathname === '/home/postings') return <PageTitleEmpty/>;
+    if(pathname === '/viewer/posting/list') return <PageTitleEmpty/>;
     return(
         <PageTitleWrapper>
             <PageTitleContent>

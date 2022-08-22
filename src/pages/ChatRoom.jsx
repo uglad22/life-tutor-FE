@@ -54,7 +54,7 @@ const ChatRoom = () => {
         client.disconnect(() => {
             client.unsubscribe();
         });
-        navigate('/home/postings');
+        navigate('/viewer/posting/list');
     }
 
     const firstSendMsg = () => {

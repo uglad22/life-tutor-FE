@@ -35,7 +35,7 @@ const Navigation = () => {
     return(
         <NavigationWrapper>
             <NavigationContent ref={navContentRef}>
-                <p data-url="/home/postings" onClick={iconClickHandler}>
+                <p data-url="/viewer/posting/list" onClick={iconClickHandler}>
                     <svg width="26" height="27" viewBox="0 0 26 27" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9.25 25.5837V13.5003H16.75V25.5837M1.75 9.87533L13 1.41699L24.25 9.87533V23.167C24.25 23.8079 23.9866 24.4226 23.5178 24.8758C23.0489 25.329 22.413 25.5837 21.75 25.5837H4.25C3.58696 25.5837 2.95107 25.329 2.48223 24.8758C2.01339 24.4226 1.75 23.8079 1.75 23.167V9.87533Z"
                         stroke="#979797" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>

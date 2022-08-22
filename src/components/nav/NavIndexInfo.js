@@ -1,6 +1,6 @@
 const IndexInfo = [
     {
-        path:"/home/postings",
+        path:"/viewer/posting/list",
         idx:0
     },
     {
