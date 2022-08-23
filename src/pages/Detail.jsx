@@ -5,35 +5,29 @@ import NomalBadge from '../components/hashtag/NomalBadge';
 import { useParams, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BsChevronLeft } from "react-icons/bs";
-import axios from "axios";
 import { AiOutlineLike } from 'react-icons/ai';
 import { IoChatboxEllipsesOutline } from 'react-icons/io5';
-import { BiRightArrowCircle } from 'react-icons/bi';
+import CommentCard from "../components/card/CommentCard";
+import SubmitForm from "../components/submitForm/SubmitForm";
 
-
-// TODO:
-// FIXME: 작성날짜시간 ex. ~시간전, ~일전
+// TODO: 댓글 수정기능, 댓글 좋아요확인, 게시글 본문 줄바꿈처리
+// FIXME: 
 // 좋아요 했던 게시글 표시 (스테이트) ? 옵셔널체이닝
 // https://mockapi.io/
 
-// useState 함수형
-// const [isLike, setIsLike] = useState(() => {
-//   if(data.isLike) return true;
-//   else return false;
-// })
-
-
 const Detail = () => {
   const params = useParams();
-  const comment_ref = useRef();
+  const commentInput = useRef();
   const navigate = useNavigate();
   const postingId = params.postingId;
   const queryClient = useQueryClient();
-  const loginNickname = window.localStorage.getItem("nickname");
+  
+  // 로그인한 유저의 닉네임 가져오기
+  const loginNickname = '테스트용';
 
+  // 게시글 불러오기
   const getPost = async () => {
-    // const res = await instance.get(`/api/board/detail/${postingId}`);
-    const res = await axios.get(`https://62ff3c5934344b6431f5091f.mockapi.io/posting/${postingId}`);
+    const res = await instance.get(`/api/board/detail/${postingId}`);
     return res.data;
   };
 
@@ -43,22 +37,24 @@ const Detail = () => {
 
   console.log(data);
 
-
-
+  // 게시글 기능관련
   const editPostingHandler = async () => {
-    // navigate(`/edit/${postingId}`);
+    const result = window.confirm("게시글을 수정하시겠습니까?");
+    if (result) {
+    // navigate(`/edit/${postingId}`);  
+    }
   };
 
   const deletePostingHandler = async () => {
     const result = window.confirm("게시글을 삭제하시겠습니까?");
     if (result) {
       await instance.delete(`/api/board/${postingId}`);
-      return navigate("/");
+      return navigate("/home/postings");
     }
   };
 
   const contentLike = async () => {
-    if (data.isLike === true) {
+    if (data.like === true) {
     return await instance.delete(`/api/board/${postingId}/likes`);
     } else {
     return await instance.post(`/api/board/${postingId}/likes`);
@@ -71,56 +67,24 @@ const Detail = () => {
     }
   })
 
-  const addComment = async (comment) => {
-    console.log(comment);
-    return await instance.post(`/api/board/${postingId}/comment`, comment);
+  // 시간세팅
+  const timeSet = (value) => {
+    const milliSeconds = new Date() - new Date(value);
+    const seconds = milliSeconds / 1000;
+    if(seconds < 60) return `방금 전`
+    const minutes = seconds / 60
+    if (minutes < 60) return `${Math.floor(minutes)}분 전`
+    const hours = minutes / 60
+    if (hours < 24) return `${Math.floor(hours)}시간 전`
+    const days = hours / 24
+    if (days < 7) return `${Math.floor(days)}일 전`
+    const weeks = days / 7
+    if (weeks < 5) return `${Math.floor(weeks)}주 전`
+    const months = days / 30
+    if (months < 12) return `${Math.floor(months)}개월 전`
+    const years = days / 365
+    return `${Math.floor(years)}년 전`
   }
-
-  const { mutate : commentAddHandler } = useMutation(addComment, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("post");
-      comment_ref.current.value = "";
-    }
-  })
-
-
-
-  const commentEditHandler = async (commentId) => {
-    // FIXME: 코멘트 content 데이터 넣어서 put
-    // 댓글 수정 > 유튜브, 페이스북처럼 수정하는 댓글 밑에 인풋박스 생성
-    // await axios.put(`/api/board/${postingId}/comment/${commentId}`);
-    console.log(commentId);
-    console.log("댓글 수정버튼");
-  };
-
-  const deleteComment = async (commentId) => {
-    await instance.delete(`/api/board/${postingId}/comment/${commentId}`);
-    console.log(commentId);
-    console.log("댓글 삭제버튼");
-  }
-
-  const { mutate : commentDelHandler } = useMutation(deleteComment, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("post");
-      comment_ref.current.value = "";
-    }
-  })
-
-
-  const commentLike = async (commentIdx) => {
-    console.log(commentIdx);
-    if (data.comments[commentIdx].isLike === true) {
-      return await instance.delete(`/api/comment/${data.comments[commentIdx].id}/likes`);
-    } else {
-      return await instance.post(`/api/comment/${data.comments[commentIdx].id}/likes`);
-    }
-  }
-
-  const { mutate:commentlikeHandler } = useMutation(commentLike, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("post");
-    }
-  })
 
   return (
     <>
@@ -132,9 +96,9 @@ const Detail = () => {
         >
           <BsChevronLeft />
         </BackBtn>
-        <HeaderInfo>본문 상세</HeaderInfo>
+        <HeaderInfo>헤더 부분</HeaderInfo>
         <EditAndDelBtn>
-          {data.nickname && loginNickname ? (
+          {data.nickname === loginNickname ? (
             <>
               <EditBtn
                 onClick={() => {
@@ -164,7 +128,7 @@ const Detail = () => {
               <p>{data.nickname}</p>
               <p>{data.user_type}</p>
             </Writer>
-            <TimeBox>{data.date.substr(0, 10)}</TimeBox>
+            <TimeBox>{timeSet(data.date)}</TimeBox>
           </WriterAndTimeBox>
         </TitleAndWriterBox>
         <ContentAndHashtagBox>
@@ -181,12 +145,12 @@ const Detail = () => {
           <CommentCount>
             <IoChatboxEllipsesOutline />{data.comments.length}
           </CommentCount>
-        {data.nickname && loginNickname ? (
+        {data.nickname === loginNickname ? (
           <>
             <ContentLikeFalseBtn><AiOutlineLike />{data.like_count}</ContentLikeFalseBtn>
           </>
         ) : (
-          data.isLike ? (
+          data.like ? (
           <>
             <ContentLikeTrueBtn onClick={() => {
                 contentlikeHandler();
@@ -209,77 +173,13 @@ const Detail = () => {
 
       <CommentBox>
         <CommentListBox>
-          {data.comments.map((d, idx) => (
-            <Comment key={idx}>
-              <CommentWriter>
-                <p>{d.nickname}닉네임</p>
-                <p>{d.user_type}유저타입</p>
-              </CommentWriter>
-              <CommentContent>{d.content}댓글내용</CommentContent>
-              <CommentLikeAndEditDelBox>
-                {d.nickname && loginNickname ? (
-                  <>
-                  <CommentDateAndLikeBox>
-                    <p>{d.date}</p>
-                    <CommentLikeFalseBtn><AiOutlineLike />{d.like_count}</CommentLikeFalseBtn>
-                  </CommentDateAndLikeBox>
-                  <CommentEditAndDelBox>
-                    <CommentEdit
-                        onClick={() => {
-                          commentEditHandler(`${d.id}`);
-                        }}
-                      >
-                        수정
-                      </CommentEdit>
-                      <CommentDel
-                        onClick={() => {
-                          commentDelHandler(`${d.id}`);
-                        }}
-                      >
-                        삭제
-                      </CommentDel>
-                    </CommentEditAndDelBox>
-                  </>
-                ) : (
-                  d.isLike === true ? (
-                  <>
-                    <CommentDateAndLikeBox>
-                      <p>{d.date}</p>
-                      <CommentLikeTrueBtn onClick={() => {
-                        commentlikeHandler(`${d.id}`);
-                      }}><AiOutlineLike />{d.like_count}</CommentLikeTrueBtn>
-                    </CommentDateAndLikeBox>
-                  </>
-                  ) : (
-                  <>
-                    <CommentDateAndLikeBox>
-                      <p>{d.date}</p>
-                      <CommentLikeFalseBtn onClick={() => {
-                        commentlikeHandler(`${d.id}`);
-                        }}><AiOutlineLike />{d.like_count}</CommentLikeFalseBtn>
-                    </CommentDateAndLikeBox>
-                  </>)
-                  
-                )}
-              </CommentLikeAndEditDelBox>
-            </Comment>
+          {data.comments.map((data, idx) => (
+            <CommentCard key={idx} data={data} postingId={postingId} />
           ))}
         </CommentListBox>
       </CommentBox>
-      
-      <CommentAddBox>
-        <CommentInputBox>
-          <input type="text" placeholder="댓글을 남겨주세요." ref={comment_ref} />
-          <CommentAddBtn
-            onClick={() => {
-              const comment = { "content": comment_ref.current.value };
-              commentAddHandler(comment);
-            }}
-          >
-            <BiRightArrowCircle />
-          </CommentAddBtn>
-        </CommentInputBox>
-        </CommentAddBox>
+
+      <SubmitForm postingId={postingId} placeholderText="댓글을 남겨주세요." />
     </>
   );
 };
@@ -440,111 +340,6 @@ const CommentBox = styled.div`
 `;
 
 const CommentListBox = styled.div`
-  width: 90%;
-  margin: 0 auto;
-`;
-
-const Comment = styled.div`
   width: 100%;
-  text-align: left;
-  line-height: 2rem;
-  margin: 1rem auto;
-  box-sizing: border-box;
-`;
-
-const CommentWriter = styled.div`
-  display: flex;
-  gap: 7px;
-  font-weight: bold;
-  font-size: 15px;
-  color: #656565;
-  p:last-child {
-    color: #3549FF;
-  }
-`;
-
-const CommentContent = styled.div`
-  font-size: 16px;
-`;
-
-const CommentLikeAndEditDelBox = styled.div`
-  display: flex;
-  justify-content: space-between;  
-`;
-
-const CommentDateAndLikeBox = styled.div`
-  display: flex;
-  gap: 10px;
-  color: #656565;
-  p:last-child {
-    display:flex;
-    align-items: center;
-    gap: 3px;
-  }
-`;
-
-
-const CommentEditAndDelBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  color: #3549FF;
-`;
-
-const CommentEdit = styled.div`
-`;
-
-const CommentDel = styled.div`
-`;
-
-const CommentLikeFalseBtn = styled.div`
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 3px;
-`;
-
-const CommentLikeTrueBtn = styled.div`
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  color: #3549FF;
-`;
-
-const CommentAddBox = styled.div`
-  background: #EFEFEF;
-  width: 100%;
-  height: 63px;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-`;
-
-const CommentInputBox = styled.div`
-  width: 90%;
-  height: 44px;
   margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #D8D8D8;
-  border-radius: 30px;
-  gap: 5px;
-  background: white;
-  input {
-    border: none;
-    width: 80%;
-    height: 30px;
-    background: transparent;
-  }
-`;
-
-const CommentAddBtn = styled.div`
-  margin-top: 5px;
-  cursor: pointer;
-  color: #3549FF;
-  font-size: 30px;
 `;
