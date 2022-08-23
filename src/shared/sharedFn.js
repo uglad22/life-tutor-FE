@@ -31,3 +31,9 @@ export const hashtagValidation = (hashtagInput) => {
     if(!hashtagInput) return false;
     return true;
 }
+
+export const userTypeTrans = (userType) => {
+    if(userType === "SEEKER") return "취준생";
+    else if(userType === "JUNIOR") return "주니어";
+    else if(userType === "SENIOR") return "시니어";
+}

@@ -106,6 +106,7 @@ const Signup = () => {
     }
     
     const submitSignup = async () => {
+        console.log(emailcheck, nicknamecheck, pwcheck, pwrecheck, userType)
 
         //input 값에 공란이 있으면 알럿 띄우기
         if (email_ref.current.value === '') {
@@ -121,7 +122,7 @@ const Signup = () => {
         }
 
         //회원가입 성공시 db는 서버로 보내고 알럿띄우고 login 페이지로 이동
-        if (emailcheck && nicknamecheck && pwcheck && pwrecheck === true && userType !==null) {
+        if (emailcheck && nicknamecheck && pwcheck && pwrecheck && userType) {
 
             //보내줄 데이터 모아서 변수에 담기!
             const user_data = {

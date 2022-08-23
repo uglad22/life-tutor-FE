@@ -27,5 +27,6 @@ const HeaderWrapper = styled.div`
     transform: translate(-50%, 0);
     margin:0 auto;
     background:white;
+    z-index:10;
     
 `

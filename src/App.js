@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
-import Home from './pages/PostingViewer';
+import PostingViewer from './pages/PostingViewer';
 import Detail from "./pages/Detail";
 import Post from './pages/Post';
 import CreateRoom from './pages/CreateRoom';
@@ -16,6 +16,7 @@ import theme from './style/theme';
 import { userContext } from './components/context/UserProvider';
 import Splash from './pages/Splash';
 import { AnimatePresence } from 'framer-motion';
+import RoomViewer from './pages/RoomViewer';
 
 
 
@@ -57,7 +58,9 @@ function App() {
         <AnimatePresence exitBeforeEnter>
           <Routes key={location.pathname} location={location}>
             <Route path="/" element={<Splash/>}/>
-            <Route path="/viewer/posting/:category" element={<Home/>}></Route>
+            <Route path="/viewer/posting/:category" element={<PostingViewer/>}></Route>
+            <Route path="/viewer/room" element={<RoomViewer/>}/>
+            <Route path="/viewer/room/search/:hashtag" element={<RoomViewer/>}/>
             <Route path="/detail/:postingId" element={<Detail />} />
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>

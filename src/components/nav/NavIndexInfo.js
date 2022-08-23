@@ -4,7 +4,7 @@ const IndexInfo = [
         idx:0
     },
     {
-        path:"home/rooms",
+        path:"/viewer/room",
         idx:1
     },
     {

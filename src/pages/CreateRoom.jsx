@@ -50,6 +50,7 @@ const CreateRoom = () => {
             alert("제목을 입력해주세요!");
             return;
         }
+        console.log({title:inputs.titleInput, hashtag})
         createRoom({title:inputs.titleInput, hashtag});
     }
 

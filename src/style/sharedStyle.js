@@ -14,9 +14,9 @@ export const WhiteBackground = styled.div`
 
 export const HRLineDiv= styled.div`
     width:100%;
-    height:1px;
-    border:1px solid;
+    height:2px;
     border-color:${({theme}) => theme.colors.hrGray};
     box-sizing:border-box;
     margin-bottom:15px;
+    background:${({theme}) => theme.colors.hrGray};
 `

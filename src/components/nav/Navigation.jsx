@@ -41,7 +41,7 @@ const Navigation = () => {
                         stroke="#979797" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                 </p>
-                <p data-url="home/rooms" onClick={iconClickHandler} >
+                <p data-url="/viewer/room" onClick={iconClickHandler} >
                     <svg width="26" height="30" viewBox="0 0 26 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M24.25 16.125C24.25 16.7659 23.9866 17.3806 23.5178 17.8338C23.0489 18.2871 22.413 18.5417 21.75 18.5417H6.75L1.75 23.375V4.04167C1.75 3.40073 2.01339 2.78604 2.48223 2.33283C2.95107 1.87961 3.58696 1.625 4.25 1.625H21.75C22.413 1.625 23.0489 1.87961 23.5178 2.33283C23.9866 2.78604 24.25 3.40073 24.25 4.04167V16.125Z"
                         stroke="#979797" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>

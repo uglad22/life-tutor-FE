@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { postings } from '../../shared/api';
+import { AiOutlinePlus } from 'react-icons/ai';
 
 
 const PageTitle = ({ title, isAction }) => {
@@ -44,7 +45,8 @@ const PageTitle = ({ title, isAction }) => {
                 <div className='back-icon' onClick={()=>navigate(-1)}><p><MdArrowBackIosNew/></p></div>
                 <p>{title}</p>
                 <HeaderActions isShow={isAction}>
-                    {pathname==="/posting"?<p onClick={postSubmitHandler}>제출</p>:null}
+                    {pathname==="/posting" && <p onClick={postSubmitHandler}>등록</p>}
+                    {pathname==="/viewer/room" && <p style={{fontSize:"25px", color:"black"}} onClick={()=> navigate("/create/room")}><AiOutlinePlus/></p>}
                     {/* TODO: action이 필요한 페이지의 케이스를 위와 같이 다룸 */}
                 </HeaderActions>
             </PageTitleContent>
@@ -59,7 +61,8 @@ const PageTitleWrapper = styled.div`
     max-width:480px;
     margin:0 auto;
     /* background:blue; */
-    /* display:flex; */
+    display:flex;
+    align-items:center;
     height:60px;
     border-bottom:1px solid lightgray;
     p {
@@ -76,6 +79,8 @@ const PageTitleContent = styled.div`
     justify-content:space-between;
 
     .back-icon p{
+        display:flex;
+        align-items:center;
         font-size:20px;
     }
 
@@ -88,12 +93,15 @@ const PageTitleContent = styled.div`
 `
 
 const HeaderActions = styled.div`
+    
     color:${({ theme }) => theme.colors.mainBlue};
     font-size:16px;
     letter-spacing:-0.3px;
     font-weight:600;
     p {
         cursor:pointer;
+        display:flex;
+        align-items:center;
     }
     ${props => {
             if(props.isShow === false) {

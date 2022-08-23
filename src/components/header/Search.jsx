@@ -10,7 +10,7 @@ const Search = () => {
         e.preventDefault();
         console.log('search');
     }
-    if(!pathname.includes('/home/')) return null;
+    if(!pathname.includes('/viewer/')) return null;
 
     return(
         <SearchWrapper onSubmit={submitHandler}>
