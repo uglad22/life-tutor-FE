@@ -71,7 +71,7 @@ function App() {
              />
             <Route path="/posting" element={<Post/>}/>
             <Route path="/create/room" element={<CreateRoom/>}/>
-            <Route path="/detail/room/chat" element={<ChatRoom/>}/>
+            <Route path="/detail/room/chat/:roomId" element={<ChatRoom/>}/>
           </Routes>
           </AnimatePresence>  
         </Content>
