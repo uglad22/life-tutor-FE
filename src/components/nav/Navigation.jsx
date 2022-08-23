@@ -29,6 +29,7 @@ const Navigation = () => {
         
     }, [pathname])
 
+
     if(pathname.includes("/detail")) return null;
     else if(pathname === "/") return null;
 

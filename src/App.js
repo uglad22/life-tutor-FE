@@ -13,11 +13,11 @@ import Login from './pages/Login';
 import KakaoLogin from './components/KakaoLogin';
 import GlobalStyle from './style/GlobalStyle';
 import theme from './style/theme';
+import Mypage from './pages/Mypage';
 import { userContext } from './components/context/UserProvider';
 import Splash from './pages/Splash';
 import { AnimatePresence } from 'framer-motion';
 import RoomViewer from './pages/RoomViewer';
-
 
 
 function App() {
@@ -64,6 +64,7 @@ function App() {
             <Route path="/detail/:postingId" element={<Detail />} />
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>
+            <Route path="/mypage" element={<Mypage />} />
             <Route
             path="/oauth2/redirect/:token"
             element={<KakaoLogin />}
