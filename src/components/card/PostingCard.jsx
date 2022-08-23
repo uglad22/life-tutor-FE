@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import NomalBadge from '../hashtag/NomalBadge';
+import { editPostingTime } from '../../shared/sharedFn';
 import { AiOutlineLike } from 'react-icons/ai';
 import { IoChatboxEllipsesOutline } from 'react-icons/io5';
 
@@ -12,11 +13,11 @@ const PostingCard = ({post}) => {
             <PostingCardTitle>{post.title}</PostingCardTitle>
             <PostingCardContent>{post.posting_content}</PostingCardContent>
             <PostingCardHashtagArea>
-                {post.hashtag.map((item, index) => <NomalBadge key={index}>{`#${item}`}</NomalBadge>)}
+                {post.hashtag.map((item, index) => <NomalBadge key={index}>{`# ${item}`}</NomalBadge>)}
             </PostingCardHashtagArea>
             <PostingCardUserInfo>
                 <p style={{color:"#656565"}}>{post.nickname}</p>
-                <p style={{color:"#3549FF"}}>주니어</p>
+                <p style={{color:"#3549FF"}}>{post.user_type}</p>
             </PostingCardUserInfo>
             </PostingCardBody>
             <HRDiv/>
@@ -24,14 +25,14 @@ const PostingCard = ({post}) => {
                 <div className='posting-actions-icon'>
                     <p className='posting-actions-icon-wrapper posting-actions-icon-like'>
                         <AiOutlineLike/>
-                        100
+                        {post.like_count}
                     </p>
                     <p className='posting-actions-icon-wrapper'>
                         <IoChatboxEllipsesOutline/>
-                        100
+                        {post.comment_count}
                     </p>
                 </div>
-                <div className='posting-time'><p>1시간 전</p></div>
+                <div className='posting-time'><p>{editPostingTime(post.date)}</p></div>
             </PostingCardFooter>
         </PostingCardWrapper>
     )
@@ -71,6 +72,10 @@ const PostingCardContent = styled.p`
     letter-spacing: -0.3px;
     line-height: 16px;
     color:${({ theme }) => theme.colors.lightGray};
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
 `
 
 const PostingCardHashtagArea = styled.div`

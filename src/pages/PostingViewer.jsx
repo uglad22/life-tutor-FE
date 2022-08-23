@@ -10,22 +10,24 @@ import Header from '../components/header/Header';
 
 
 
-const Home = () => {
+const PostingViewer = () => {
     const paramCategory = useParams().category;
-    const queryClient = useQueryClient();
     const { ref, inView} = useInView();
 
-    const { data, fetchNextPage, isFetchingNextPage, refetch } = useInfiniteQuery(
-      ['cardList', paramCategory],
-      ({ pageParam = 0 }) => postingsAPI.fetchPostingsListWithScroll(pageParam, paramCategory),
+    const { data:listData, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+      ['postings', paramCategory],
+      ({ pageParam = 0 }) => postingsAPI.fetchPostingsListWithScroll(pageParam),
       {
+        enabled:!!(paramCategory === "list"),
+        staleTime:3000,
         getNextPageParam: (lastPage) =>
           !lastPage.isLast ? lastPage.nextPage : undefined,
 
         onSuccess:(data) => {
           console.log(data);
         },
-        retry:false
+        retry:false,
+        keepPreviousData:true
       },
     );
 
@@ -36,23 +38,23 @@ const Home = () => {
     }, [inView])    
   
     return (
-      <HomeWrapper>
+      <PostingViewerWrapper>
         <Header/>
-            {data.pages?.map((page, index) => (
+            {listData.pages?.map((page, index) => (
               <Page key={index} >
                   {page.posts.map((post) => (
-                    paramCategory==='postings'?<PostingCard key={post.posting_id} post={post}></PostingCard>:null //FIXME: 채팅방 리스트 불러오기 API가 구현되면 null 대신에 ChatroomCard 컴포넌트로 렌더링
+                    <PostingCard key={post.posting_id} post={post}></PostingCard> //FIXME: 채팅방 리스트 불러오기 API가 구현되면 null 대신에 ChatroomCard 컴포넌트로 렌더링
                   ))}
               </Page>
             ))}
-        {isFetchingNextPage ? <div>로딩중입니다1!!!!</div>: <div ref={ref} style={{height:"100px"}}></div>}
-        </HomeWrapper>
+        {isFetchingNextPage ? <div>로딩중입니다1!!!!</div>: <div ref={ref} style={{height:"50px"}}></div>}
+        </PostingViewerWrapper>
     );
 }
 
-export default Home;
+export default PostingViewer;
 
-const HomeWrapper = styled.div`
+const PostingViewerWrapper = styled.div`
   display:flex;
   flex-direction:column;
   gap:10px;

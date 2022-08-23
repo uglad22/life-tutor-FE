@@ -10,7 +10,7 @@ const Search = () => {
         e.preventDefault();
         console.log('search');
     }
-    if(!pathname.includes('/home/')) return null;
+    if(!pathname.includes('/viewer/')) return null;
 
     return(
         <SearchWrapper onSubmit={submitHandler}>
@@ -68,14 +68,9 @@ const SearchWrapper = styled.form`
         padding-left:65px;
         font-size:17px;
     }
-    input:focus {
-        outline:none;
-        border-color: ${({ theme }) => theme.colors.mainBlue};
-    }
-    
 
     // placeholder 색상 변경
     input::placeholder {color:#CBCBCB;}
     input::-webkit-input-placeholder {color:#CBCBCB;}
-    input:-ms-input-placeholder {color:#CBCBCB;}
+    input::-ms-input-placeholder {color:#CBCBCB;}
 `

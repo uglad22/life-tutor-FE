@@ -1,8 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { BiHomeAlt, BiEdit } from 'react-icons/bi';
-import { BsChatLeft, BsPerson } from 'react-icons/bs';
+import IndexInfo from './NavIndexInfo';
 
 const Navigation = () => {
     const navContentRef = useRef(null);
@@ -10,26 +9,40 @@ const Navigation = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const pathname = location.pathname;
+
     const iconClickHandler = (e) => {
-        const childNodes = navContentRef.current.children;
-        for(let i of childNodes) {
-            i.classList.remove('clicked');
-        }
-        e.currentTarget.classList.add('clicked');
         navigate(e.currentTarget.dataset.url);
     }
 
-    if(pathname.includes('detail')) return null;
+    useEffect(()=> {
+        if(pathname === "/" || pathname.includes("/detail")) return;
+
+        const childNodes = navContentRef.current.children;
+        const navIndexInfo = [...IndexInfo];
+        const index = navIndexInfo.findIndex((item) => item.path === pathname);
+        
+        for(let i of childNodes) {
+            i.classList.remove('clicked');
+        }
+        
+        if(index !== -1) childNodes[index].classList.add('clicked');
+        
+    }, [pathname])
+
+
+    if(pathname.includes("/detail")) return null;
+    else if(pathname === "/") return null;
+
     return(
         <NavigationWrapper>
             <NavigationContent ref={navContentRef}>
-                <p className="clicked" data-url="/home/postings" onClick={iconClickHandler}>
+                <p data-url="/viewer/posting/list" onClick={iconClickHandler}>
                     <svg width="26" height="27" viewBox="0 0 26 27" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9.25 25.5837V13.5003H16.75V25.5837M1.75 9.87533L13 1.41699L24.25 9.87533V23.167C24.25 23.8079 23.9866 24.4226 23.5178 24.8758C23.0489 25.329 22.413 25.5837 21.75 25.5837H4.25C3.58696 25.5837 2.95107 25.329 2.48223 24.8758C2.01339 24.4226 1.75 23.8079 1.75 23.167V9.87533Z"
                         stroke="#979797" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                 </p>
-                <p data-url="home/rooms" onClick={iconClickHandler} >
+                <p data-url="/viewer/room" onClick={iconClickHandler} >
                     <svg width="26" height="30" viewBox="0 0 26 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M24.25 16.125C24.25 16.7659 23.9866 17.3806 23.5178 17.8338C23.0489 18.2871 22.413 18.5417 21.75 18.5417H6.75L1.75 23.375V4.04167C1.75 3.40073 2.01339 2.78604 2.48223 2.33283C2.95107 1.87961 3.58696 1.625 4.25 1.625H21.75C22.413 1.625 23.0489 1.87961 23.5178 2.33283C23.9866 2.78604 24.25 3.40073 24.25 4.04167V16.125Z"
                         stroke="#979797" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -60,6 +73,9 @@ const NavigationWrapper = styled.div`
     bottom:0;
     left:0;
     width:100%;
+    max-width:480px;
+    left: 50%;
+    transform: translate(-50%, 0);
     margin:0 auto;
     height:71px;
     background:white;
