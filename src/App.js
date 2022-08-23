@@ -13,6 +13,7 @@ import Login from './pages/Login';
 import KakaoLogin from './components/KakaoLogin';
 import GlobalStyle from './style/GlobalStyle';
 import theme from './style/theme';
+import Mypage from './pages/Mypage';
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
             <Route path="/detail/:postingId" element={<Detail />} />
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>
+            <Route path="/mypage" element={<Mypage />} />
             <Route
             path="/oauth2/redirect/:token"
             element={<KakaoLogin />}
