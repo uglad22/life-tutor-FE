@@ -13,7 +13,6 @@ export const chatroomAPI = {
     createChatRoom: async (param) => {
         const { title, hashtag } = param;
         const newData = {title, hashtag};
-        console.log(newData);
         const res = await instance.post('api/chat/room', newData);
         return res.data;
     },
@@ -22,6 +21,14 @@ export const chatroomAPI = {
         const { content } = res.data;
         const { isLast } = res.data;
         return { rooms:content, nextPage: pageParams + 1, isLast};
+    },
+    fetchSearchRoomsListWithScroll: async (pageParams, hashtag) => {
+        console.log(hashtag);
+        const res = await instance.get(`/api/search/rooms?hash_tag=${hashtag}&page=${pageParams}&size=10`);
+        
+        const { content } = res.data;
+        const { isLast } = res.data;
+        return {rooms:content, nextPage: pageParams + 1, isLast};
     }
 }
 
