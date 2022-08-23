@@ -18,7 +18,7 @@ const RoomViewer = () => {
         ['rooms'],
         ({ pageParam = 1 }) => chatroomAPI.fetchRoomsListWithScroll(pageParam),
         {
-            enabled:!!(pathname.includes("search") === false),
+            enabled:!!(!pathname.includes("search")),
             getNextPageParam: (lastPage) =>
             !lastPage.isLast ? lastPage.nextPage : undefined,
             
