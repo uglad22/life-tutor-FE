@@ -23,7 +23,7 @@ const Detail = () => {
   const queryClient = useQueryClient();
   
   // 로그인한 유저의 닉네임 가져오기
-  const loginNickname = '테스트용';
+  const loginNickname = 'king1';
 
   // 게시글 불러오기
   const getPost = async () => {
@@ -39,10 +39,7 @@ const Detail = () => {
 
   // 게시글 기능관련
   const editPostingHandler = async () => {
-    const result = window.confirm("게시글을 수정하시겠습니까?");
-    if (result) {
-    // navigate(`/edit/${postingId}`);  
-    }
+    navigate(`/posting/${postingId}`);  
   };
 
   const deletePostingHandler = async () => {
