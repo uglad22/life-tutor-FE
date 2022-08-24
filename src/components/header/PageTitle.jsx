@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { MdArrowBackIosNew } from 'react-icons/md';
-import { postings } from '../../shared/api';
+import { postingsAPI } from '../../shared/api';
 import { AiOutlinePlus } from 'react-icons/ai';
 
 
@@ -15,11 +15,11 @@ const PageTitle = ({ title, isAction }) => {
     const pathname = location.pathname;
     const context = useContext(submitDataContext);
 
-    const { mutate:submitPosting, isError:mutateError } = useMutation(postings.postPosting, {
+    const { mutate:submitPosting, isError:mutateError } = useMutation(postingsAPI.postPosting, {
         onSuccess: ({data}) => {
             console.log(data);
-            queryClient.invalidateQueries(["cardList", "postings"]);
-            navigate('/viewer/posting/list');
+            queryClient.invalidateQueries(["postings", "list"]);
+            
         }
     });
 
@@ -30,10 +30,11 @@ const PageTitle = ({ title, isAction }) => {
             title,
             posting_content,
             hashtag,
-            imgUrl:'shdlfl'
+            imgUrl:'shdlfl' // TODO: 지우기
         }
         console.log(newData);
         submitPosting(newData);
+        navigate('/viewer/posting/list');
     }
 
     
