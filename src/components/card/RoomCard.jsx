@@ -9,8 +9,16 @@ const RoomCard = ({ room }) => {
 
     const navigate = useNavigate();
 
+    const roomCardClickHandler = () => {
+        if(room.isfull) {
+            alert("채팅방이 꽉 찼습니다.");
+            return;
+        }
+        else navigate(`/detail/room/chat/${room.roomId}`)
+    }
+
     return(
-        <RoomCardWrapper onClick={()=> navigate(`/detail/room/chat/${room.roomId}`)}>
+        <RoomCardWrapper onClick={roomCardClickHandler}>
             <RoomCardContent>
                 <RoomCardTitle>
                     <p>{room.title}</p>

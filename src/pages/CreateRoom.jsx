@@ -19,7 +19,7 @@ const CreateRoom = () => {
 
     const { mutate:createRoom, isError:createRoomError } = useMutation(chatroomAPI.createChatRoom, {
         onSuccess:(data)=> {
-            navigate(`/detail/room/chat/${data}`)
+            navigate(`/detail/room/chat/${data}`);
         }
     })
 
