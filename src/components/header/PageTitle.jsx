@@ -2,9 +2,9 @@ import React, { useContext } from 'react';
 import { submitDataContext } from '../context/SubmitDataProvider';
 import styled, { css } from 'styled-components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { MdArrowBackIosNew } from 'react-icons/md';
-import { postings } from '../../shared/api';
+import { postingsAPI } from '../../shared/api';
 import { AiOutlinePlus } from 'react-icons/ai';
 
 
@@ -15,14 +15,15 @@ const PageTitle = ({ title, isAction }) => {
     const pathname = location.pathname;
     const context = useContext(submitDataContext);
 
-    const { mutate:submitPosting, isError:mutateError } = useMutation(postings.postPosting, {
+    const postingId = useParams().postingId;
+
+    const { mutate:submitPosting, isError:mutateError } = useMutation(postingsAPI.postPosting, {
         onSuccess: ({data}) => {
             console.log(data);
             queryClient.invalidateQueries(["cardList", "postings"]);
             navigate('/viewer/posting/list');
         }
     });
-
     const postSubmitHandler = () => {
         //TODO: useMutation 사용해서 글 작성
         const {title, posting_content, hashtag} = context.state.postData;
@@ -36,6 +37,42 @@ const PageTitle = ({ title, isAction }) => {
         submitPosting(newData);
     }
 
+    const postEditNavigateHandler = async () => {
+        navigate(`/posting/edit/${postingId}`);  
+    };
+
+    const { mutate:deletePosting } = useMutation(postingsAPI.postDelete, {
+        onSuccess: () => {
+            queryClient.invalidateQueries(["cardList", "postings"]);
+            navigate("/viewer/posting/list");
+        }
+    });
+    const postDeleteHandler = async () => {
+    const result = window.confirm("게시글을 삭제하시겠습니까?");
+    if (result) {
+        deletePosting(postingId);
+    }
+    };
+
+    const { mutate:submitEditing } = useMutation(postingsAPI.postEditing, {
+        onSuccess: () => {
+            queryClient.invalidateQueries(["cardList", "postings"]);
+            alert('게시글이 수정되었습니다.');
+            navigate(`/detail/${postingId}`);
+        }
+    });
+    const postEditHandler = () => {
+        const {title, posting_content, hashtag} = context.state.postData;
+        const newData = {
+            title,
+            posting_content,
+            hashtag,
+            imgUrl:'shdlfl'
+        }
+        console.log(newData);
+        submitEditing({postingId, newData});
+    }
+
     
     if(mutateError) return <p>error</p>
     if(pathname === '/viewer/posting/list') return <PageTitleEmpty/>;
@@ -46,6 +83,8 @@ const PageTitle = ({ title, isAction }) => {
                 <p>{title}</p>
                 <HeaderActions isShow={isAction}>
                     {pathname==="/posting" && <p onClick={postSubmitHandler}>등록</p>}
+                    {pathname===`/detail/${postingId}` && <><p onClick={postEditNavigateHandler}>수정</p><p onClick={postDeleteHandler}>삭제</p></>}
+                    {pathname===`/posting/edit/${postingId}` && <p onClick={postEditHandler}>수정</p>}
                     {pathname==="/viewer/room" && <p style={{fontSize:"25px", color:"black"}} onClick={()=> navigate("/create/room")}><AiOutlinePlus/></p>}
                     {/* TODO: action이 필요한 페이지의 케이스를 위와 같이 다룸 */}
                 </HeaderActions>
@@ -98,6 +137,8 @@ const HeaderActions = styled.div`
     font-size:16px;
     letter-spacing:-0.3px;
     font-weight:600;
+    display: flex;
+    gap: 5px;
     p {
         cursor:pointer;
         display:flex;
