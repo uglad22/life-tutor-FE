@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { useParams,useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { WhiteBackground, HRLineDiv } from '../style/sharedStyle'
 import { submitDataContext } from '../components/context/SubmitDataProvider';
@@ -6,12 +7,20 @@ import Header from '../components/header/Header';
 import DeletableBadge from '../components/hashtag/DeletableBadge';
 import { hashtagValidation } from '../shared/sharedFn';
 
+import instance from '../shared/axios';
+
 const Post = () => {
     const [hashInput, setHashInput] = useState('');
     const context = useContext(submitDataContext);
     const { postData } = context.state;
     const { title, posting_content } = postData;
     const { setPostData } = context.actions;
+
+    const pathname = useLocation().pathname;
+    const params = useParams();
+    const postingId = params.postingId;
+    const navigate = useNavigate();
+    console.log(pathname, postingId);
 
     const changeHashInput = (e) => {
         setHashInput(e.target.value);
@@ -66,6 +75,28 @@ const Post = () => {
     }
 
     useEffect(() => {
+        if (postingId) {
+            const setPost = async () => {
+                const postInfo = await instance.get(`/api/board/detail/${postingId}`);
+                const data = postInfo.data;
+
+                // FIXME: url주소를 타고 들어올 수 있으니 유저닉네임 가져와서 비교해주는 로직 추가 구현 필요
+                // if(data.nickname !== loginNickname) {
+                //     alert('수정 권한이 없습니다.');
+                //     navigate(-1);
+                //     return;
+                // }
+                console.log(data);
+                console.log(data.hashtag);
+                setPostData({
+                    title: data.title,
+                    posting_content: data.posting_content,
+                    hashtag: data.hashtag,
+                })
+            }
+            setPost();
+        }
+
         return(() => {
             setPostData({title:'', posting_content:'', hashtag:[]})
         })
@@ -73,7 +104,9 @@ const Post = () => {
     return(
         <WhiteBackground>
         <PostWrapper>
-            <Header title="글쓰기" isAction={true}/>
+            {pathname === '/posting' && <Header title="글쓰기" isAction={true}/>}
+            {pathname === `/posting/edit/${postingId}` && <Header title="수정하기" isAction={true}/>}
+            
             <PostContent>
                 <input 
                 type="text" placeholder='제목을 입력해주세요.' value={title}

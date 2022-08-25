@@ -10,6 +10,14 @@ export const postingsAPI = { // FIXME: 이름 변경하기
     postPosting: async (newData) => {
         const res = await instance.post('/api/board', newData);
         return res.data;
+    },
+    postEditing: async ({ postingId, newData}) => {
+        console.log(postingId, newData);
+        await instance.put(`/api/board/${postingId}`, newData)
+    },
+    postDelete: async (postingId) => {
+        await instance.delete(`/api/board/${postingId}`);
+
     }
 }
 
@@ -25,13 +33,14 @@ export const chatroomAPI = {
         const { content } = res.data;
         const { isLast } = res.data;
         return { rooms:content, nextPage: pageParams + 1, isLast};
+
     },
     fetchSearchRoomsListWithScroll: async (pageParams, hashtag) => {
         console.log(hashtag);
         const res = await instance.get(`/api/search/rooms?hash_tag=${hashtag}&page=${pageParams}&size=10`);
-        
         const { content } = res.data;
         const { isLast } = res.data;
         return {rooms:content, nextPage: pageParams + 1, isLast};
+
     }
 }

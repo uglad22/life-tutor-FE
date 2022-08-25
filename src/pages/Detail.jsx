@@ -4,11 +4,11 @@ import styled from "styled-components";
 import NomalBadge from '../components/hashtag/NomalBadge';
 import { useParams, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { BsChevronLeft } from "react-icons/bs";
 import { AiOutlineLike } from 'react-icons/ai';
 import { IoChatboxEllipsesOutline } from 'react-icons/io5';
 import CommentCard from "../components/card/CommentCard";
 import SubmitForm from "../components/submitForm/SubmitForm";
+import Header from "../components/header/Header";
 
 // TODO: 댓글 수정기능, 댓글 좋아요확인, 게시글 본문 줄바꿈처리
 // FIXME: 
@@ -23,7 +23,7 @@ const Detail = () => {
   const queryClient = useQueryClient();
   
   // 로그인한 유저의 닉네임 가져오기
-  const loginNickname = '테스트용';
+  const loginNickname = 'king1';
 
   // 게시글 불러오기
   const getPost = async () => {
@@ -38,20 +38,6 @@ const Detail = () => {
   console.log(data);
 
   // 게시글 기능관련
-  const editPostingHandler = async () => {
-    const result = window.confirm("게시글을 수정하시겠습니까?");
-    if (result) {
-    // navigate(`/edit/${postingId}`);  
-    }
-  };
-
-  const deletePostingHandler = async () => {
-    const result = window.confirm("게시글을 삭제하시겠습니까?");
-    if (result) {
-      await instance.delete(`/api/board/${postingId}`);
-      return navigate("/home/postings");
-    }
-  };
 
   const contentLike = async () => {
     if (data.like === true) {
@@ -88,36 +74,7 @@ const Detail = () => {
 
   return (
     <>
-      <HeaderBox>
-        <BackBtn
-          onClick={() => {
-            navigate(-1);
-          }}
-        >
-          <BsChevronLeft />
-        </BackBtn>
-        <HeaderInfo>헤더 부분</HeaderInfo>
-        <EditAndDelBtn>
-          {data.nickname === loginNickname ? (
-            <>
-              <EditBtn
-                onClick={() => {
-                  editPostingHandler();
-                }}
-              >
-                수정
-              </EditBtn>
-              <DelBtn
-                onClick={() => {
-                  deletePostingHandler();
-                }}
-              >
-                삭제
-              </DelBtn>
-            </>
-          ) : null}
-        </EditAndDelBtn>
-      </HeaderBox>
+      <Header title="본문 상세" isAction={true}/>
       <ContentBox>
         <TitleAndWriterBox>
           <Title>
@@ -186,60 +143,8 @@ const Detail = () => {
 
 export default Detail;
 
-const HeaderBox = styled.div`
-  width: 100%;
-  height: 95px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  border-bottom: 0.5px solid #d3d3d3;
-  box-sizing: border-box;
-`;
-
-const BackBtn = styled.div`
-  margin: 0 0 16px 20px;
-  font-size: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-`;
-
-const HeaderInfo = styled.div`
-  position: absolute;
-  left: 159px;
-  top: 57px;
-  width: 69px;
-  height: 27px;
-`;
-
-const EditAndDelBtn = styled.div`
-  margin: 0 20px 16px 0;
-  gap: 10px;
-  display: flex;
-`;
-
-const EditBtn = styled.div`
-  cursor: pointer;
-  width: 50%;
-  height: 3rem;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  justify-content: center;
-`;
-
-const DelBtn = styled.div`
-  cursor: pointer;
-  width: 50%;
-  height: 3rem;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  justify-content: center;
-`;
-
 const ContentBox = styled.div`
+  margin-top: 60px;
   background: white;
   width: 100%;
   border-bottom: 2px solid #D3D3D3;
@@ -253,8 +158,7 @@ const TitleAndWriterBox = styled.div`
 const Title = styled.div`
   text-align: left;
   p {
-    margin: 25px 20px;
-    padding: 0;
+    padding: 25px 20px;
     font-weight:500;
     font-size:20px;
   }
