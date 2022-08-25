@@ -70,6 +70,7 @@ function App() {
             element={<KakaoLogin />}
              />
             <Route path="/posting" element={<Post/>}/>
+            <Route path="/posting/edit/:postingId" element={<Post/>}/>
             <Route path="/create/room" element={<CreateRoom/>}/>
             <Route path="/detail/room/chat" element={<ChatRoom/>}/>
           </Routes>
