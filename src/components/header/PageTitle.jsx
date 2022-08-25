@@ -84,7 +84,7 @@ const PageTitle = ({ title, isAction }) => {
 
     
     if(mutateError) return <p>error</p>
-    if(pathname === '/viewer/posting/list') return <PageTitleEmpty/>;
+    if(pathname === '/viewer/posting/list' || pathname.includes('/viewer/posting/search')) return <PageTitleEmpty/>;
     return(
         <PageTitleWrapper>
             <PageTitleContent>

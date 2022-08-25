@@ -7,18 +7,17 @@ import { useInView } from 'react-intersection-observer';
 import PostingCard from '../components/card/PostingCard';
 import Header from '../components/header/Header';
 
-
-
-
 const PostingViewer = () => {
     const paramCategory = useParams().category;
+    const paramHashtag = useParams().hashtag;
     const { ref, inView} = useInView();
+    // const { aref, ainView} = useInView();
 
-    const { data:listData, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+    const { data:listData, fetchNextPage:fetchListNextPage, isFetchingNextPage:isListFetching } = useInfiniteQuery(
       ["postings", paramCategory],
       ({ pageParam = 0 }) => postingsAPI.fetchPostingsListWithScroll(pageParam),
       {
-        enabled:!!(paramCategory === "list"),
+        enabled:!!(!paramHashtag),
         staleTime:3000,
         getNextPageParam: (lastPage) =>
           !lastPage.isLast ? lastPage.nextPage : undefined,
@@ -31,23 +30,47 @@ const PostingViewer = () => {
       },
     );
 
+    const { data:searchListData, fetchNextPage:fetchSearchListNextPage, isFetchingNextPage:isSearchListFetching} = useInfiniteQuery(
+      ["postings", "search", paramHashtag],
+      ({ pageParam = 0}) => postingsAPI.fetchSearchPostingsListWithScroll(pageParam, paramHashtag),
+      {
+        enabled:!!paramHashtag,
+        staleTime:3000,
+        getNextPageParam: (lastPage) =>
+        !lastPage.isLast? lastPage.nextPage : undefined,
+        onSuccess:(data) => {
+          console.log(data);
+        },
+        retry:false,
+        keepPreviousData:true
+      }
+    )
+
     useEffect(()=> {
       if(inView){
-        fetchNextPage();
+        !paramHashtag?fetchListNextPage():fetchSearchListNextPage();
       } 
     }, [inView])    
   
     return (
       <PostingViewerWrapper>
         <Header/>
-            {listData.pages?.map((page, index) => (
-              <Page key={index} >
+            {!paramHashtag&&listData.pages?.map((page, index) => (
+              <Page key={index}>
                   {page.posts.map((post) => (
-                    <PostingCard key={post.posting_id} post={post}></PostingCard> //FIXME: 채팅방 리스트 불러오기 API가 구현되면 null 대신에 ChatroomCard 컴포넌트로 렌더링
+                    <PostingCard key={post.posting_id} post={post}></PostingCard> 
                   ))}
               </Page>
             ))}
-        {isFetchingNextPage ? <div>로딩중입니다1!!!!</div>: <div ref={ref} style={{height:"50px"}}></div>}
+            {!paramHashtag||searchListData.pages?.map((page, index) => (
+              <Page key={index} >
+                  {page.posts.map((post) => (
+                    <PostingCard key={post.posting_id} post={post}></PostingCard> 
+                  ))}
+              </Page>
+            ))}
+        {!paramHashtag&&(isListFetching ? <div>로딩중입니다!!!!</div>: <div ref={ref} style={{height:"100px"}}></div>)}
+        {!paramHashtag||(isSearchListFetching ? <div>로딩중입니다!!!!</div>: <div ref={ref} style={{height:"100px"}}></div>)}
         </PostingViewerWrapper>
     );
 }

@@ -58,6 +58,7 @@ function App() {
           <Routes key={location.pathname} location={location}>
             <Route path="/" element={<Splash/>}/>
             <Route path="/viewer/posting/:category" element={<PostingViewer/>}></Route>
+            <Route path="/viewer/posting/search/:hashtag" element={<PostingViewer/>}></Route>
             <Route path="/viewer/room" element={<RoomViewer/>}/>
             <Route path="/viewer/room/search/:hashtag" element={<RoomViewer/>}/>
             <Route path="/detail/posting/:postingId" element={<Detail />} />

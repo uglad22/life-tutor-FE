@@ -55,14 +55,14 @@ const RoomViewer = () => {
     return(   
         <RoomViewerWrapper>
             <Header title={"채팅 리스트"} isAction={true}/>
-            {hashtagParam||listData.pages?.map((page, index) => (
+            {!hashtagParam&&listData.pages?.map((page, index) => (
                 <Page key={index}>
                     {page.rooms.map((room) => (
                         <RoomCard key={room.roomId} room={room}></RoomCard>
                     ))}
                 </Page>
             ))}
-             {hashtagParam&&searchData.pages?.map((page, index) => (
+             {!hashtagParam||searchData.pages?.map((page, index) => (
                 <Page key={index}>
                     {page.rooms.map((room) => (
                          <RoomCard key={room.roomId} room={room}></RoomCard>
