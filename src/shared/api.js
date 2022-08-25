@@ -2,7 +2,7 @@ import instance from "./axios";
 
 export const postingsAPI = { // FIXME: 이름 변경하기
     fetchPostingsListWithScroll: async (pageParams) => {
-        const res = await instance.get(`/api/main/postings?page=${pageParams}&size=5`);// FIXME: URL 바꾸기
+        const res = await instance.get(`/api/main/postings?page=${pageParams}&size=10`);// FIXME: URL 바꾸기
         const { content } = res.data;
         const { last } = res.data;
         return { posts:content, nextPage:pageParams + 1, isLast:last};
@@ -21,7 +21,7 @@ export const postingsAPI = { // FIXME: 이름 변경하기
 
     },
     fetchSearchPostingsListWithScroll: async (pageParams, hashtag) => {
-        const res = await instance.get(`/api/search/postings?hashtag=${hashtag}&page=${pageParams}&size=5`);
+        const res = await instance.get(`/api/search/postings?hashtag=${hashtag}&page=${pageParams}&size=10`);
         const { content } = res.data;
         const { last } = res.data;
         return { posts:content, nextPage:pageParams + 1, isLast:last};
