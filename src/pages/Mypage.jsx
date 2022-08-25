@@ -4,6 +4,7 @@ import Header from "../components/header/Header";
 import ManagementCard from "../components/card/ManagementCard";
 
 const Mypage = () => {
+  
   return (
     <>
       <Header title="마이페이지" isAction={true}/>
