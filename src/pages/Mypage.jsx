@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+import Header from "../components/header/Header";
 import ManagementCard from "../components/card/ManagementCard";
 
 const Mypage = () => {
   return (
     <>
-      <Header>헤더 들어올 부분</Header>
+      <Header title="마이페이지" isAction={true}/>
       <MemberInfoAndCategoryBox>
         <MemberInfo>
           <ProfilePicture>
@@ -145,12 +146,8 @@ const Mypage = () => {
 
 export default Mypage;
 
-const Header = styled.div`
-  height: 70px;
-  background: silver;
-`;
-
 const MemberInfoAndCategoryBox = styled.div`
+  margin-top: 60px;
   padding: 20px;
   box-sizing: border-box;
   background: white;
