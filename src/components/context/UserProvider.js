@@ -3,11 +3,7 @@ import React, { useState, createContext } from 'react';
 export const userContext = createContext();
 
 const UserProvider = ({ children }) => {
-    const [userInfo, setUserInfo] = useState({
-        username:"",
-        nickname:"",
-        user_type:""
-    })
+    const [userInfo, setUserInfo] = useState({});
 
     const value = {
         state:{ userInfo },

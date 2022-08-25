@@ -33,7 +33,6 @@ function App() {
       /* 토큰이 웹 스토리지에 없는 경우(로그인 X) */
       if(!token) {
         // 혹시나 context에 저장되어 있을 경우를 방지 default 값으로 초기화
-        setUserInfo({username:"", nickname:"", user_type:""})
         return;
       }
       /*토큰이 웹 스토리지에 있는 경우(로그인 O) */ 

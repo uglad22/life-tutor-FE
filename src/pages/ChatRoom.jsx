@@ -7,8 +7,9 @@ import axios from 'axios';
 import instance from '../shared/axios';
 import { userContext } from '../components/context/UserProvider';
 
+
+
 const ChatRoom = () => {
-    const [userNickname, setUserNickname] = useState("");
     const context = useContext(userContext);
     const { userInfo } = context.state;
     const navigate = useNavigate();
@@ -17,14 +18,11 @@ const ChatRoom = () => {
     const client= StompJS.over(sock);
 
 
-    console.log(userInfo);
     const headers = {} // TODO: 토큰 말고 어떤걸 넣을지?
     useEffect(()=> {
         const enterRoom = async () => {
             const res = await instance.put(`/api/chat/room/${roomId}/enter`);
             const data = res.data;
-            console.log(data);
-            setUserNickname(data);
         }
 
         enterRoom().catch(console.error);
@@ -34,7 +32,7 @@ const ChatRoom = () => {
             client.send(`/api/pub/${roomId}`, {}, JSON.stringify({
                 "enter":"ENTER",
                 "messageType":"TEXT",
-                "nickname":userNickname, // FIXME: 여기다가 nickname 넣기
+                "nickname":userInfo.nickname, // FIXME: 여기다가 nickname 넣기
             }))
 
             client.subscribe(`/api/sub/${roomId}`, (data) => {
@@ -49,6 +47,13 @@ const ChatRoom = () => {
         })
     }, []);
 
+    useEffect(()=> {
+        if(!userInfo.nickname) {
+            /** 새로고침 시 나가기 API 넣기 */
+            navigate("/viewer/room");
+        }
+    }, [])
+
     const disConnect = () => {
         client.disconnect(() => {
             client.unsubscribe();
@@ -60,7 +65,7 @@ const ChatRoom = () => {
         client.send(`/api/pub/${roomId}`, {}, JSON.stringify({
             "enter":"COMM",
             "messageType":"TEXT",
-            "nickname":userNickname,
+            "nickname":userInfo.nickname,
             "message":"안녕하세요"
         }))
     }
