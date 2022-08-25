@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import NomalBadge from '../hashtag/NomalBadge';
+import { userTypeTrans } from '../../shared/sharedFn';
 import { editPostingTime } from '../../shared/sharedFn';
 import { AiOutlineLike } from 'react-icons/ai';
 import { IoChatboxEllipsesOutline } from 'react-icons/io5';
@@ -17,7 +18,7 @@ const PostingCard = ({post}) => {
             </PostingCardHashtagArea>
             <PostingCardUserInfo>
                 <p style={{color:"#656565"}}>{post.nickname}</p>
-                <p style={{color:"#3549FF"}}>{post.user_type}</p>
+                <p style={{color:"#3549FF"}}>{userTypeTrans(post.user_type)}</p>
             </PostingCardUserInfo>
             </PostingCardBody>
             <HRDiv/>

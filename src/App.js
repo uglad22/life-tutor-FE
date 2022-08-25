@@ -33,7 +33,6 @@ function App() {
       /* 토큰이 웹 스토리지에 없는 경우(로그인 X) */
       if(!token) {
         // 혹시나 context에 저장되어 있을 경우를 방지 default 값으로 초기화
-        setUserInfo({username:"", nickname:"", user_type:""})
         return;
       }
       /*토큰이 웹 스토리지에 있는 경우(로그인 O) */ 
@@ -72,7 +71,7 @@ function App() {
             <Route path="/posting" element={<Post/>}/>
             <Route path="/posting/edit/:postingId" element={<Post/>}/>
             <Route path="/create/room" element={<CreateRoom/>}/>
-            <Route path="/detail/room/chat" element={<ChatRoom/>}/>
+            <Route path="/detail/room/chat/:roomId" element={<ChatRoom/>}/>
           </Routes>
           </AnimatePresence>  
         </Content>

@@ -1,13 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
 import NomalBadge from '../hashtag/NomalBadge';
+import { useNavigate } from 'react-router-dom';
 import { userTypeTrans } from '../../shared/sharedFn';
 import { FiChevronRight } from 'react-icons/fi';
 
 const RoomCard = ({ room }) => {
 
+    const navigate = useNavigate();
+
+    const roomCardClickHandler = () => {
+        if(room.isfull) {
+            alert("채팅방이 꽉 찼습니다.");
+            return;
+        }
+        else navigate(`/detail/room/chat/${room.roomId}`)
+    }
+
     return(
-        <RoomCardWrapper>
+        <RoomCardWrapper onClick={roomCardClickHandler}>
             <RoomCardContent>
                 <RoomCardTitle>
                     <p>{room.title}</p>
@@ -20,9 +31,6 @@ const RoomCard = ({ room }) => {
                     {room.hashtag.map((tag, index) => 
                         <NomalBadge key={index}>{`# ${tag}`}</NomalBadge>
                     )}
-                    {/* <NomalBadge># 개발자</NomalBadge>
-                    <NomalBadge># 개발자</NomalBadge>
-                    <NomalBadge># 개발자</NomalBadge> */}
                 </RoomCardHashtagArea>
             </RoomCardContent>
             <RoomCardPersonCount>

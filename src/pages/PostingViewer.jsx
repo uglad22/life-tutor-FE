@@ -15,7 +15,7 @@ const PostingViewer = () => {
     const { ref, inView} = useInView();
 
     const { data:listData, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-      ['postings', paramCategory],
+      ["postings", paramCategory],
       ({ pageParam = 0 }) => postingsAPI.fetchPostingsListWithScroll(pageParam),
       {
         enabled:!!(paramCategory === "list"),

@@ -12,16 +12,16 @@ const PageTitle = ({ title, isAction }) => {
     const queryClient = useQueryClient();
     const location = useLocation();
     const navigate = useNavigate();
-    const pathname = location.pathname;
-    const context = useContext(submitDataContext);
-
     const postingId = useParams().postingId;
-
+    const pathname = location.pathname;
+    
+    const context = useContext(submitDataContext);
+    
     const { mutate:submitPosting, isError:mutateError } = useMutation(postingsAPI.postPosting, {
         onSuccess: ({data}) => {
             console.log(data);
-            queryClient.invalidateQueries(["cardList", "postings"]);
-            navigate('/viewer/posting/list');
+            queryClient.invalidateQueries(["postings", "list"]);
+            
         }
     });
     const postSubmitHandler = () => {
@@ -31,10 +31,11 @@ const PageTitle = ({ title, isAction }) => {
             title,
             posting_content,
             hashtag,
-            imgUrl:'shdlfl'
+            imgUrl:'shdlfl' // TODO: 지우기
         }
         console.log(newData);
         submitPosting(newData);
+        navigate('/viewer/posting/list');
     }
 
     const postEditNavigateHandler = async () => {
