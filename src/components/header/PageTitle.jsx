@@ -58,7 +58,7 @@ const PageTitle = ({ title, isAction }) => {
         onSuccess: () => {
             queryClient.invalidateQueries(["cardList", "postings"]);
             alert('게시글이 수정되었습니다.');
-            navigate(`/detail/${postingId}`);
+            navigate(`/detail/posting/${postingId}`);
         }
     });
     const postEditHandler = () => {
@@ -73,17 +73,26 @@ const PageTitle = ({ title, isAction }) => {
         submitEditing({postingId, newData});
     }
 
+    const backBtnHandler = () => {
+        if (pathname===`/detail/posting/${postingId}`) {
+            navigate("/viewer/posting/list");
+        } else {
+            navigate(-1);
+        }
+    }
+
     
     if(mutateError) return <p>error</p>
     if(pathname === '/viewer/posting/list') return <PageTitleEmpty/>;
     return(
         <PageTitleWrapper>
             <PageTitleContent>
-                <div className='back-icon' onClick={()=>navigate(-1)}><p><MdArrowBackIosNew/></p></div>
+                {/* <div className='back-icon' onClick={()=>navigate(-1)}><p><MdArrowBackIosNew/></p></div> */}
+                <div className='back-icon' onClick={backBtnHandler}><p><MdArrowBackIosNew/></p></div>
                 <p>{title}</p>
                 <HeaderActions isShow={isAction}>
                     {pathname==="/posting" && <p onClick={postSubmitHandler}>등록</p>}
-                    {pathname===`/detail/${postingId}` && <><p onClick={postEditNavigateHandler}>수정</p><p onClick={postDeleteHandler}>삭제</p></>}
+                    {pathname===`/detail/posting/${postingId}` && <><p onClick={postEditNavigateHandler}>수정</p><p onClick={postDeleteHandler}>삭제</p></>}
                     {pathname===`/posting/edit/${postingId}` && <p onClick={postEditHandler}>수정</p>}
                     {pathname==="/viewer/room" && <p style={{fontSize:"25px", color:"black"}} onClick={()=> navigate("/create/room")}><AiOutlinePlus/></p>}
                     {/* TODO: action이 필요한 페이지의 케이스를 위와 같이 다룸 */}
