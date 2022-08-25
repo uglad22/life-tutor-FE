@@ -138,7 +138,7 @@ const Post = () => {
                 </HashTagForm>
             </PostContent>
         </PostWrapper>
-        </WhiteBackground>
+          </WhiteBackground>
     )
 }
 
@@ -146,7 +146,7 @@ export default Post;
 
 const PostWrapper = styled.div`
     // app.js의 content가 480px로 limit
-    position:relative;
+    /* position:relative; */
     padding-top:60px;
     width:calc(100% - 40px);
     margin:0 auto;
@@ -187,7 +187,7 @@ const PostContent = styled.div`
         font-size:15px;
         font-weight:500;
         line-height:18px;
-        height:300px;
+        height:200px;
         margin-bottom:10px;
         /* background:blue; */
     }
@@ -204,6 +204,7 @@ const HashTagForm = styled.form`
     box-sizing:border-box;
     align-items:center;
     overflow-x:auto;
+    margin-bottom:150px;
     
     /* background:red; */
     input {
