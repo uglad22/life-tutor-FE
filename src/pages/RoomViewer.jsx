@@ -30,8 +30,8 @@ const RoomViewer = () => {
         }
     )
 
-    const {data:searchData, fetchNextPage:searchFetchNextPage, isFetchingNextPage:isSearchFetchingNextPage, refetch } = useInfiniteQuery(
-        ["rooms", 'search', hashtagParam],
+    const {data:searchData, fetchNextPage:searchFetchNextPage, isFetchingNextPage:isSearchFetchingNextPage} = useInfiniteQuery(
+        ["rooms", "search", hashtagParam],
         ({ pageParam = 1}) => chatroomAPI.fetchSearchRoomsListWithScroll(pageParam, hashtagParam),
         {
             enabled:!!hashtagParam,
@@ -77,6 +77,7 @@ export default RoomViewer;
 
 const RoomViewerWrapper = styled.div`
     display:flex;
+    position:relative;
     flex-direction: column;
     gap:0.5px;
     width:100%;
