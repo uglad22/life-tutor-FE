@@ -61,7 +61,7 @@ function App() {
             <Route path="/viewer/posting/:category" element={<PostingViewer/>}></Route>
             <Route path="/viewer/room" element={<RoomViewer/>}/>
             <Route path="/viewer/room/search/:hashtag" element={<RoomViewer/>}/>
-            <Route path="/detail/:postingId" element={<Detail />} />
+            <Route path="/detail/posting/:postingId" element={<Detail />} />
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>
             <Route path="/mypage" element={<Mypage />} />
