@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import SockJS from 'sockjs-client';
@@ -15,6 +15,8 @@ import Header from '../components/header/Header';
 
 const ChatRoom = () => {
     const [messages, setMessages] = useState([]);
+    const chatRef = useRef(null);
+    const tempRef = useRef(null);
     const context = useContext(userContext);
     const { userInfo } = context.state;
     const navigate = useNavigate();
@@ -58,6 +60,10 @@ const ChatRoom = () => {
         }
     }, [])
 
+    useEffect(()=> {
+        scrollToBottom();
+    }, [messages])
+
     const disConnect = () => {
         client.disconnect(() => {
             client.unsubscribe();
@@ -75,14 +81,18 @@ const ChatRoom = () => {
         client.send(`/api/pub/${roomId}`, {}, JSON.stringify(sendMessage));
     }
 
+    const scrollToBottom = () => {
+        chatRef.current?.scrollIntoView({ behavior: "smooth" })
+    }
+
 
     return (
-        <ChatRoomWrapper>
+        <ChatRoomWrapper ref={tempRef}>
         <Header/>
         <ChatArea>
             {messages?.map((msg, index) => msg.nickname === userInfo.nickname ?
             <MyBubble messageTime={msg.time} key={index}>{msg.message}</MyBubble>:<OtherBubble messageTime={msg.time} key={index}>{msg.message}</OtherBubble>)}
-        
+            <div ref={chatRef} style={{height:"10px"}}></div>
         
         </ChatArea>
         <SubmitForm sendMsg={sendMsg}/>
@@ -97,6 +107,8 @@ const ChatRoomWrapper = styled.div`
     padding-top:71px;
     padding-bottom:65px;
     width:100%;
+    /* height:calc(100vh - 71px - 70px); */
+    /* height:calc(100vh - 71px - 70px); */
     /* height:calc(100vh - 71px - 70px);
     display:flex;
     flex-direction:column;
@@ -104,9 +116,12 @@ const ChatRoomWrapper = styled.div`
 `
 
 const ChatArea = styled.div`
-    height:calc(100vh - 71px - 70px);
+    overflow-y:auto;
+    /* height:calc(100vh - 71px - 70px); */
+    height:100%;
     display:flex;
     flex-direction:column;
     justify-content:flex-end;
     gap:10px;
+    
 `
