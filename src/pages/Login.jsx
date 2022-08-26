@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import instance from '../shared/axios';
 import kakao_login from '../components/images/kakao_login.png';
+import { Link } from "react-router-dom"; 
+
 
 const Login = () => {
 
@@ -42,7 +44,7 @@ const Login = () => {
 
     return (
         <LoginWrapper>
-            <Logo> LOGO </Logo>
+            <Logo> <h1>IT-ING</h1> </Logo>
             <Inputarea>
                 <input
                     placeholder="ID"
@@ -56,7 +58,7 @@ const Login = () => {
                 />
             </Inputarea>
             <Buttonarea>
-                <button onClick={submitLogin}>로그인</button>
+                <button className="btn-login" onClick={submitLogin}>로그인</button>
                     <a
                         rel="noreferrer"
                         href="http://15.164.226.110/oauth2/authorization/kakao">
@@ -66,7 +68,8 @@ const Login = () => {
                     </a>
             </Buttonarea>
             <Singuparea>
-                <p>아직 회원이 아니신가요?</p>
+                <Link to='/signup'><p>아직 회원이 아니신가요?</p></Link>
+                <hr />
             </Singuparea>
 
         </LoginWrapper>
@@ -79,9 +82,8 @@ export default Login;
 
 
 const LoginWrapper = styled.div`
-    height: 60vh;
-    margin-top : 80px;
-
+    padding-top : 80px;
+    background-color : #FFFFFF;
     display : flex;
     flex-direction: column;
     justify-content: space-between;
@@ -89,31 +91,99 @@ const LoginWrapper = styled.div`
 
     input {
         margin-bottom : 20px;
-    }
+        box-sizing: border-box;
 
-    button {
-        margin-bottom : 20px;
-    }
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 16px;
+        gap: 4px;
 
+        width: 327px;
+        height: 58px;
+        left: 24px;
+        top: 268px;
+        border : none;
+        border-bottom: 2px solid #3549FF;
+    }
 `
 
 const Logo = styled.div`
 
+    font-family: 'Gmarket Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 40px;
+
+    color: #3549FF;
+
+    margin-bottom : 60px;
 
 `
 
 const Inputarea = styled.div`
     display : flex;
     flex-direction: column;
-
+    margin-bottom : 38px;
 `
 
 const Buttonarea = styled.div`
     display : flex;
     flex-direction: column;
+    align-items: center;
+    
+    .btn-login {
+        margin-bottom : 20px;
+        justify-content: center;
+        padding: 18px 0px;
+        gap: 8px;
+
+        width: 335px;
+        height: 60px;
+        left: 20px;
+        top: 427px;
+
+        background: #3549FF;
+        border-radius: 40px;
+        border : none;
+
+        font-family: 'Apple SD Gothic Neo';
+        font-style: normal;
+        // font-weight: 600;
+        font-size: 20px;
+        line-height: 24px;
+        text-align: center;
+        letter-spacing: -0.3px;
+        color: #FFFFFF;
+
+    }
+
+    .btn-kakao {
+        margin-top : 100px;
+        margin-bottom : 18px;
+        border : none;
+        background-color : none;
+    }
 
 `
 
 const Singuparea = styled.div`
 
+    p {
+        margin-bottom : 4px;
+        color: #717171;
+        font-size: 14px;
+
+    }
+
+    hr {
+        width : 150px;
+        margin-bottom : 43px;
+    }
+
+    a {
+        color : black;
+        text-decoration:none;
+    }
 `

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import instance from '../shared/axios';
+import { Link,useNavigate } from "react-router-dom"; 
 
 const Signup = () => {
+    const navigate = useNavigate();
 
     //ref로 input값 받아오기
     const email_ref = React.useRef(null);
@@ -140,7 +142,7 @@ const Signup = () => {
                 const res = await instance.post('/api/signup', user_data);
                 console.log(res);
                 alert('회원가입이 완료되었습니다!');
-            //   navigate('/login');
+                navigate('/login');
             } catch (err) {
                 console.log(err);
                 alert('회원가입에 문제가 생겼어요!');
@@ -151,61 +153,62 @@ const Signup = () => {
 
     return(
         <SignupWrapper>
-            <h1>회원가입</h1>
+            <SingupContent>
+                <p>아이디</p>
+            <IdBox>
+                <input
+                    placeholder="이메일 형식"
+                    ref={email_ref}
+                    onBlur={idCheck}
+                />
+                <button onClick={submitId}>중복 확인</button>
+            </IdBox>
 
-            <p>ID</p>
-            <input
-                placeholder="이메일 형식"
-                ref={email_ref}
-                onBlur={idCheck}
-            />
-            <button onClick={submitId}>ID 중복확인</button>
+                <p>비밀번호</p>
+            <PwBox>
+                <input 
+                    type="password"
+                    placeholder="영문 8-20자, 특수문자(!@#$%^&.*)포함 "
+                    ref={pw_ref}
+                    onBlur={pwCheck}
+                />
 
-            <p>닉네임</p>
-            <input
-                placeholder="2자리 이상 5자리 이하 한글"
-                ref={nickname_ref}
-                onBlur={nickNameCheck}
-            />
-            <button onClick={submitNickName}>닉네임 중복확인</button>
+                <input
+                    type="password"
+                    placeholder="비밀번호 확인"
+                    ref={pwcheck_ref}
+                    onBlur={pwReCheck}
+                />
+            </PwBox>
 
-            <p>PW</p>
-            <input 
-                type="password"
-                placeholder="영문 8-20자, 특수문자(!@#$%^&.*)포함 "
-                ref={pw_ref}
-                onBlur={pwCheck}
-            />
+                <p>닉네임</p>
+            <NicknameBox>
+                <input
+                    placeholder="2자리 이상 5자리 이하 한글"
+                    ref={nickname_ref}
+                    onBlur={nickNameCheck}
+                />
+                <button onClick={submitNickName}>중복 확인</button>
+            </NicknameBox>
+                <p className='nickname'>한번 설정한 닉네임은 변경이 불가합니다.</p>
 
-            <p>PW 확인</p>
-            <input
-                type="password"
-                placeholder="비밀번호 확인"
-                ref={pwcheck_ref}
-                onBlur={pwReCheck}
-            />
+            <UsertypeBox>
+                    <select name="userType" onChange={selectUserType}>
+                        <option value="SEEKER">취준생</option>
+                        <option value="JUNIOR">주니어</option>
+                        <option value="SENIOR">시니어</option>
+                    </select>
+            </UsertypeBox>
 
-            <p>User Type</p>
-                <div onChange={selectUserType}>
-                    <input type="radio" id="contactChoice1"
-                    name="userType" value="SEEKER" />
-                    <label htmlFor="취준생">취준생</label>
-
-                    <input type="radio" id="contactChoice2"
-                    name="userType" value="JUNIOR" />
-                    <label htmlFor="주니어">주니어</label>
-
-                    <input type="radio" id="contactChoice3"
-                    name="userType" value="SENIOR" />
-                    <label htmlFor="시니어">시니어</label>
-                </div>
-                <br />
-            <button
-                type="submit"
-                onClick={submitSignup}
-            >가입하기</button>
-            <p>회원이시라면?</p>
-
+            <SignupBottom>
+                <button
+                    type="submit"
+                    onClick={submitSignup}
+                >가입하기</button>
+                <Link to='/login'><p>회원 로그인 바로가기</p></Link>
+                <hr />
+            </SignupBottom>
+            </SingupContent>
         </SignupWrapper>
     )
 }
@@ -213,6 +216,162 @@ const Signup = () => {
 export default Signup;
 
 const SignupWrapper =styled.div`
+    background: #FFFFFF;
+    display : flex;
+    flex-direction: column;
 
+    padding-top : 80px;
+
+`
+
+const SingupContent =styled.div`
+    margin-left: auto;
+    margin-right: auto;
+    gap : 5px;
+
+    p {
+        color : #757575;
+        font-size: 14px;
+        margin-bottom : 9px;
+    }
+
+    input {
+        box-sizing: border-box;
+        height: 46px;
+        background: #FFFFFF;
+        border: 1.5px solid #D8D8D8;
+        border-radius: 8px;
+        padding : 14px;
+        ::placeholder {
+            color : black;
+        }
+    }
+
+    button {
+        width: 128px;
+        height: 46px;
+        background: #3549FF;
+        border-radius: 8px;
+        border : none;
+
+        font-family: 'Apple SD Gothic Neo';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 19px;
+        letter-spacing: -0.3px;
+
+        color: #FFFFFF;
+    }
+
+    .nickname {
+        font-family: 'Noto Sans KR';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 11px;
+        line-height: 16px;
+
+        letter-spacing: -0.03em;
+
+        color: #FF0000;
+        margin-top : 6px;
+        margin-bottom : 14px;
+    }
+`
+
+const IdBox = styled.div`
+    display : flex;
+    gap : 5px;
+    margin-bottom : 27px;
+
+    input {
+        width : 203px;
+    }
+`
+
+const PwBox = styled.div`
+    width : 336px;
+    display : flex;
+    flex-direction: column;
+    gap : 8px;
+    margin-bottom : 37px;
+`
+
+const NicknameBox = styled.div`
+    display : flex;
+    gap : 5px;
+
+    input {
+        width : 203px;
+    }
+
+`
+
+const UsertypeBox = styled.div`
+
+    select {
+        box-sizing: border-box;
+
+        height: 46px;
+        width : 338px;
+
+        background: #FFFFFF;
+        border: 1.5px solid #D8D8D8;
+        border-radius: 8px;
+
+        color: #8D8D8D;
+    }
+
+    select option {
+        font-family: 'Apple SD Gothic Neo';
+
+        font-style: normal;
+        // font-weight: 600;
+        font-size: 16px;
+        line-height: 19px;
+        letter-spacing: -0.3px;
+        width: 41px;
+        height: 19px;
+    }
+
+`
+
+const SignupBottom = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    a {
+        color : black;
+        text-decoration:none;
+    }
+
+    button {
+        padding: 18px 0px;
+        gap: 8px;
+        margin-top : 81px;
+
+        // position: absolute;
+        width: 335px;
+        height: 60px;
+        left: 20px;
+        top: 654px;
+
+        background: #3549FF;
+        border-radius: 40px;
+    }
+
+    p {
+        margin-top : 29px;
+        margin-bottom : 4px;
+        color: #717171;
+        font-size: 14px;
+
+    }
+
+    hr {
+        width : 135px;
+        margin-bottom : 43px;
+    }
 
 `

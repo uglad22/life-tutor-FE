@@ -4,6 +4,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import IndexInfo from './NavIndexInfo';
 
 const Navigation = () => {
+
+    
     const navContentRef = useRef(null);
 
     const navigate = useNavigate();
@@ -29,6 +31,8 @@ const Navigation = () => {
         
     }, [pathname])
 
+    if (window.location.pathname === '/login')  return null;
+    if (window.location.pathname === '/signup')  return null;
 
     if(pathname.includes("/detail")) return null;
     else if(pathname === "/") return null;
