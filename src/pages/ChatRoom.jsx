@@ -41,12 +41,8 @@ const ChatRoom = () => {
             }))
 
             client.subscribe(`/api/sub/${roomId}`, (data) => {
-                console.log(messages);
                 const newMessage = JSON.parse(data.body);
-                console.log(newMessage);
-                const tempMessage = [...messages, newMessage];
-                console.log(tempMessage);
-                setMessages(tempMessage);
+                setMessages((prev) => [...prev, newMessage]);
             })
         })
 
