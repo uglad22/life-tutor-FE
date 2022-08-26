@@ -6,6 +6,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AiOutlineLike } from 'react-icons/ai';
 import { IoChatboxEllipsesOutline } from 'react-icons/io5';
+import { userTypeTrans } from "../shared/sharedFn";
 import CommentCard from "../components/card/CommentCard";
 import SubmitForm from "../components/submitForm/SubmitForm";
 import Header from "../components/header/Header";
@@ -23,7 +24,7 @@ const Detail = () => {
   const queryClient = useQueryClient();
   
   // 로그인한 유저의 닉네임 가져오기
-  const loginNickname = 'king1';
+  const loginNickname = 'king';
 
   // 게시글 불러오기
   const getPost = async () => {
@@ -83,7 +84,7 @@ const Detail = () => {
           <WriterAndTimeBox>
             <Writer>
               <p>{data.nickname}</p>
-              <p>{data.user_type}</p>
+              <p>{userTypeTrans(data.user_type)}</p>
             </Writer>
             <TimeBox>{timeSet(data.date)}</TimeBox>
           </WriterAndTimeBox>
