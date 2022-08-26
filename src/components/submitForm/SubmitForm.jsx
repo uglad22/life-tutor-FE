@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 import { BiRightArrowCircle } from 'react-icons/bi';
 
 
-const SubmitForm = ({ postingId, placeholderText }) => {
+const SubmitForm = ({ postingId, placeholderText, sendMsg }) => {
     const commentInput = useRef();
     const queryClient = useQueryClient();
     const location = useLocation();
@@ -31,17 +31,11 @@ const SubmitForm = ({ postingId, placeholderText }) => {
 
       e.preventDefault();
       if(location.pathname.includes("/detail/room/chat")) {
-        
+        sendMsg(commentInput.current.value);
         // commentInput.current.focus();
       }
       else commentAddHandler();
     }
-
-    useEffect(()=> {
-      if(location.pathname.includes("/detail/room/chat")) {
-        
-      }
-    }, [])
 
   return (
     <>

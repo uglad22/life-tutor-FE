@@ -41,9 +41,12 @@ const ChatRoom = () => {
             }))
 
             client.subscribe(`/api/sub/${roomId}`, (data) => {
+                console.log(messages);
                 const newMessage = JSON.parse(data.body);
                 console.log(newMessage);
-                
+                const tempMessage = [...messages, newMessage];
+                console.log(tempMessage);
+                setMessages(tempMessage);
             })
         })
 
@@ -55,7 +58,7 @@ const ChatRoom = () => {
     useEffect(()=> {
         if(!userInfo.nickname) {
             /** 새로고침 시 나가기 API 넣기 */
-            navigate("/viewer/room");
+            // navigate("/viewer/room");
         }
     }, [])
 
@@ -66,22 +69,27 @@ const ChatRoom = () => {
         // navigate('/viewer/posting/list');
     }
 
-    const sendMsg = () => {
-        client.send(`/api/pub/${roomId}`, {}, JSON.stringify({
+    const sendMsg = (messageText) => {
+        const sendMessage = {
             "enter":"COMM",
             "messageType":"TEXT",
             "nickname":userInfo.nickname,
-            "message":"안녕하세요"
-        }))
+            "message":messageText
+        }
+        client.send(`/api/pub/${roomId}`, {}, JSON.stringify(sendMessage));
     }
 
 
     return (
         <ChatRoomWrapper>
         <Header/>
-        <MyBubble messageTime={"오전 06:00"}>안녕하세요</MyBubble>
-        <OtherBubble messageTime={"오전 06:00"}>네 안녕하세요</OtherBubble>
-        <SubmitForm/>
+        <ChatArea>
+            {messages?.map((msg, index) => msg.nickname === userInfo.nickname ?
+            <MyBubble messageTime={msg.time} key={index}>{msg.message}</MyBubble>:<OtherBubble messageTime={msg.time} key={index}>{msg.message}</OtherBubble>)}
+        
+        
+        </ChatArea>
+        <SubmitForm sendMsg={sendMsg}/>
         </ChatRoomWrapper>
         
     );
@@ -93,8 +101,16 @@ const ChatRoomWrapper = styled.div`
     padding-top:71px;
     padding-bottom:65px;
     width:100%;
+    /* height:calc(100vh - 71px - 70px);
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end; */
+`
+
+const ChatArea = styled.div`
     height:calc(100vh - 71px - 70px);
     display:flex;
     flex-direction:column;
     justify-content:flex-end;
+    gap:10px;
 `
