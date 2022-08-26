@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import styled from 'styled-components';
 import instance from '../../shared/axios';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -7,10 +7,12 @@ import { useLocation } from 'react-router-dom';
 import { BiRightArrowCircle } from 'react-icons/bi';
 
 
-const SubmitForm = ({postingId, placeholderText}) => {
+const SubmitForm = ({ postingId, placeholderText, sendMsg }) => {
     const commentInput = useRef();
     const queryClient = useQueryClient();
     const location = useLocation();
+
+    console.log('render');
 
     const addComment = async () => {
         const comment = { "content": commentInput.current.value };
@@ -24,8 +26,15 @@ const SubmitForm = ({postingId, placeholderText}) => {
     }
     })
 
-    const submitButtonHandler = () => {
-        commentAddHandler();
+    const submitButtonHandler = (e) => {
+      if(!commentInput.current.value) return;
+
+      e.preventDefault();
+      if(location.pathname.includes("/detail/room/chat")) {
+        sendMsg(commentInput.current.value);
+        // commentInput.current.focus();
+      }
+      else commentAddHandler();
     }
 
   return (
@@ -44,7 +53,7 @@ const SubmitForm = ({postingId, placeholderText}) => {
   )
 }
 
-export default SubmitForm
+export default React.memo(SubmitForm);
 
 const CommentAddBox = styled.div`
   background: #EFEFEF;

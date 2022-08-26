@@ -27,6 +27,10 @@ const PageTitle = ({ title, isAction }) => {
     const postSubmitHandler = () => {
         //TODO: useMutation 사용해서 글 작성
         const {title, posting_content, hashtag} = context.state.postData;
+        if(!title || !posting_content) {
+            alert("제목과 내용을 모두 채워주세요!");
+            return;
+        }
         const newData = {
             title,
             posting_content,

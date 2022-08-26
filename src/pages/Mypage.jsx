@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import Header from "../components/header/Header";
 import ManagementCard from "../components/card/ManagementCard";
+import { userContext } from "../components/context/UserProvider";
+import { userTypeTrans } from "../shared/sharedFn";
 
 const Mypage = () => {
-  
+  const context = useContext(userContext);
+  const { userInfo } = context.state;
   return (
     <>
       <Header title="마이페이지" isAction={true}/>
@@ -29,10 +32,10 @@ const Mypage = () => {
           </ProfilePicture>
           <MemberNameTypeAndEmail>
             <MemberNameAndType>
-              <MemberName>항해개발자1</MemberName>
-              <MemberType>주니어</MemberType>
+              <MemberName>{userInfo.nickname}</MemberName>
+              <MemberType>{userTypeTrans(userInfo.user_type)}</MemberType>
             </MemberNameAndType>
-            <MemberEmail>hanghae1@naver.com</MemberEmail>
+            <MemberEmail>{userInfo.username}</MemberEmail>
           </MemberNameTypeAndEmail>
         </MemberInfo>
         <CategoryBox>

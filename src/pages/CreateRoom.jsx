@@ -88,6 +88,7 @@ const CreateRoom = () => {
 export default CreateRoom;
 
 const CreateRoomWrapper = styled.div`
+    /* position:relative; */
     width:calc(100% - 40px);
     max-width:480px;
     padding-top:100px;

@@ -43,7 +43,6 @@ export default PostingCard;
 
 const PostingCardWrapper = styled.div`
     width:100%;
-    border-radius:10px;
     background:white;
     /* padding:20px; */
     box-sizing:border-box;
