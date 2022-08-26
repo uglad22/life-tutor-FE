@@ -28,7 +28,7 @@ const ChatRoom = () => {
     const headers = {} // TODO: 토큰 말고 어떤걸 넣을지?
     useEffect(()=> {
         const enterRoom = async () => {
-            const res = await instance.put(`/api/chat/room/${roomId}/enter`);
+            const res = await instance.post(`/api/chat/room/${roomId}/enter`);
             const data = res.data;
         }
 
@@ -49,14 +49,14 @@ const ChatRoom = () => {
         })
 
         return(()=> {
+            exitRoom().catch(console.error);
             disConnect();
         })
     }, []);
 
     useEffect(()=> {
         if(!userInfo.nickname) {
-            /** 새로고침 시 나가기 API 넣기 */
-            // navigate("/viewer/room");
+            navigate("/viewer/room");
         }
     }, [])
 
@@ -83,6 +83,11 @@ const ChatRoom = () => {
 
     const scrollToBottom = () => {
         chatRef.current?.scrollIntoView({ behavior: "smooth" })
+    }
+
+    const exitRoom = async () => {
+        const res = await instance.delete(`/api/chat/room/${roomId}/exit`);
+        console.log(res.data);
     }
 
 
