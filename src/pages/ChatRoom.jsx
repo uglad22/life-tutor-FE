@@ -15,21 +15,50 @@ import Header from '../components/header/Header';
 
 const ChatRoom = () => {
     const [messages, setMessages] = useState([]);
+    const nicknameRef = useRef("");
     const chatRef = useRef(null);
     const tempRef = useRef(null);
+
     const context = useContext(userContext);
     const { userInfo } = context.state;
+
     const navigate = useNavigate();
     const roomId = useParams().roomId;
+    
     const sock = new SockJS(`${process.env.REACT_APP_API_URL}/iting`) //TODO: url 넣기
     const client= StompJS.over(sock);
-
-
     const headers = {} // TODO: 토큰 말고 어떤걸 넣을지?
+
+    const disConnect = () => {
+        client.disconnect(() => {
+            client.unsubscribe();
+        });
+    }
+
+    const sendMsg = (messageText) => {
+        const sendMessage = {
+            "enter":"COMM",
+            "messageType":"TEXT",
+            "nickname":nicknameRef.current,
+            "message":messageText
+        }
+        client.send(`/api/pub/${roomId}`, {}, JSON.stringify(sendMessage));
+    }
+
+    const scrollToBottom = () => {
+        chatRef.current?.scrollIntoView({ behavior: "smooth" })
+    }
+
+    const exitRoom = async () => {
+        const res = await instance.delete(`/api/chat/room/${roomId}/exit`);
+        console.log(res.data);
+    }
+
     useEffect(()=> {
         const enterRoom = async () => {
             const res = await instance.post(`/api/chat/room/${roomId}/enter`);
             const data = res.data;
+            nicknameRef.current = data;
         }
 
         enterRoom().catch(console.error);
@@ -39,7 +68,7 @@ const ChatRoom = () => {
             client.send(`/api/pub/${roomId}`, {}, JSON.stringify({
                 "enter":"ENTER",
                 "messageType":"TEXT",
-                "nickname":userInfo.nickname, // FIXME: 여기다가 nickname 넣기
+                "nickname":nicknameRef.current
             }))
 
             client.subscribe(`/api/sub/${roomId}`, (data) => {
@@ -64,38 +93,14 @@ const ChatRoom = () => {
         scrollToBottom();
     }, [messages])
 
-    const disConnect = () => {
-        client.disconnect(() => {
-            client.unsubscribe();
-        });
-        // navigate('/viewer/posting/list');
-    }
-
-    const sendMsg = (messageText) => {
-        const sendMessage = {
-            "enter":"COMM",
-            "messageType":"TEXT",
-            "nickname":userInfo.nickname,
-            "message":messageText
-        }
-        client.send(`/api/pub/${roomId}`, {}, JSON.stringify(sendMessage));
-    }
-
-    const scrollToBottom = () => {
-        chatRef.current?.scrollIntoView({ behavior: "smooth" })
-    }
-
-    const exitRoom = async () => {
-        const res = await instance.delete(`/api/chat/room/${roomId}/exit`);
-        console.log(res.data);
-    }
+    
 
 
     return (
         <ChatRoomWrapper ref={tempRef}>
         <Header/>
         <ChatArea>
-            {messages?.map((msg, index) => msg.nickname === userInfo.nickname ?
+            {messages?.map((msg, index) => msg.nickname === nicknameRef.current ?
             <MyBubble messageTime={msg.time} key={index}>{msg.message}</MyBubble>:<OtherBubble messageTime={msg.time} key={index}>{msg.message}</OtherBubble>)}
             <div ref={chatRef} style={{height:"10px"}}></div>
         
