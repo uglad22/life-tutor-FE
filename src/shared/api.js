@@ -51,5 +51,11 @@ export const chatroomAPI = {
 
         return {rooms:content, nextPage: pageParams + 1, isLast};
 
+    },
+    enterRoom: async (roomId) => {
+        return await instance.post(`api/chat/room/${roomId}/enter`);
+    },
+    exitRoom: async (roomId) => {
+        return await instance.delete(`api/chat/room/${roomId}/exit`);
     }
 }

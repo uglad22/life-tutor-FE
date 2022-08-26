@@ -5,6 +5,7 @@ import SockJS from 'sockjs-client';
 import * as StompJS from 'stompjs'
 import instance from '../shared/axios';
 import { userContext } from '../components/context/UserProvider';
+import { chatroomAPI } from '../shared/api';
 
 import SubmitForm from '../components/submitForm/SubmitForm';
 import MyBubble from '../components/speechBubble/MyBubble';
@@ -24,10 +25,10 @@ const ChatRoom = () => {
 
     const navigate = useNavigate();
     const roomId = useParams().roomId;
-    
-    const sock = new SockJS(`${process.env.REACT_APP_API_URL}/iting`) //TODO: url 넣기
+
+    const sock = new SockJS(`${process.env.REACT_APP_API_URL}/iting`);
     const client= StompJS.over(sock);
-    const headers = {} // TODO: 토큰 말고 어떤걸 넣을지?
+    const headers = {}; // TODO: 토큰 말고 어떤걸 넣을지?
 
     const disConnect = () => {
         client.disconnect(() => {
@@ -46,22 +47,16 @@ const ChatRoom = () => {
     }
 
     const scrollToBottom = () => {
-        chatRef.current?.scrollIntoView({ behavior: "smooth" })
+        chatRef.current?.scrollIntoView({ behavior: "smooth" });
     }
 
-    const exitRoom = async () => {
-        const res = await instance.delete(`/api/chat/room/${roomId}/exit`);
-        console.log(res.data);
-    }
 
     useEffect(()=> {
-        const enterRoom = async () => {
-            const res = await instance.post(`/api/chat/room/${roomId}/enter`);
-            const data = res.data;
-            nicknameRef.current = data;
-        }
-
-        enterRoom().catch(console.error);
+        chatroomAPI.enterRoom(roomId).then((res) => {
+            nicknameRef.current = res.data;
+        }).catch((e) => {
+            console.log(e);
+        });
        
         client.connect(headers, ()=> {
             
@@ -78,7 +73,7 @@ const ChatRoom = () => {
         })
 
         return(()=> {
-            exitRoom().catch(console.error);
+            chatroomAPI.exitRoom().catch(console.error);
             disConnect();
         })
     }, []);
@@ -89,6 +84,7 @@ const ChatRoom = () => {
         }
     }, [])
 
+    /** 메세지가 쌓여 스크롤이 생기면 자동으로 스크롤을 내려주는 코드 */
     useEffect(()=> {
         scrollToBottom();
     }, [messages])
