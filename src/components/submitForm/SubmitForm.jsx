@@ -32,6 +32,7 @@ const SubmitForm = ({ postingId, placeholderText, sendMsg }) => {
       e.preventDefault();
       if(location.pathname.includes("/detail/room/chat")) {
         sendMsg(commentInput.current.value);
+        commentInput.current.value="";
         // commentInput.current.focus();
       }
       else commentAddHandler();
