@@ -1,11 +1,13 @@
-import React, { useRef } from "react";
-import instance from "../shared/axios";
+import React, { useContext } from "react";
 import styled from "styled-components";
-import NomalBadge from '../components/hashtag/NomalBadge';
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AiOutlineLike } from 'react-icons/ai';
 import { IoChatboxEllipsesOutline } from 'react-icons/io5';
+
+import instance from "../shared/axios";
+import NomalBadge from '../components/hashtag/NomalBadge';
+import { userContext } from "../components/context/UserProvider";
 import CommentCard from "../components/card/CommentCard";
 import SubmitForm from "../components/submitForm/SubmitForm";
 import Header from "../components/header/Header";
@@ -17,13 +19,13 @@ import Header from "../components/header/Header";
 
 const Detail = () => {
   const params = useParams();
-  const commentInput = useRef();
-  const navigate = useNavigate();
   const postingId = params.postingId;
   const queryClient = useQueryClient();
   
   // 로그인한 유저의 닉네임 가져오기
-  const loginNickname = 'king1';
+  const context = useContext(userContext);
+  const { userInfo } = context.state;
+  const loginNickname = userInfo.nickname;
 
   // 게시글 불러오기
   const getPost = async () => {
