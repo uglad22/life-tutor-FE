@@ -12,10 +12,7 @@ import CommentCard from "../components/card/CommentCard";
 import SubmitForm from "../components/submitForm/SubmitForm";
 import Header from "../components/header/Header";
 
-// TODO: 댓글 수정기능, 댓글 좋아요확인, 게시글 본문 줄바꿈처리
-// FIXME: 
-// 좋아요 했던 게시글 표시 (스테이트) ? 옵셔널체이닝
-// https://mockapi.io/
+// FIXME: 게시글 본문 줄바꿈처리, 본인확인 후 헤더 수정, 삭제 버튼 렌더링
 
 const Detail = () => {
   const params = useParams();
@@ -76,7 +73,8 @@ const Detail = () => {
 
   return (
     <>
-      <Header title="본문 상세" isAction={true}/>
+      {data.nickname === loginNickname && <Header title="본문 상세" isAction={true}/>}
+      {data.nickname !== loginNickname && <Header title="본문 상세" isAction={false}/>}
       <ContentBox>
         <TitleAndWriterBox>
           <Title>
