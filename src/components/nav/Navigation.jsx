@@ -5,6 +5,8 @@ import { BiHomeAlt, BiEdit } from 'react-icons/bi';
 import { BsChatLeft, BsPerson } from 'react-icons/bs';
 
 const Navigation = () => {
+
+    
     const navContentRef = useRef(null);
 
     const navigate = useNavigate();
@@ -18,6 +20,8 @@ const Navigation = () => {
         navigate(e.currentTarget.dataset.url);
     }
 
+    if (window.location.pathname === '/login')  return null;
+    if (window.location.pathname === '/signup')  return null;
 
     return(
         <NavigationWrapper>
