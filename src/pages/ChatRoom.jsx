@@ -3,9 +3,10 @@ import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import SockJS from 'sockjs-client';
 import * as StompJS from 'stompjs'
-import instance from '../shared/axios';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { userContext } from '../components/context/UserProvider';
 import { chatroomAPI } from '../shared/api';
+
 
 import SubmitForm from '../components/submitForm/SubmitForm';
 import MyBubble from '../components/speechBubble/MyBubble';
@@ -20,6 +21,8 @@ const ChatRoom = () => {
     const chatRef = useRef(null);
     const tempRef = useRef(null);
 
+    const queryClient = useQueryClient();
+
     const context = useContext(userContext);
     const { userInfo } = context.state;
 
@@ -29,6 +32,12 @@ const ChatRoom = () => {
     const sock = new SockJS(`${process.env.REACT_APP_API_URL}/iting`);
     const client= StompJS.over(sock);
     const headers = {}; // TODO: 토큰 말고 어떤걸 넣을지?
+
+    const { mutate } = useMutation(chatroomAPI.exitRoom, {
+        onSuccess:() => {
+            queryClient.invalidateQueries(["rooms"]);
+        }
+    })
 
     const disConnect = () => {
         client.disconnect(() => {
@@ -73,7 +82,7 @@ const ChatRoom = () => {
         })
 
         return(()=> {
-            chatroomAPI.exitRoom().catch(console.error);
+            mutate(roomId);
             disConnect();
         })
     }, []);
