@@ -4,6 +4,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import IndexInfo from './NavIndexInfo';
 
 const Navigation = () => {
+
+    
     const navContentRef = useRef(null);
 
     const navigate = useNavigate();
@@ -16,7 +18,7 @@ const Navigation = () => {
 
     useEffect(()=> {
         if(pathname === "/" || pathname.includes("/detail")) return;
-
+        else if(pathname === "/login" || pathname === "/signup") return;
         const childNodes = navContentRef.current.children;
         const navIndexInfo = [...IndexInfo];
         const index = navIndexInfo.findIndex((item) => item.path === pathname);
@@ -29,9 +31,8 @@ const Navigation = () => {
         
     }, [pathname])
 
-
+    if (pathname === '/login' || pathname === '/signup' || pathname === "/")  return null;
     if(pathname.includes("/detail")) return null;
-    else if(pathname === "/") return null;
 
     return(
         <NavigationWrapper>

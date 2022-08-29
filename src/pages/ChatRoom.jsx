@@ -3,43 +3,77 @@ import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import SockJS from 'sockjs-client';
 import * as StompJS from 'stompjs'
-import instance from '../shared/axios';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { userContext } from '../components/context/UserProvider';
+import { chatroomAPI } from '../shared/api';
+
 
 import SubmitForm from '../components/submitForm/SubmitForm';
 import MyBubble from '../components/speechBubble/MyBubble';
 import OtherBubble from '../components/speechBubble/OtherBubble';
 import Header from '../components/header/Header';
+import Notice from '../components/speechBubble/Notice';
 
 
 
 const ChatRoom = () => {
     const [messages, setMessages] = useState([]);
+    const nicknameRef = useRef("");
     const chatRef = useRef(null);
     const tempRef = useRef(null);
+
+    const queryClient = useQueryClient();
+
     const context = useContext(userContext);
     const { userInfo } = context.state;
+
     const navigate = useNavigate();
     const roomId = useParams().roomId;
-    const sock = new SockJS(`${process.env.REACT_APP_API_URL}/iting`) //TODO: url 넣기
+
+    const sock = new SockJS(`${process.env.REACT_APP_API_URL}/iting`);
     const client= StompJS.over(sock);
+    const headers = {}; // TODO: 토큰 말고 어떤걸 넣을지?
 
-
-    const headers = {} // TODO: 토큰 말고 어떤걸 넣을지?
-    useEffect(()=> {
-        const enterRoom = async () => {
-            const res = await instance.put(`/api/chat/room/${roomId}/enter`);
-            const data = res.data;
+    const { mutate: exitRoom } = useMutation(chatroomAPI.exitRoom, {
+        onSuccess:() => {
+            queryClient.invalidateQueries(["rooms"]);
         }
+    })
 
-        enterRoom().catch(console.error);
+    const disConnect = () => {
+        client.disconnect(() => {
+            client.unsubscribe();
+        });
+    }
+
+    const sendMsg = (messageText) => {
+        const sendMessage = {
+            "enter":"COMM",
+            "messageType":"TEXT",
+            "nickname":nicknameRef.current,
+            "message":messageText
+        }
+        client.send(`/api/pub/${roomId}`, {}, JSON.stringify(sendMessage));
+    }
+
+    const scrollToBottom = () => {
+        chatRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+
+
+    useEffect(()=> {
+        chatroomAPI.enterRoom(roomId).then((res) => {
+            nicknameRef.current = res.data;
+        }).catch((e) => {
+            console.log(e);
+        });
        
         client.connect(headers, ()=> {
             
             client.send(`/api/pub/${roomId}`, {}, JSON.stringify({
                 "enter":"ENTER",
                 "messageType":"TEXT",
-                "nickname":userInfo.nickname, // FIXME: 여기다가 nickname 넣기
+                "nickname":nicknameRef.current
             }))
 
             client.subscribe(`/api/sub/${roomId}`, (data) => {
@@ -49,48 +83,31 @@ const ChatRoom = () => {
         })
 
         return(()=> {
+            exitRoom(roomId);
             disConnect();
         })
     }, []);
 
     useEffect(()=> {
         if(!userInfo.nickname) {
-            /** 새로고침 시 나가기 API 넣기 */
-            // navigate("/viewer/room");
+            navigate("/viewer/room");
         }
     }, [])
 
+    /** 메세지가 쌓여 스크롤이 생기면 자동으로 스크롤을 내려주는 코드 */
     useEffect(()=> {
         scrollToBottom();
     }, [messages])
 
-    const disConnect = () => {
-        client.disconnect(() => {
-            client.unsubscribe();
-        });
-        // navigate('/viewer/posting/list');
-    }
-
-    const sendMsg = (messageText) => {
-        const sendMessage = {
-            "enter":"COMM",
-            "messageType":"TEXT",
-            "nickname":userInfo.nickname,
-            "message":messageText
-        }
-        client.send(`/api/pub/${roomId}`, {}, JSON.stringify(sendMessage));
-    }
-
-    const scrollToBottom = () => {
-        chatRef.current?.scrollIntoView({ behavior: "smooth" })
-    }
+    
 
 
     return (
         <ChatRoomWrapper ref={tempRef}>
         <Header/>
         <ChatArea>
-            {messages?.map((msg, index) => msg.nickname === userInfo.nickname ?
+            {messages?.map((msg, index) => msg.enter==="ENTER"? <Notice key={index}>{msg.message}</Notice>:
+             msg.nickname === nicknameRef.current ?
             <MyBubble messageTime={msg.time} key={index}>{msg.message}</MyBubble>:<OtherBubble messageTime={msg.time} key={index}>{msg.message}</OtherBubble>)}
             <div ref={chatRef} style={{height:"10px"}}></div>
         

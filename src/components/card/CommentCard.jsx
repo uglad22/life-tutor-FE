@@ -1,5 +1,6 @@
 import React, { useRef, useState, useContext } from "react";
 import styled from "styled-components";
+import { userTypeTrans } from "../../shared/sharedFn";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AiOutlineLike } from "react-icons/ai";
 
@@ -17,6 +18,7 @@ const CommentCard = ({ data, postingId }) => {
   const context = useContext(userContext);
   const { userInfo } = context.state;
   const loginNickname = userInfo.nickname;
+
 
   // 댓글 기능관련
   const editComment = async (commentId) => {
@@ -87,7 +89,7 @@ const CommentCard = ({ data, postingId }) => {
       <Comment>
         <CommentWriter>
           <p>{data.nickname}</p>
-          <p>{data.user_type}</p>
+          <p>{userTypeTrans(data.user_type)}</p>
         </CommentWriter>
         <CommentContent>{data.content}</CommentContent>
         <CommentContentEdit state={commentEditState}>

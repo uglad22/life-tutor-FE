@@ -5,9 +5,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AiOutlineLike } from 'react-icons/ai';
 import { IoChatboxEllipsesOutline } from 'react-icons/io5';
 
+
 import instance from "../shared/axios";
 import NomalBadge from '../components/hashtag/NomalBadge';
 import { userContext } from "../components/context/UserProvider";
+
+import { userTypeTrans } from "../shared/sharedFn";
 import CommentCard from "../components/card/CommentCard";
 import SubmitForm from "../components/submitForm/SubmitForm";
 import Header from "../components/header/Header";
@@ -21,9 +24,11 @@ const Detail = () => {
   const queryClient = useQueryClient();
   
   // 로그인한 유저의 닉네임 가져오기
+
   const context = useContext(userContext);
   const { userInfo } = context.state;
   const loginNickname = userInfo.nickname;
+
 
   // 게시글 불러오기
   const getPost = async () => {
@@ -84,7 +89,7 @@ const Detail = () => {
           <WriterAndTimeBox>
             <Writer>
               <p>{data.nickname}</p>
-              <p>{data.user_type}</p>
+              <p>{userTypeTrans(data.user_type)}</p>
             </Writer>
             <TimeBox>{timeSet(data.date)}</TimeBox>
           </WriterAndTimeBox>
