@@ -12,6 +12,7 @@ import SubmitForm from '../components/submitForm/SubmitForm';
 import MyBubble from '../components/speechBubble/MyBubble';
 import OtherBubble from '../components/speechBubble/OtherBubble';
 import Header from '../components/header/Header';
+import Notice from '../components/speechBubble/Notice';
 
 
 
@@ -105,7 +106,10 @@ const ChatRoom = () => {
         <ChatRoomWrapper ref={tempRef}>
         <Header/>
         <ChatArea>
-            {messages?.map((msg, index) => msg.nickname === nicknameRef.current ?
+            {/* {messages?.map((msg, index) => msg.nickname === nicknameRef.current ?
+            <MyBubble messageTime={msg.time} key={index}>{msg.message}</MyBubble>:<OtherBubble messageTime={msg.time} key={index}>{msg.message}</OtherBubble>)} */}
+            {messages?.map((msg, index) => msg.enter==="ENTER"? <Notice key={index}>{msg.message}</Notice>:
+             msg.nickname === nicknameRef.current ?
             <MyBubble messageTime={msg.time} key={index}>{msg.message}</MyBubble>:<OtherBubble messageTime={msg.time} key={index}>{msg.message}</OtherBubble>)}
             <div ref={chatRef} style={{height:"10px"}}></div>
         
