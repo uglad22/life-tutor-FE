@@ -34,7 +34,7 @@ const ChatRoom = () => {
     const client= StompJS.over(sock);
     const headers = {}; // TODO: 토큰 말고 어떤걸 넣을지?
 
-    const { mutate } = useMutation(chatroomAPI.exitRoom, {
+    const { mutate: exitRoom } = useMutation(chatroomAPI.exitRoom, {
         onSuccess:() => {
             queryClient.invalidateQueries(["rooms"]);
         }
@@ -57,7 +57,7 @@ const ChatRoom = () => {
     }
 
     const scrollToBottom = () => {
-        chatRef.current?.scrollIntoView({ behavior: "smooth" });
+        chatRef.current.scrollIntoView({ behavior: "smooth" });
     }
 
 
@@ -83,7 +83,7 @@ const ChatRoom = () => {
         })
 
         return(()=> {
-            mutate(roomId);
+            exitRoom(roomId);
             disConnect();
         })
     }, []);
@@ -106,8 +106,6 @@ const ChatRoom = () => {
         <ChatRoomWrapper ref={tempRef}>
         <Header/>
         <ChatArea>
-            {/* {messages?.map((msg, index) => msg.nickname === nicknameRef.current ?
-            <MyBubble messageTime={msg.time} key={index}>{msg.message}</MyBubble>:<OtherBubble messageTime={msg.time} key={index}>{msg.message}</OtherBubble>)} */}
             {messages?.map((msg, index) => msg.enter==="ENTER"? <Notice key={index}>{msg.message}</Notice>:
              msg.nickname === nicknameRef.current ?
             <MyBubble messageTime={msg.time} key={index}>{msg.message}</MyBubble>:<OtherBubble messageTime={msg.time} key={index}>{msg.message}</OtherBubble>)}
