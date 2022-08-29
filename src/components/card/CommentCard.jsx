@@ -1,10 +1,11 @@
-import React, { useRef, useState } from "react";
-import instance from "../../shared/axios";
+import React, { useRef, useState, useContext } from "react";
 import styled from "styled-components";
 import { userTypeTrans } from "../../shared/sharedFn";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
 import { AiOutlineLike } from "react-icons/ai";
+
+import instance from "../../shared/axios";
+import { userContext } from "../context/UserProvider";
 
 const CommentCard = ({ data, postingId }) => {
   const commentEditInput = useRef();
@@ -14,7 +15,10 @@ const CommentCard = ({ data, postingId }) => {
   const [commentEditState, setCommentEditState] = useState(false);
 
   // 로그인한 유저의 닉네임 가져오기
-  const loginNickname = "king";
+  const context = useContext(userContext);
+  const { userInfo } = context.state;
+  const loginNickname = userInfo.nickname;
+
 
   // 댓글 기능관련
   const editComment = async (commentId) => {
