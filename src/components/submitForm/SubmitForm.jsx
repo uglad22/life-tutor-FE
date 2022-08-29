@@ -15,7 +15,7 @@ const SubmitForm = ({ postingId, placeholderText, sendMsg }) => {
     console.log('render');
 
     const addComment = async () => {
-        const comment = { "content": commentInput.current.value };
+        const comment = { content: commentInput.current.value };
         return await instance.post(`/api/board/${postingId}/comment`, comment);
     }
     
