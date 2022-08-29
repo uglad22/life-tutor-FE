@@ -1,14 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import instance from '../shared/axios';
 import kakao_login from '../components/images/kakao_login.png';
-import { Link } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom";
+
+import { userContext } from '../components/context/UserProvider';
 
 
 const Login = () => {
 
     const email_ref = React.useRef(null);
     const pw_ref = React.useRef(null);
+
+    const navigate = useNavigate();
+
+    const context = useContext(userContext);
+    const { setUserInfo } = context.actions;
 
 
     const submitLogin = async () => {
@@ -26,11 +33,12 @@ const Login = () => {
             try {
                 const res = await instance.post('/api/login', login_data);
                 const token = res.headers.authorization;
-        
+                const { username, nickname, user_type, kakao } = res.data;
+                const userData = {username, nickname, user_type, kakao};
+                setUserInfo(userData);
                 localStorage.setItem("Authorization", token);
-                console.log(res);
                 alert('환영합니다!');
-            //   navigate('/main');
+                navigate('/viewer/posting/list');
             } catch (err) {
                 console.log(err);
                 alert('로그인에 문제가 생겼어요!');
