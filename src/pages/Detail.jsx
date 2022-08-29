@@ -12,7 +12,8 @@ import CommentCard from "../components/card/CommentCard";
 import SubmitForm from "../components/submitForm/SubmitForm";
 import Header from "../components/header/Header";
 
-// FIXME: 게시글 본문 줄바꿈처리, 본인확인 후 헤더 수정, 삭제 버튼 렌더링
+// FIXME: 게시글 본문 줄바꿈처리,
+// 댓글 수정버튼 누르면 모바일의 경우 댓글 입력창이 고정되어 있어서 헷갈리는 UI 수정 필요!
 
 const Detail = () => {
   const params = useParams();
