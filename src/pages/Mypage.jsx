@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components';
 import Header from '../components/header/Header';
 import ManagementCard from '../components/card/ManagementCard';
@@ -11,7 +10,7 @@ import { userTypeTrans } from '../shared/sharedFn';
 const Mypage = () => {
   const context = useContext(userContext);
   const { userInfo } = context.state;
-  const navigate = useNavigate();
+  
   return (
     <>
       <Header title="마이페이지" isAction={true}/>
@@ -88,6 +87,7 @@ const Mypage = () => {
       </MemberInfoAndCategoryBox>
       <MemberManagementBox>
         <ManagementCard
+          isShow={true}
           managementType="개인정보 변경"
           svg={
             <svg
@@ -109,6 +109,7 @@ const Mypage = () => {
           pathUrl="/mypage/myinfomanage"
         />
         <ManagementCard
+          isShow={!userInfo.kakao}
           managementType="비밀번호 변경"
           svg={
             <svg
@@ -130,6 +131,7 @@ const Mypage = () => {
           pathUrl="/mypage/mypwmanage"
         />
         <ManagementCard
+          isShow={true}
           managementType="피드백 남기기"
           svg={
             <svg
