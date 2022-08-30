@@ -1,6 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { userContext } from "../components/context/UserProvider";
 import Header from '../components/header/Header';
 import instance from '../shared/axios';
 
@@ -11,9 +13,12 @@ const MyPwManage = () => {
     const newConfirmPw_ref = useRef();
     const navigate = useNavigate();
 
+    const context = useContext(userContext);
+    const { userInfo } = context.state;
+    
     const [ newPwCheck, setNewPwCheck ] = useState(false);
     const [ newPwConfirmCheck, setNewPwConfirmCheck ] = useState(false);
-
+    
     const newPwCheckHandler = () => {
         if (_pwcheck.test(newPw_ref.current.value)) {
             setNewPwCheck(true);
@@ -29,8 +34,6 @@ const MyPwManage = () => {
             setNewPwConfirmCheck(false);
         }
     }
-
-    console.log(newPwCheck, newPwConfirmCheck);
 
     const myPwChangeHandler = async () => {
         if (newPwCheck && newPwConfirmCheck) {
@@ -52,6 +55,13 @@ const MyPwManage = () => {
             alert('변경하려는 비밀번호가 일치하지 않습니다.');
         }
     }
+
+    useEffect(() => {
+      if (userInfo.kakao) {
+        alert("카카오회원은 비밀번호 변경을 할 수 없습니다.");
+        return navigate("/mypage");
+      }
+    }, [])
 
   return (
     <>
