@@ -1,10 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const ManagementCard = ({svg, managementType}) => {
+const ManagementCard = ({svg, managementType, pathUrl}) => {
+  const navigate = useNavigate();
   return (
     <>
-        <ManagementWrapper>
+        <ManagementWrapper onClick={() => {navigate(pathUrl)}}>
             {svg}
             <p>{managementType}</p>
         </ManagementWrapper>
