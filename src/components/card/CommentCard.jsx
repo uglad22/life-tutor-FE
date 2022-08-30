@@ -7,7 +7,7 @@ import { AiOutlineLike } from "react-icons/ai";
 import instance from "../../shared/axios";
 import { userContext } from "../context/UserProvider";
 
-const CommentCard = ({ data, postingId }) => {
+const CommentCard = ({ data, postingId, setCommentEditStateForSubmit }) => {
   const commentEditInput = useRef();
   const queryClient = useQueryClient();
   console.log(data);
@@ -98,6 +98,7 @@ const CommentCard = ({ data, postingId }) => {
             <CommentEditCancelBtn
               onClick={() => {
                 setCommentEditState(false);
+                setCommentEditStateForSubmit(false);
               }}
             >
               취소
@@ -106,6 +107,7 @@ const CommentCard = ({ data, postingId }) => {
               onClick={() => {
                 commentEditHandler(`${data.id}`);
                 setCommentEditState(false);
+                setCommentEditStateForSubmit(false);
               }}
             >
               저장
@@ -126,6 +128,7 @@ const CommentCard = ({ data, postingId }) => {
                 <CommentEdit
                   onClick={() => {
                       setCommentEditState(true);
+                      setCommentEditStateForSubmit(true);
                       commentEditInput.current.value = data.content;
                   }}
                 >
