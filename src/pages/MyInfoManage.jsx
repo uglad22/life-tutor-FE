@@ -66,9 +66,9 @@ const MyInfoManage = () => {
         </NicknameBox>
         <UserTypeBox>
             <select ref={usertype_ref} defaultValue={userTypeTrans(userInfo.user_type)}>
-                <option value="취준생">취준생</option>
-                <option value="주니어">주니어</option>
-                <option value="시니어">시니어</option>
+                <option value="SEEKER">취준생</option>
+                <option value="JUNIOR">주니어</option>
+                <option value="SENIOR">시니어</option>
             </select>
         </UserTypeBox>
         <ChangeMyInfoBtn onClick={() => {myInfoChangeHandler()}}>변경하기</ChangeMyInfoBtn>
