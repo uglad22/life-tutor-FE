@@ -1,13 +1,17 @@
-import React, { useContext } from "react";
-import styled from "styled-components";
-import Header from "../components/header/Header";
-import ManagementCard from "../components/card/ManagementCard";
-import { userContext } from "../components/context/UserProvider";
-import { userTypeTrans } from "../shared/sharedFn";
+import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components';
+import Header from '../components/header/Header';
+import ManagementCard from '../components/card/ManagementCard';
+import { userContext } from '../components/context/UserProvider';
+import { userTypeTrans } from '../shared/sharedFn';
+
+// FIXME: 카카오로그인이면 비밀번호 변경 렌더링 안되게
 
 const Mypage = () => {
   const context = useContext(userContext);
   const { userInfo } = context.state;
+  const navigate = useNavigate();
   return (
     <>
       <Header title="마이페이지" isAction={true}/>
@@ -102,6 +106,7 @@ const Mypage = () => {
               />
             </svg>
           }
+          pathUrl="/mypage/myinfomanage"
         />
         <ManagementCard
           managementType="비밀번호 변경"
@@ -122,6 +127,7 @@ const Mypage = () => {
               />
             </svg>
           }
+          pathUrl="/mypage/mypwmanage"
         />
         <ManagementCard
           managementType="피드백 남기기"
