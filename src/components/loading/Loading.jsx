@@ -30,4 +30,6 @@ const LoadingWrapper = styled.div`
     top:0;
     left:0;
     background:rgba(236,236,236,0.7);
+    left:50%;
+    transform:translate(-50%, 0);
 `
