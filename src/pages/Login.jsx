@@ -69,7 +69,7 @@ const Login = () => {
                 <button className="btn-login" onClick={submitLogin}>로그인</button>
                     <a
                         rel="noreferrer"
-                        href="http://15.164.226.110/oauth2/authorization/kakao">
+                        href="https://api.it-ing.co.kr/oauth2/authorization/kakao">
                         <button type="button" className="btn-kakao">
                         <img src={kakao_login} alt="" />
                         </button>
