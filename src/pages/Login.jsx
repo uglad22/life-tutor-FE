@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import instance from '../shared/axios';
 import kakao_login from '../components/images/kakao_login.png';
+import LogoReversal from '../components/images/LogoReversal.png';
 import { Link, useNavigate } from "react-router-dom";
 
 import { userContext } from '../components/context/UserProvider';
@@ -52,7 +53,10 @@ const Login = () => {
 
     return (
         <LoginWrapper>
-            <Logo> <h1>IT-ING</h1> </Logo>
+            <Logo
+            style={{backgroundImage:`url(${LogoReversal})`}}
+            onClick={()=>navigate("/viewer/posting/list")}
+            />
             <Inputarea>
                 <input
                     placeholder="ID"
@@ -117,17 +121,12 @@ const LoginWrapper = styled.div`
 `
 
 const Logo = styled.div`
-
-    font-family: 'Gmarket Sans';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 30px;
-    line-height: 40px;
-
-    color: #3549FF;
-
+    height:80px;
+    width:140px;
+    background-size:140px 80px;
+    background-position:cover;
     margin-bottom : 60px;
-
+    cursor:pointer;
 `
 
 const Inputarea = styled.div`

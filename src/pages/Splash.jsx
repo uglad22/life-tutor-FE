@@ -2,18 +2,19 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import AnimationPage from '../components/animation/AnimationPage';
+import mainLogo from '../components/images/mainLogo.png';
 
 const Splash = () => {
     const navigate = useNavigate();
     useEffect(()=> {
         setTimeout(()=> {
             navigate("/viewer/posting/list");
-        }, 4000)
+        }, 3500)
     }, [])
     return (
         <AnimationPage>
         <SplashWrapper>
-            <h1>IT-ING</h1>
+            <LogoDiv style={{backgroundImage:`url(${mainLogo})`}}/>
         </SplashWrapper>
         </AnimationPage>
     )
@@ -35,10 +36,19 @@ const SplashWrapper = styled.div`
     display:flex;
     justify-content: center;
     align-items:center;
+    padding:0 20px;
+    box-sizing:border-box;
 
     h1 {
         color:white;
         font-size:60px;
         font-weight:bold;
     }
+`
+
+const LogoDiv = styled.div`
+    width:200px;
+    height:200px;
+    background-position:cover;
+    background-size: 200px 200px;
 `
