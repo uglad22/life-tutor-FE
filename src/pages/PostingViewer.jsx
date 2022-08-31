@@ -63,15 +63,15 @@ const PostingViewer = () => {
                   ))}
               </Page>
             )))}
-            {!paramHashtag||(searchListData.pages[0]?.posts?.length===0?<Notice/>:searchListData.pages?.map((page, index) => (
+            {!paramHashtag||(searchListData.pages[0]?.posts?.length===0?<Notice title={"게시글이 없습니다!"} text={"다른 해시태그로 검색해보세요!"}/>:searchListData.pages?.map((page, index) => (
               <Page key={index} >
                   {page.posts.map((post) => (
                     <PostingCard key={post.posting_id} post={post}></PostingCard> 
                   ))}
               </Page>
             )))}
-        {!paramHashtag&&(isListFetching ? <div>로딩중입니다!!!!</div>: <div ref={ref} style={{height:"100px"}}></div>)}
-        {!paramHashtag||(isSearchListFetching ? <div>로딩중입니다!!!!</div>: <div ref={ref} style={{height:"100px"}}></div>)}
+        {!paramHashtag&&(isListFetching ? <div>로딩중입니다!!!!</div>: <div ref={ref} style={{height:"70px"}}></div>)}
+        {!paramHashtag||(isSearchListFetching ? <div>로딩중입니다!!!!</div>: <div ref={ref} style={{height:"50px"}}></div>)}
         </PostingViewerWrapper>
     );
 }

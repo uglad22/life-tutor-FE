@@ -10,7 +10,7 @@ const Notice = ({ title, text }) => {
                 <p className='notice-text'>{ text }</p>
             </ContentArea>
             <ImageArea>
-                sfdasdf
+                
             </ImageArea>
         </NoticeWrapper>
     );
@@ -19,15 +19,19 @@ const Notice = ({ title, text }) => {
 export default Notice;
 
 const NoticeWrapper = styled.div`
+    position:fixed;
     display:flex;
     justify-content:center;
     align-items:center;
     flex-direction:column;
     width:100%;
-    height:70vh;
-    padding-top:50px;
+    max-width:480px;
+    height:80vh;
+    /* padding-top:50px; */
     box-sizing:border-box;
     gap:10px;
+    background:white;
+    user-select:none;
 `
 
 const ContentArea = styled.div`
