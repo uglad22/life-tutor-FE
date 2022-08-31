@@ -138,7 +138,7 @@ const Post = () => {
                     {/* <div className='hashtag-viewer'>
                         {postData.hashtag.map((tag, index) => <DeletableBadge key={index} idx={index}>{tag}</DeletableBadge>)}
                     </div> */}
-                    <input type="text" placeholder="해시태그 입력 후 엔터 또는 스페이스"
+                    <input type="text" placeholder="해시태그를 입력하세요.(6자리 이하)"
                     onChange={changeHashInput} value={hashInput} onKeyUp={keyupSpace}></input>
                 </HashTagForm>
                 <HashtagViewer ref={hashRef}>

@@ -73,7 +73,7 @@ const CreateRoom = () => {
         </CreateRoomForm>
         <CreateRoomForm onSubmit={hashtagSubmitHandler}>
             <p>해시태그 입력</p>
-            <input type="text" placeholder='해시태그를 입력 후 엔터 또는 스페이스.'
+            <input type="text" placeholder='해시태그를 입력하세요.(6자리 이하)'
             value={inputs.hashtagInput} onChange={InputsChangeHandler} name="hashtagInput"></input>
         </CreateRoomForm>
         <HashtagArea>
@@ -134,7 +134,7 @@ const CreateButton = styled.button`
     color:white;
     font-size:18px;
     font-weight:600;
-    margin-top:180px;
+    margin-top:15vh;
     cursor:pointer;
     border:none;
 
