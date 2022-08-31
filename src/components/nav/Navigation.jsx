@@ -6,21 +6,24 @@ import IndexInfo from './NavIndexInfo';
 
 const Navigation = () => {
     const context = useContext(userContext);
-    const { userInfo } = context.state;
+    const { username } = context.state.userInfo;
     
     const navContentRef = useRef(null);
 
     const navigate = useNavigate();
     const location = useLocation();
     const pathname = location.pathname;
-
     const iconClickHandler = (e) => {
-        if(!userInfo) {
-            alert("로그인이 필요합니다.");
-            navigate("/login");
+        const { url } = e.currentTarget.dataset;
+        if(!username) {
+            if(url === "/mypage") navigate("/login");
+            else if(url === "/viewer/posting/list") return;
+            else alert("로그인이 필요합니다.");
+            
             return;
+            
         }
-        navigate(e.currentTarget.dataset.url);
+        else navigate(e.currentTarget.dataset.url);
     }
 
     useEffect(()=> {
