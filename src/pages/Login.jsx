@@ -149,8 +149,8 @@ const Buttonarea = styled.div`
 
         width: 335px;
         height: 60px;
-        left: 20px;
-        top: 427px;
+        // left: 20px;
+        // top: 427px;
 
         background: #3549FF;
         border-radius: 40px;
@@ -168,10 +168,17 @@ const Buttonarea = styled.div`
     }
 
     .btn-kakao {
+
         margin-top : 100px;
         margin-bottom : 18px;
         border : none;
         background-color : none;
+
+
+    }
+
+    img {
+        width: 335px;
     }
 
 `
@@ -182,7 +189,6 @@ const Singuparea = styled.div`
         margin-bottom : 4px;
         color: #717171;
         font-size: 14px;
-
     }
 
     hr {

@@ -79,7 +79,11 @@ const Signup = () => {
     }
 
     const submitId = async () => {
-        if (emailcheck !== '') {
+        if (emailcheck == null) {
+            alert('ID를 입력해주세요!');
+        } else if (emailcheck == false) {
+            alert('ID 형식을 확인해주세요!');
+        } else {
             try {
                 const res = await instance.get(`/api/users/email/${email_ref.current.value}`);
                 console.log(res);
@@ -94,7 +98,11 @@ const Signup = () => {
     }
 
     const submitNickName = async () => {
-        if (nicknamecheck !== '') {
+        if (nicknamecheck == null) {
+            alert('닉네임을 입력해주세요!');
+        } else if (nicknamecheck == false) {
+            alert('닉네임 형식을 확인해주세요!');
+        } else {
             try {
                 const res = await instance.get(`/api/users/nickname/${nickname_ref.current.value}`);
                 console.log(res);
@@ -156,12 +164,19 @@ const Signup = () => {
             <SingupContent>
                 <p>아이디</p>
             <IdBox>
+                <>
                 <input
                     placeholder="이메일 형식"
                     ref={email_ref}
                     onBlur={idCheck}
                 />
-                <button onClick={submitId}>중복 확인</button>
+                <button 
+                    className={(emailcheck == null) ? ('btnstart') : 
+                                emailcheck? '' : 'btnfalse'}
+                    onClick={submitId}> 중복 확인</button>
+                </>
+                {(emailcheck == null) ? (<None />) : emailcheck? (<None />)
+                : (<Fail><p>이메일 형식으로 작성해주세요!</p></Fail>)}
             </IdBox>
 
                 <p>비밀번호</p>
@@ -172,13 +187,16 @@ const Signup = () => {
                     ref={pw_ref}
                     onBlur={pwCheck}
                 />
-
+                {(pwcheck == null) ? (<None />) : pwcheck? (<None />)
+                : (<Fail><p>특수문자를 포함 영문(8-20자)으로 작성해주세요!</p></Fail>)}
                 <input
                     type="password"
                     placeholder="비밀번호 확인"
                     ref={pwcheck_ref}
                     onBlur={pwReCheck}
                 />
+                {(pwrecheck == null) ? (<None />) : pwrecheck? (<None />)
+                : (<Fail><p>입력하신 비밀번호와 다릅니다!</p></Fail>)}
             </PwBox>
 
                 <p>닉네임</p>
@@ -188,9 +206,13 @@ const Signup = () => {
                     ref={nickname_ref}
                     onBlur={nickNameCheck}
                 />
-                <button onClick={submitNickName}>중복 확인</button>
+                <button 
+                    className={(nicknamecheck == null) ? ('btnstart') : 
+                    nicknamecheck? '' : 'btnfalse'}
+                    onClick={submitNickName}> 중복 확인</button>
             </NicknameBox>
-                <p className='nickname'>한번 설정한 닉네임은 변경이 불가합니다.</p>
+               {(nicknamecheck == null) ? (<None />) : nicknamecheck? (<None />)
+                : (<Fail><p>2자리 이상 5자리 이하 한글로 작성해주세요!</p></Fail>)}
 
             <UsertypeBox>
                     <select name="userType" onChange={selectUserType}>
@@ -221,6 +243,19 @@ const SignupWrapper =styled.div`
     flex-direction: column;
 
     padding-top : 80px;
+
+    button {
+        cursor: pointer;
+    }
+
+    .btnstart {
+        cursor: not-allowed;
+    }
+
+    .btnfalse {
+        background: #3549ff9e;
+        cursor: not-allowed;
+    }
 
 `
 
@@ -264,28 +299,16 @@ const SingupContent =styled.div`
         color: #FFFFFF;
     }
 
-    .nickname {
-        font-family: 'Noto Sans KR';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 11px;
-        line-height: 16px;
-
-        letter-spacing: -0.03em;
-
-        color: #FF0000;
-        margin-top : 6px;
-        margin-bottom : 14px;
-    }
 `
 
 const IdBox = styled.div`
-    display : flex;
-    gap : 5px;
+    // display : flex;
+    // gap : 5px;
     margin-bottom : 27px;
 
     input {
         width : 203px;
+        margin-right : 5px;
     }
 `
 
@@ -308,6 +331,8 @@ const NicknameBox = styled.div`
 `
 
 const UsertypeBox = styled.div`
+
+    margin-top : 27px; 
 
     select {
         box-sizing: border-box;
@@ -375,3 +400,17 @@ const SignupBottom = styled.div`
     }
 
 `
+
+const None = styled.div `
+    display : none;
+`
+
+const Fail = styled.div `
+    p {
+        margin-top : 2px;
+        font-size : 13px;
+        // padding-bottom : 15px;
+        padding-left : 10px;
+        color : red;
+    }
+    `
