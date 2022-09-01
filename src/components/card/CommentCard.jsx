@@ -261,9 +261,13 @@ const CommentEditAndDelBox = styled.div`
   color: #3549ff;
 `;
 
-const CommentEdit = styled.div``;
+const CommentEdit = styled.div`
+  cursor: pointer;
+`;
 
-const CommentDel = styled.div``;
+const CommentDel = styled.div`
+  cursor: pointer;
+`;
 
 const CommentLikeFalseBtn = styled.div`
   cursor: pointer;
