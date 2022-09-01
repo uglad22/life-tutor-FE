@@ -7,6 +7,7 @@ import Header from '../components/header/Header';
 import instance from '../shared/axios';
 
 const MyPwManage = () => {
+  //FIXME: 비밀번호 정규식 수정필요
     const _pwcheck = /^[0-9a-zA-Z!@#$%^&.*]{4,20}$/;
     const nowPw_ref = useRef();
     const newPw_ref = useRef();
@@ -76,10 +77,6 @@ const MyPwManage = () => {
           <input ref={newPw_ref} type="password" placeholder="영문 8-20자, 특수문자(!@#$%^&.*)포함" onChange={() => {newPwCheckHandler()}}></input>
           <input ref={newConfirmPw_ref} type="password" placeholder="비밀번호 확인" onChange={() => {newPwConfirmCheckHandler()}}></input>
         </NewPwBox>
-        {/* <NewPwConfirmBox>
-          <p>새 비밀번호 확인</p>
-          <input ref={newConfirmPw_ref} type="password" placeholder="비밀번호 확인" onChange={() => {newPwConfirmCheckHandler()}}></input>
-        </NewPwConfirmBox> */}
         <ChangeMyPwBtn onClick={() => {myPwChangeHandler()}}>변경하기</ChangeMyPwBtn>
       </MyPwWrapper>
     </>
@@ -102,7 +99,6 @@ const MyPwWrapper = styled.div`
   flex-direction: column;
   gap: 10px;
   max-width:480px;
-  
   input {
     box-sizing: border-box;
     height: 46px;
@@ -141,20 +137,9 @@ const NewPwBox = styled.div`
   }
 `;
 
-// const NewPwConfirmBox = styled.div`
-//   width: 336px;
-//   margin: 0 auto;
-//   display: flex;
-//   flex-direction: column;
-//   p {
-//     font-size: 12px;
-//     margin-bottom: 8px;
-//   }
-// `;
-
 const ChangeMyPwBtn = styled.button`
     width: 335px;
-    margin: 310px auto 0px;
+    margin: 20px auto 0px;
     background: #3549FF;
     color: white;
     height: 60px;
