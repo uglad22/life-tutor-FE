@@ -136,7 +136,7 @@ const Detail = () => {
       <CommentBox>
         <CommentListBox>
           {data.comments.map((data, idx) => (
-            <CommentCard key={idx} data={data} postingId={postingId} setCommentEditStateForSubmit={setCommentEditStateForSubmit} />
+            <CommentCard key={idx} data={data} postingId={postingId} commentEditStateForSubmit={commentEditStateForSubmit} setCommentEditStateForSubmit={setCommentEditStateForSubmit} />
           ))}
         </CommentListBox>
       </CommentBox>

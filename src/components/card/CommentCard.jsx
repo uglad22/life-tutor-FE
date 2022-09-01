@@ -7,7 +7,7 @@ import { AiOutlineLike } from "react-icons/ai";
 import instance from "../../shared/axios";
 import { userContext } from "../context/UserProvider";
 
-const CommentCard = ({ data, postingId, setCommentEditStateForSubmit }) => {
+const CommentCard = ({ data, postingId, commentEditStateForSubmit, setCommentEditStateForSubmit }) => {
   const commentEditInput = useRef();
   const queryClient = useQueryClient();
   console.log(data);
@@ -83,7 +83,7 @@ const CommentCard = ({ data, postingId, setCommentEditStateForSubmit }) => {
     const years = days / 365;
     return `${Math.floor(years)}년 전`;
   };
-
+  console.log(commentEditStateForSubmit);
   return (
     <>
       <Comment>
@@ -91,7 +91,7 @@ const CommentCard = ({ data, postingId, setCommentEditStateForSubmit }) => {
           <p>{data.nickname}</p>
           <p>{userTypeTrans(data.user_type)}</p>
         </CommentWriter>
-        <CommentContent>{data.content}</CommentContent>
+        <CommentContent isShow={commentEditStateForSubmit}>{data.content}</CommentContent>
         <CommentContentEdit state={commentEditState}>
           <CommentArea ref={commentEditInput}></CommentArea>
           <CommentEditCancelAndSaveBtn>
@@ -202,6 +202,7 @@ const CommentWriter = styled.div`
 
 const CommentContent = styled.div`
   font-size: 16px;
+  display: ${(props) => (props.isShow ? "none" : "block")};
 `;
 
 const CommentContentEdit = styled.div`
