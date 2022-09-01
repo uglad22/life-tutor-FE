@@ -31,6 +31,7 @@ const Search = () => {
     }
 
     if(!pathname.includes('/viewer/')) return null;
+    else if(pathname === "/viewer/posting/mypostings") return null;
 
     return(
         <SearchWrapper onSubmit={submitHandler}>

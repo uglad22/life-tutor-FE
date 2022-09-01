@@ -1,9 +1,15 @@
 import instance from "./axios";
 
 export const postingsAPI = { 
-    fetchPostingsListWithScroll: async (pageParams) => {
-        const token = localStorage.getItem("Authorization");
-        let apiurl = token? `/api/main/user/postings?page=${pageParams}&size=10`:`/api/main/postings?page=${pageParams}&size=10`
+    fetchPostingsListWithScroll: async (pageParams, category) => {
+        let apiurl;
+        if(category === "list") {
+            const token = localStorage.getItem("Authorization");
+            apiurl = token? `/api/main/user/postings?page=${pageParams}&size=10`:`/api/main/postings?page=${pageParams}&size=10`
+        }
+        else if(category === "mypostings") {
+            apiurl=`/api/mypage/postings?page=${pageParams}&size=10`
+        }
         const res = await instance.get(apiurl);
         const { content } = res.data;
         const { last } = res.data;
@@ -28,7 +34,8 @@ export const postingsAPI = {
         const { last } = res.data;
         return { posts:content, nextPage:pageParams + 1, isLast:last};
 
-    }
+    },
+    
 }
 
 export const chatroomAPI = {

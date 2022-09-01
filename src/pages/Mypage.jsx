@@ -4,10 +4,12 @@ import Header from "../components/header/Header";
 import ManagementCard from "../components/card/ManagementCard";
 import { userContext } from "../components/context/UserProvider";
 import { userTypeTrans } from "../shared/sharedFn";
+import { useNavigate } from 'react-router-dom';
 
 const Mypage = () => {
   const context = useContext(userContext);
   const { userInfo } = context.state;
+  const navigate = useNavigate();
   return (
     <>
       <Header title="마이페이지" isAction={true}/>
@@ -39,7 +41,7 @@ const Mypage = () => {
           </MemberNameTypeAndEmail>
         </MemberInfo>
         <CategoryBox>
-          <Mypostings>
+          <Mypostings onClick={()=> navigate("/viewer/posting/mypostings")}>
             <CategoryIcon>
               <svg
                 width="35"

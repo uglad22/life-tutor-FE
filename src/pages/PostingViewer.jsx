@@ -12,11 +12,10 @@ const PostingViewer = () => {
     const paramCategory = useParams().category;
     const paramHashtag = useParams().hashtag;
     const { ref, inView} = useInView();
-    // const { aref, ainView} = useInView();
 
     const { data:listData, fetchNextPage:fetchListNextPage, isFetchingNextPage:isListFetching } = useInfiniteQuery(
       ["postings", paramCategory],
-      ({ pageParam = 0 }) => postingsAPI.fetchPostingsListWithScroll(pageParam),
+      ({ pageParam = 0 }) => postingsAPI.fetchPostingsListWithScroll(pageParam, paramCategory),
       {
         enabled:!!(!paramHashtag),
         staleTime:3000,
