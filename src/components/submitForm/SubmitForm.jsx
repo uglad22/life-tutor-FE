@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef } from 'react'
 import styled, { css } from 'styled-components';
 import instance from '../../shared/axios';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -12,7 +12,7 @@ const SubmitForm = ({ postingId, placeholderText, sendMsg, commentEditStateForSu
     const queryClient = useQueryClient();
     const location = useLocation();
 
-    console.log('render');
+    // console.log('render');
 
     const addComment = async () => {
         const comment = { content: commentInput.current.value };
@@ -40,7 +40,7 @@ const SubmitForm = ({ postingId, placeholderText, sendMsg, commentEditStateForSu
 
   return (
     <>
-    <CommentAddBox isShow={commentEditStateForSubmit}>
+    <CommentAddBox onSubmit={submitButtonHandler} isShow={commentEditStateForSubmit}>
         <CommentInputBox>
           <input type="text" placeholder={placeholderText} ref={commentInput} />
           <CommentAddBtn
@@ -56,7 +56,7 @@ const SubmitForm = ({ postingId, placeholderText, sendMsg, commentEditStateForSu
 
 export default React.memo(SubmitForm);
 
-const CommentAddBox = styled.div`
+const CommentAddBox = styled.form`
   background: #EFEFEF;
   margin: 0 auto;
   width: 100%;
