@@ -22,6 +22,8 @@ import MyInfoManage from './pages/MyInfoManage';
 import MyPwManage from './pages/MyPwManage';
 import PrivateRoute from './components/limitAuthRoute/PrivateRoute';
 import UserLimitRoute from './components/limitAuthRoute/UserLimitRoute';
+import { Helmet } from 'react-helmet'
+
 
 function App() {
 
@@ -56,7 +58,12 @@ function App() {
     <ThemeProvider theme={theme}>
     <div className="App">
         <GlobalStyle/>
-        
+        <Helmet>
+          <title>IT-ing</title>
+          <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/180.ico" />
+          <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/32.ico" />
+          <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/16.ico" />
+        </Helmet>
         <Content>
         <AnimatePresence exitBeforeEnter>
           <Routes key={location.pathname} location={location}>

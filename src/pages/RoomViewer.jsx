@@ -6,7 +6,10 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useLocation, useParams } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { chatroomAPI } from '../shared/api';
+
 import Notice from '../components/notice/Notice';
+
+import { Helmet } from 'react-helmet'
 
 
 const RoomViewer = () => {
@@ -55,6 +58,12 @@ const RoomViewer = () => {
 
     return(   
         <RoomViewerWrapper>
+            <Helmet>
+                <title>IT-ing</title>
+                <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/180.ico" />
+                <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/32.ico" />
+                <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/16.ico" />
+            </Helmet>
             <Header title={"채팅 리스트"} isAction={true}/>
             {!hashtagParam&&(listData.pages[0]?.rooms?.length===0?<Notice title={"채팅방이 없습니다!"} text={"채팅방을 개설하고 대화해보세요!"}/>:listData.pages?.map((page, index) => (
                 <Page key={index}>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import instance from '../shared/axios';
 import { Link,useNavigate } from "react-router-dom"; 
+import { Helmet } from 'react-helmet'
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -17,7 +18,7 @@ const Signup = () => {
     const [nicknamecheck, setNickNameCheck] = useState(null);
     const [pwcheck, setPwCheck] = useState(null);
     const [pwrecheck, setPwReCheck] = useState(null);
-    const [userType, setUserType] = useState(null);
+    const [userType, setUserType] = useState('SEEKER');
 
     //아이디(이메일) 제한 조건 : 이메일 형식
     const email_limit = (email) => {
@@ -36,7 +37,7 @@ const Signup = () => {
 
     // 닉네임 제한 조건 : 2자리 이상 5자리 이하 한글
     const nickname_limit = (nickname) => {
-        let _reg = /^(?=.*[ㄱ-ㅎ가-힣])[a-zA-Z0-9ㄱ-ㅎ가-힣]{2,5}$/;
+        let _reg = /^[a-zA-Z0-9ㄱ-ㅎ가-힣]{2,10}$/;
         return _reg.test(nickname);
     };
 
@@ -51,7 +52,7 @@ const Signup = () => {
 
     // 비밀번호 제한 조건 : 8자리 이상 20자리 이하
     const password_limit = (password) => {
-        let _reg = /^[0-9a-zA-Z!@#$%^&.*]{8,20}$/;
+        let _reg = /^(?=.*[@$!%*?&])[0-9a-zA-Z!@#$%^&.*]{8,20}$/;
         return _reg.test(password);
     };
 
@@ -161,6 +162,12 @@ const Signup = () => {
 
     return(
         <SignupWrapper>
+            <Helmet>
+                <title>IT-ing</title>
+                <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/180.ico" />
+                <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/32.ico" />
+                <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/16.ico" />
+            </Helmet>
             <SingupContent>
                 <p>아이디</p>
             <IdBox>
@@ -183,7 +190,7 @@ const Signup = () => {
             <PwBox>
                 <input 
                     type="password"
-                    placeholder="영문 8-20자, 특수문자(!@#$%^&.*)포함 "
+                    placeholder="영문/숫자 8-20자, 특수문자(!@#$%^&.*)포함 "
                     ref={pw_ref}
                     onBlur={pwCheck}
                 />
@@ -202,7 +209,7 @@ const Signup = () => {
                 <p>닉네임</p>
             <NicknameBox>
                 <input
-                    placeholder="2자리 이상 5자리 이하 한글"
+                    placeholder="한글/영문/숫자, 2-10자리 이하"
                     ref={nickname_ref}
                     onBlur={nickNameCheck}
                 />

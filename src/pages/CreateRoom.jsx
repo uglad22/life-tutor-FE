@@ -8,6 +8,7 @@ import { useMutation } from '@tanstack/react-query';
 
 import { chatroomAPI } from '../shared/api';
 import { hashtagValidation } from '../shared/sharedFn';
+import { Helmet } from 'react-helmet'
 
 const CreateRoom = () => {
     const navigate = useNavigate();
@@ -91,6 +92,12 @@ const CreateRoom = () => {
     if(createRoomError) return <p>에러</p>
     return(
         <WhiteBackground>
+            <Helmet>
+                <title>IT-ing</title>
+                <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/180.ico" />
+                <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/32.ico" />
+                <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/16.ico" />
+            </Helmet>
             <Header title={"채팅 만들기"} isAction={false}/>
         <CreateRoomWrapper>
         <CreateRoomForm onSubmit={(e)=> e.preventDefault()}>

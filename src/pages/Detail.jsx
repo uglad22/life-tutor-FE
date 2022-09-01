@@ -14,6 +14,7 @@ import { userTypeTrans } from "../shared/sharedFn";
 import CommentCard from "../components/card/CommentCard";
 import SubmitForm from "../components/submitForm/SubmitForm";
 import Header from "../components/header/Header";
+import { Helmet } from 'react-helmet'
 
 // FIXME: 게시글 본문 줄바꿈처리
 
@@ -81,6 +82,12 @@ const Detail = () => {
       {data.nickname === loginNickname && <Header title="본문 상세" isAction={true}/>}
       {data.nickname !== loginNickname && <Header title="본문 상세" isAction={false}/>}
       <ContentBox>
+        <Helmet>
+            <title>IT-ing</title>
+            <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/180.ico" />
+            <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/32.ico" />
+            <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/16.ico" />
+        </Helmet>
         <TitleAndWriterBox>
           <Title>
             <p>{data.title}</p>
