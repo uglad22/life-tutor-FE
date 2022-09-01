@@ -251,5 +251,4 @@ const MyCommentsInPost = styled.div`
 
 const MemberManagementBox = styled.div`
   background: white;
-  height: 300px;
 `;
