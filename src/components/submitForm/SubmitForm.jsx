@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react'
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import instance from '../../shared/axios';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocation } from 'react-router-dom';
@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 import { BiRightArrowCircle } from 'react-icons/bi';
 
 
-const SubmitForm = ({ postingId, placeholderText, sendMsg }) => {
+const SubmitForm = ({ postingId, placeholderText, sendMsg, commentEditStateForSubmit }) => {
     const commentInput = useRef();
     const queryClient = useQueryClient();
     const location = useLocation();
@@ -40,7 +40,7 @@ const SubmitForm = ({ postingId, placeholderText, sendMsg }) => {
 
   return (
     <>
-    <CommentAddBox>
+    <CommentAddBox isShow={commentEditStateForSubmit}>
         <CommentInputBox>
           <input type="text" placeholder={placeholderText} ref={commentInput} />
           <CommentAddBtn
@@ -65,6 +65,13 @@ const CommentAddBox = styled.div`
   left: 0;
   display: flex;
   align-items: center;
+  ${props => {
+            if(props.isShow === true) {
+                return css`
+                    visibility: hidden;
+                `
+            }
+        }}
 `;
 
 const CommentInputBox = styled.div`

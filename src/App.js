@@ -18,9 +18,10 @@ import { userContext } from './components/context/UserProvider';
 import Splash from './pages/Splash';
 import { AnimatePresence } from 'framer-motion';
 import RoomViewer from './pages/RoomViewer';
+import MyInfoManage from './pages/MyInfoManage';
+import MyPwManage from './pages/MyPwManage';
 import PrivateRoute from './components/limitAuthRoute/PrivateRoute';
 import UserLimitRoute from './components/limitAuthRoute/UserLimitRoute';
-
 
 function App() {
 
@@ -65,8 +66,14 @@ function App() {
             <Route path="/viewer/room/search/:hashtag" element={<PrivateRoute component={<RoomViewer/>} authenticated={access}/>}/>
             <Route path="/detail/posting/:postingId" element={<PrivateRoute component={<Detail />} authenticated={access}/>} />
             <Route path="/signup" element={<Signup />}></Route>
+
+            
+            <Route path="/mypage/myinfomanage" element={<MyInfoManage />} />
+            <Route path="/mypage/mypwmanage" element={<MyPwManage />} />
+
             <Route path="/login" element={<UserLimitRoute component={<Login />} authenticated={access}/>}></Route>
             <Route path="/mypage" element={<PrivateRoute component={<Mypage />} authenticated={access}/>} />
+
             <Route
             path="/oauth2/redirect/:token"
             element={<KakaoLogin />}

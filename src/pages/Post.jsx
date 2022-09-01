@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { useParams,useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { WhiteBackground, HRLineDiv } from '../style/sharedStyle'
+import { WhiteBackground, HRLineDiv } from '../style/sharedStyle';
+import { userContext } from "../components/context/UserProvider";
 import { submitDataContext } from '../components/context/SubmitDataProvider';
 import Header from '../components/header/Header';
 import DeletableBadge from '../components/hashtag/DeletableBadge';
@@ -12,6 +13,8 @@ import instance from '../shared/axios';
 const Post = () => {
     const [hashInput, setHashInput] = useState('');
     const context = useContext(submitDataContext);
+    const userInfoContext = useContext(userContext);
+    const { userInfo } = userInfoContext.state;
     const { postData } = context.state;
     const { title, posting_content, hashtag } = postData;
     const { setPostData } = context.actions;
@@ -81,14 +84,12 @@ const Post = () => {
                 const postInfo = await instance.get(`/api/board/detail/${postingId}`);
                 const data = postInfo.data;
 
-                // FIXME: url주소를 타고 들어올 수 있으니 유저닉네임 가져와서 비교해주는 로직 추가 구현 필요
-                // if(data.nickname !== loginNickname) {
-                //     alert('수정 권한이 없습니다.');
-                //     navigate(-1);
-                //     return;
-                // }
-                console.log(data);
-                console.log(data.hashtag);
+                if(data.nickname !== userInfo.nickname) {
+                    alert('수정 권한이 없습니다.');
+                    navigate(-1);
+                    return;
+                }
+
                 setPostData({
                     title: data.title,
                     posting_content: data.posting_content,
