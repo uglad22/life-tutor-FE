@@ -72,13 +72,14 @@ const MyPwManage = () => {
           <input ref={nowPw_ref} type="password"></input>
         </NowPwBox>
         <NewPwBox>
-          <p>새 비밀번호</p>
+          <p>신규 비밀번호</p>
           <input ref={newPw_ref} type="password" placeholder="영문 8-20자, 특수문자(!@#$%^&.*)포함" onChange={() => {newPwCheckHandler()}}></input>
+          <input ref={newConfirmPw_ref} type="password" placeholder="비밀번호 확인" onChange={() => {newPwConfirmCheckHandler()}}></input>
         </NewPwBox>
-        <NewPwConfirmBox>
+        {/* <NewPwConfirmBox>
           <p>새 비밀번호 확인</p>
           <input ref={newConfirmPw_ref} type="password" placeholder="비밀번호 확인" onChange={() => {newPwConfirmCheckHandler()}}></input>
-        </NewPwConfirmBox>
+        </NewPwConfirmBox> */}
         <ChangeMyPwBtn onClick={() => {myPwChangeHandler()}}>변경하기</ChangeMyPwBtn>
       </MyPwWrapper>
     </>
@@ -130,18 +131,21 @@ const NewPwBox = styled.div`
     font-size: 12px;
     margin-bottom: 8px;
   }
-`;
-
-const NewPwConfirmBox = styled.div`
-  width: 336px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  p {
-    font-size: 12px;
+  input {
     margin-bottom: 8px;
   }
 `;
+
+// const NewPwConfirmBox = styled.div`
+//   width: 336px;
+//   margin: 0 auto;
+//   display: flex;
+//   flex-direction: column;
+//   p {
+//     font-size: 12px;
+//     margin-bottom: 8px;
+//   }
+// `;
 
 const ChangeMyPwBtn = styled.div`
     width: 335px;
