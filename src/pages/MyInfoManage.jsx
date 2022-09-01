@@ -11,6 +11,7 @@ const MyInfoManage = () => {
     const navigate = useNavigate();
     const context = useContext(userContext);
     const { userInfo } = context.state;
+    const { setUserInfo } = context.actions;
     const [ nicknameCheck, setNicknameCheck ] = useState(false);
 
     const _reg = /^(?=.*[ㄱ-ㅎ가-힣])[a-zA-Z0-9ㄱ-ㅎ가-힣]{2,5}$/;
@@ -47,6 +48,10 @@ const MyInfoManage = () => {
             const res = await instance.put("/api/mypage/user/info", data);
             console.log("성공", res);
             alert('개인정보가 변경되었습니다.');
+            const { nickname, user_type } = data;
+            const { username, kakao } = userInfo;
+            const userData = { username, nickname, user_type, kakao };
+            setUserInfo(userData);
             navigate("/mypage");
         } catch (err) {
             console.log("실패", err);
@@ -149,7 +154,7 @@ const UserTypeBox = styled.div`
 
 const ChangeMyInfoBtn = styled.button`
     width: 335px;
-    margin: 379px auto 0px;
+    margin: 35px auto 0px;
     background: #3549FF;
     color: white;
     height: 60px;
