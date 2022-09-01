@@ -9,6 +9,7 @@ import DeletableBadge from '../components/hashtag/DeletableBadge';
 import { hashtagValidation } from '../shared/sharedFn';
 
 import instance from '../shared/axios';
+import { Helmet } from 'react-helmet'
 
 const Post = () => {
     const [hashInput, setHashInput] = useState('');
@@ -118,6 +119,12 @@ const Post = () => {
     }, [hashtag])
     return(
         <WhiteBackground>
+            <Helmet>
+                <title>IT-ing</title>
+                <link rel="apple-touch-icon" sizes="180x180" href="180.ico" />
+                <link rel="icon" type="image/png" sizes="32x32" href="32.ico" />
+                <link rel="icon" type="image/png" sizes="16x16" href="16.ico" />
+            </Helmet>
         <PostWrapper>
             {pathname === '/posting' && <Header title="글쓰기" isAction={true}/>}
             {pathname === `/posting/edit/${postingId}` && <Header title="수정하기" isAction={true}/>}

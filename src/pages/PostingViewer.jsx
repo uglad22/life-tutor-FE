@@ -8,6 +8,8 @@ import PostingCard from '../components/card/PostingCard';
 import Header from '../components/header/Header';
 import Notice from '../components/notice/Notice';
 
+import { Helmet } from 'react-helmet'
+
 const PostingViewer = () => {
     const paramCategory = useParams().category;
     const paramHashtag = useParams().hashtag;
@@ -54,6 +56,12 @@ const PostingViewer = () => {
   
     return (
       <PostingViewerWrapper>
+        <Helmet>
+          <title>IT-ing</title>
+          <link rel="apple-touch-icon" sizes="180x180" href="180.ico" />
+          <link rel="icon" type="image/png" sizes="32x32" href="32.ico" />
+          <link rel="icon" type="image/png" sizes="16x16" href="16.ico" />
+        </Helmet>
         <Header/>
             {!paramHashtag&&(listData.pages[0]?.posts?.length===0?<Notice title={"게시글이 없습니다!"} text={"첫 게시글을 등록해보세요!"}/>:listData.pages?.map((page, index) => (
               <Page key={index}>

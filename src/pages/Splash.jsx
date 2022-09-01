@@ -2,7 +2,10 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import AnimationPage from '../components/animation/AnimationPage';
+
 import mainLogo from '../components/images/mainLogo.png';
+
+import { Helmet } from 'react-helmet'
 
 const Splash = () => {
     const navigate = useNavigate();
@@ -13,6 +16,12 @@ const Splash = () => {
     }, [])
     return (
         <AnimationPage>
+        <Helmet>
+            <title>IT-ing</title>
+            <link rel="apple-touch-icon" sizes="180x180" href="180.ico" />
+            <link rel="icon" type="image/png" sizes="32x32" href="32.ico" />
+            <link rel="icon" type="image/png" sizes="16x16" href="16.ico" />
+        </Helmet>
         <SplashWrapper>
             <LogoDiv style={{backgroundImage:`url(${mainLogo})`}}/>
         </SplashWrapper>

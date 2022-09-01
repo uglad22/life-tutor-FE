@@ -6,6 +6,7 @@ import LogoReversal from '../components/images/LogoReversal.png';
 import { Link, useNavigate } from "react-router-dom";
 
 import { userContext } from '../components/context/UserProvider';
+import { Helmet } from 'react-helmet'
 
 
 const Login = () => {
@@ -27,9 +28,9 @@ const Login = () => {
         }
 
         //공란이면 알럿 띄우기
-        // if (login_data.username || login_data.password === '') {
-        //     alert ('ID 또는 비밀번호를 입력하세요!')
-        // } else {
+        if (email_ref || pw_ref === null) {
+            alert ('ID 또는 비밀번호를 입력하세요!')
+        } else {
 
             try {
                 const res = await instance.post('/api/login', login_data);
@@ -44,19 +45,26 @@ const Login = () => {
                 console.log(err);
                 alert('로그인에 문제가 생겼어요!');
             }
-
-        // }
-
+        }
     }
 
 
 
     return (
         <LoginWrapper>
+
             <Logo
             style={{backgroundImage:`url(${LogoReversal})`}}
             onClick={()=>navigate("/viewer/posting/list")}
             />
+
+            <Helmet>
+                <title>IT-ing</title>
+                <link rel="apple-touch-icon" sizes="180x180" href="180.ico" />
+                <link rel="icon" type="image/png" sizes="32x32" href="32.ico" />
+                <link rel="icon" type="image/png" sizes="16x16" href="16.ico" />
+            </Helmet>
+
             <Inputarea>
                 <input
                     placeholder="ID"
@@ -148,8 +156,8 @@ const Buttonarea = styled.div`
 
         width: 335px;
         height: 60px;
-        left: 20px;
-        top: 427px;
+        // left: 20px;
+        // top: 427px;
 
         background: #3549FF;
         border-radius: 40px;
@@ -167,10 +175,17 @@ const Buttonarea = styled.div`
     }
 
     .btn-kakao {
+
         margin-top : 100px;
         margin-bottom : 18px;
         border : none;
         background-color : none;
+
+
+    }
+
+    img {
+        width: 335px;
     }
 
 `
@@ -181,11 +196,10 @@ const Singuparea = styled.div`
         margin-bottom : 4px;
         color: #717171;
         font-size: 14px;
-
     }
 
     hr {
-        width : 150px;
+        width : 135px;
         margin-bottom : 43px;
     }
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import instance from '../shared/axios';
 import { Link,useNavigate } from "react-router-dom"; 
+import { Helmet } from 'react-helmet'
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -17,7 +18,7 @@ const Signup = () => {
     const [nicknamecheck, setNickNameCheck] = useState(null);
     const [pwcheck, setPwCheck] = useState(null);
     const [pwrecheck, setPwReCheck] = useState(null);
-    const [userType, setUserType] = useState(null);
+    const [userType, setUserType] = useState('SEEKER');
 
     //아이디(이메일) 제한 조건 : 이메일 형식
     const email_limit = (email) => {
@@ -36,7 +37,7 @@ const Signup = () => {
 
     // 닉네임 제한 조건 : 2자리 이상 5자리 이하 한글
     const nickname_limit = (nickname) => {
-        let _reg = /^(?=.*[ㄱ-ㅎ가-힣])[a-zA-Z0-9ㄱ-ㅎ가-힣]{2,5}$/;
+        let _reg = /^[a-zA-Z0-9ㄱ-ㅎ가-힣]{2,10}$/;
         return _reg.test(nickname);
     };
 
@@ -51,7 +52,7 @@ const Signup = () => {
 
     // 비밀번호 제한 조건 : 8자리 이상 20자리 이하
     const password_limit = (password) => {
-        let _reg = /^[0-9a-zA-Z!@#$%^&.*]{8,20}$/;
+        let _reg = /^(?=.*[@$!%*?&])[0-9a-zA-Z!@#$%^&.*]{8,20}$/;
         return _reg.test(password);
     };
 
@@ -79,7 +80,11 @@ const Signup = () => {
     }
 
     const submitId = async () => {
-        if (emailcheck !== '') {
+        if (emailcheck == null) {
+            alert('ID를 입력해주세요!');
+        } else if (emailcheck == false) {
+            alert('ID 형식을 확인해주세요!');
+        } else {
             try {
                 const res = await instance.get(`/api/users/email/${email_ref.current.value}`);
                 console.log(res);
@@ -94,7 +99,11 @@ const Signup = () => {
     }
 
     const submitNickName = async () => {
-        if (nicknamecheck !== '') {
+        if (nicknamecheck == null) {
+            alert('닉네임을 입력해주세요!');
+        } else if (nicknamecheck == false) {
+            alert('닉네임 형식을 확인해주세요!');
+        } else {
             try {
                 const res = await instance.get(`/api/users/nickname/${nickname_ref.current.value}`);
                 console.log(res);
@@ -153,44 +162,64 @@ const Signup = () => {
 
     return(
         <SignupWrapper>
+            <Helmet>
+                <title>IT-ing</title>
+                <link rel="apple-touch-icon" sizes="180x180" href="180.ico" />
+                <link rel="icon" type="image/png" sizes="32x32" href="32.ico" />
+                <link rel="icon" type="image/png" sizes="16x16" href="16.ico" />
+            </Helmet>
             <SingupContent>
                 <p>아이디</p>
             <IdBox>
+                <>
                 <input
                     placeholder="이메일 형식"
                     ref={email_ref}
                     onBlur={idCheck}
                 />
-                <button onClick={submitId}>중복 확인</button>
+                <button 
+                    className={(emailcheck == null) ? ('btnstart') : 
+                                emailcheck? '' : 'btnfalse'}
+                    onClick={submitId}> 중복 확인</button>
+                </>
+                {(emailcheck == null) ? (<None />) : emailcheck? (<None />)
+                : (<Fail><p>이메일 형식으로 작성해주세요!</p></Fail>)}
             </IdBox>
 
                 <p>비밀번호</p>
             <PwBox>
                 <input 
                     type="password"
-                    placeholder="영문 8-20자, 특수문자(!@#$%^&.*)포함 "
+                    placeholder="영문/숫자 8-20자, 특수문자(!@#$%^&.*)포함 "
                     ref={pw_ref}
                     onBlur={pwCheck}
                 />
-
+                {(pwcheck == null) ? (<None />) : pwcheck? (<None />)
+                : (<Fail><p>특수문자를 포함 영문(8-20자)으로 작성해주세요!</p></Fail>)}
                 <input
                     type="password"
                     placeholder="비밀번호 확인"
                     ref={pwcheck_ref}
                     onBlur={pwReCheck}
                 />
+                {(pwrecheck == null) ? (<None />) : pwrecheck? (<None />)
+                : (<Fail><p>입력하신 비밀번호와 다릅니다!</p></Fail>)}
             </PwBox>
 
                 <p>닉네임</p>
             <NicknameBox>
                 <input
-                    placeholder="2자리 이상 5자리 이하 한글"
+                    placeholder="한글/영문/숫자, 2-10자리 이하"
                     ref={nickname_ref}
                     onBlur={nickNameCheck}
                 />
-                <button onClick={submitNickName}>중복 확인</button>
+                <button 
+                    className={(nicknamecheck == null) ? ('btnstart') : 
+                    nicknamecheck? '' : 'btnfalse'}
+                    onClick={submitNickName}> 중복 확인</button>
             </NicknameBox>
-                <p className='nickname'>한번 설정한 닉네임은 변경이 불가합니다.</p>
+               {(nicknamecheck == null) ? (<None />) : nicknamecheck? (<None />)
+                : (<Fail><p>2자리 이상 5자리 이하 한글로 작성해주세요!</p></Fail>)}
 
             <UsertypeBox>
                     <select name="userType" onChange={selectUserType}>
@@ -221,6 +250,19 @@ const SignupWrapper =styled.div`
     flex-direction: column;
 
     padding-top : 80px;
+
+    button {
+        cursor: pointer;
+    }
+
+    .btnstart {
+        cursor: not-allowed;
+    }
+
+    .btnfalse {
+        background: #3549ff9e;
+        cursor: not-allowed;
+    }
 
 `
 
@@ -264,28 +306,16 @@ const SingupContent =styled.div`
         color: #FFFFFF;
     }
 
-    .nickname {
-        font-family: 'Noto Sans KR';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 11px;
-        line-height: 16px;
-
-        letter-spacing: -0.03em;
-
-        color: #FF0000;
-        margin-top : 6px;
-        margin-bottom : 14px;
-    }
 `
 
 const IdBox = styled.div`
-    display : flex;
-    gap : 5px;
+    // display : flex;
+    // gap : 5px;
     margin-bottom : 27px;
 
     input {
         width : 203px;
+        margin-right : 5px;
     }
 `
 
@@ -308,6 +338,8 @@ const NicknameBox = styled.div`
 `
 
 const UsertypeBox = styled.div`
+
+    margin-top : 27px; 
 
     select {
         box-sizing: border-box;
@@ -375,3 +407,17 @@ const SignupBottom = styled.div`
     }
 
 `
+
+const None = styled.div `
+    display : none;
+`
+
+const Fail = styled.div `
+    p {
+        margin-top : 2px;
+        font-size : 13px;
+        // padding-bottom : 15px;
+        padding-left : 10px;
+        color : red;
+    }
+    `

@@ -6,6 +6,7 @@ import * as StompJS from 'stompjs'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { userContext } from '../components/context/UserProvider';
 import { chatroomAPI } from '../shared/api';
+import { Helmet } from 'react-helmet'
 
 
 import SubmitForm from '../components/submitForm/SubmitForm';
@@ -104,6 +105,12 @@ const ChatRoom = () => {
 
     return (
         <ChatRoomWrapper ref={tempRef}>
+        <Helmet>
+            <title>IT-ing</title>
+            <link rel="apple-touch-icon" sizes="180x180" href="180.ico" />
+            <link rel="icon" type="image/png" sizes="32x32" href="32.ico" />
+            <link rel="icon" type="image/png" sizes="16x16" href="16.ico" />
+        </Helmet>
         <Header/>
         <ChatArea>
             {messages?.map((msg, index) => msg.enter==="ENTER"? <Notice key={index}>{msg.message}</Notice>:

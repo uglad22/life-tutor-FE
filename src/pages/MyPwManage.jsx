@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { userContext } from "../components/context/UserProvider";
 import Header from '../components/header/Header';
 import instance from '../shared/axios';
+import { Helmet } from 'react-helmet'
 
 const MyPwManage = () => {
     const _pwcheck = /^[0-9a-zA-Z!@#$%^&.*]{8,20}$/;
@@ -65,6 +66,12 @@ const MyPwManage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>IT-ing</title>
+        <link rel="apple-touch-icon" sizes="180x180" href="180.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="32.ico" />
+        <link rel="icon" type="image/png" sizes="16x16" href="16.ico" />
+      </Helmet>
       <Header title="비밀번호 변경" isAction={true} />
       <MyPwWrapper>
         <NowPwBox>

@@ -4,6 +4,7 @@ const GlobalStyle = createGlobalStyle`
     * {
         margin:0;
         padding:0;
+        font-family: 'Pretendard-Regular'
     }
     
     input {
@@ -22,6 +23,8 @@ const GlobalStyle = createGlobalStyle`
     body {
         background:${({ theme }) => theme.colors.backgroundGray};
     }
+
+
 `
 
 export default GlobalStyle;

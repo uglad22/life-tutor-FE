@@ -4,9 +4,11 @@ import Header from "../components/header/Header";
 import ManagementCard from "../components/card/ManagementCard";
 import { userContext } from "../components/context/UserProvider";
 import { userTypeTrans } from "../shared/sharedFn";
+
 import { useNavigate } from 'react-router-dom';
 
 // FIXME: 카카오로그인이면 비밀번호 변경 렌더링 안되게
+import { Helmet } from 'react-helmet'
 
 const Mypage = () => {
   const context = useContext(userContext);
@@ -16,7 +18,13 @@ const Mypage = () => {
 
   return (
     <>
-      <Header title="마이페이지" isAction={true} />
+      <Helmet>
+        <title>IT-ing</title>
+        <link rel="apple-touch-icon" sizes="180x180" href="180.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="32.ico" />
+        <link rel="icon" type="image/png" sizes="16x16" href="16.ico" />
+      </Helmet>
+      <Header title="마이페이지" isAction={true}/>
       <MemberInfoAndCategoryBox>
         <MemberInfo>
           <ProfilePicture>
