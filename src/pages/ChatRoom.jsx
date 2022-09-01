@@ -69,17 +69,17 @@ const ChatRoom = () => {
         });
        
         client.connect(headers, ()=> {
-            
-            client.send(`/api/pub/${roomId}`, {}, JSON.stringify({
-                "enter":"ENTER",
-                "messageType":"TEXT",
-                "nickname":nicknameRef.current
-            }))
 
             client.subscribe(`/api/sub/${roomId}`, (data) => {
                 const newMessage = JSON.parse(data.body);
                 setMessages((prev) => [...prev, newMessage]);
             })
+
+            client.send(`/api/pub/${roomId}`, {}, JSON.stringify({
+                "enter":"ENTER",
+                "messageType":"TEXT",
+                "nickname":nicknameRef.current
+            }))
         })
 
         return(()=> {
