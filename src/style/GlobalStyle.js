@@ -15,6 +15,10 @@ const GlobalStyle = createGlobalStyle`
         border-color: ${({ theme }) => theme.colors.mainBlue};
     }
 
+    button {
+        cursor:pointer;
+    }
+
     body {
         background:${({ theme }) => theme.colors.backgroundGray};
     }

@@ -1,10 +1,10 @@
 import instance from "./axios";
 
-export const postingsAPI = { // FIXME: 이름 변경하기
+export const postingsAPI = { 
     fetchPostingsListWithScroll: async (pageParams) => {
         const token = localStorage.getItem("Authorization");
-        let isUser = token? true:false
-        const res = await instance.get(`/api/main/postings?page=${pageParams}&size=10&isUser=${isUser}`);// FIXME: URL 바꾸기
+        let apiurl = token? `/api/main/user/postings?page=${pageParams}&size=10`:`/api/main/postings?page=${pageParams}&size=10`
+        const res = await instance.get(apiurl);
         const { content } = res.data;
         const { last } = res.data;
         return { posts:content, nextPage:pageParams + 1, isLast:last};
