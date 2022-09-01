@@ -1,10 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const ManagementCard = ({svg, managementType}) => {
+const ManagementCard = ({isShow, svg, managementType, pathUrl}) => {
+  const navigate = useNavigate();
   return (
     <>
-        <ManagementWrapper>
+        <ManagementWrapper isShow={isShow} onClick={() => {navigate(pathUrl)}}>
             {svg}
             <p>{managementType}</p>
         </ManagementWrapper>
@@ -15,7 +17,7 @@ const ManagementCard = ({svg, managementType}) => {
 export default ManagementCard
 
 const ManagementWrapper = styled.div`
-    display: flex;
+    display: ${(props) => (props.isShow ? "flex" : "none")};
     padding: 20px;
     color: #656565;
     gap: 20px;

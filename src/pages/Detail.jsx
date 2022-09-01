@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -15,14 +15,13 @@ import CommentCard from "../components/card/CommentCard";
 import SubmitForm from "../components/submitForm/SubmitForm";
 import Header from "../components/header/Header";
 
-// FIXME: 게시글 본문 줄바꿈처리,
-// 댓글 수정버튼 누르면 모바일의 경우 댓글 입력창이 고정되어 있어서 헷갈리는 UI 수정 필요!
+// FIXME: 게시글 본문 줄바꿈처리
 
 const Detail = () => {
   const params = useParams();
   const postingId = params.postingId;
   const queryClient = useQueryClient();
-  
+  const [ commentEditStateForSubmit, setCommentEditStateForSubmit ] = useState(false);
   // 로그인한 유저의 닉네임 가져오기
 
   const context = useContext(userContext);
@@ -137,12 +136,12 @@ const Detail = () => {
       <CommentBox>
         <CommentListBox>
           {data.comments.map((data, idx) => (
-            <CommentCard key={idx} data={data} postingId={postingId} />
+            <CommentCard key={idx} data={data} postingId={postingId} commentEditStateForSubmit={commentEditStateForSubmit} setCommentEditStateForSubmit={setCommentEditStateForSubmit} />
           ))}
         </CommentListBox>
       </CommentBox>
 
-      <SubmitForm postingId={postingId} placeholderText="댓글을 남겨주세요." />
+      <SubmitForm postingId={postingId} placeholderText="댓글을 남겨주세요." commentEditStateForSubmit={commentEditStateForSubmit} />
     </>
   );
 };
