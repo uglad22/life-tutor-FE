@@ -29,6 +29,7 @@ function App() {
   const location = useLocation();
   const access = context.state.userInfo.username;
   const { setUserInfo } = context.actions;
+  const token = localStorage.getItem("Authorization");
 
   useEffect(()=> {
     const getUserInfo = async () => {
@@ -61,27 +62,27 @@ function App() {
           <Routes key={location.pathname} location={location}>
             <Route path="/" element={<Splash/>}/>
             <Route path="/viewer/posting/:category" element={<PostingViewer/>}/>
-            <Route path="/viewer/posting/search/:hashtag" element={<PrivateRoute component={<PostingViewer/>} authenticated={access}/>}/>
-            <Route path="/viewer/room" element={<PrivateRoute component={<RoomViewer/>} authenticated={access}/>}/>
-            <Route path="/viewer/room/search/:hashtag" element={<PrivateRoute component={<RoomViewer/>} authenticated={access}/>}/>
-            <Route path="/detail/posting/:postingId" element={<PrivateRoute component={<Detail />} authenticated={access}/>} />
+            <Route path="/viewer/posting/search/:hashtag" element={<PrivateRoute component={<PostingViewer/>} authenticated={token}/>}/>
+            <Route path="/viewer/room" element={<PrivateRoute component={<RoomViewer/>} authenticated={token}/>}/>
+            <Route path="/viewer/room/search/:hashtag" element={<PrivateRoute component={<RoomViewer/>} authenticated={token}/>}/>
+            <Route path="/detail/posting/:postingId" element={<PrivateRoute component={<Detail />} authenticated={token}/>} />
             <Route path="/signup" element={<Signup />}></Route>
 
             
             <Route path="/mypage/myinfomanage" element={<MyInfoManage />} />
             <Route path="/mypage/mypwmanage" element={<MyPwManage />} />
 
-            <Route path="/login" element={<UserLimitRoute component={<Login />} authenticated={access}/>}></Route>
-            <Route path="/mypage" element={<PrivateRoute component={<Mypage />} authenticated={access}/>} />
+            <Route path="/login" element={<UserLimitRoute component={<Login />} authenticated={token}/>}></Route>
+            <Route path="/mypage" element={<PrivateRoute component={<Mypage />} authenticated={token}/>} />
 
             <Route
             path="/oauth2/redirect/:token"
             element={<KakaoLogin />}
              />
-            <Route path="/posting" element={<PrivateRoute component={<Post/>} authenticated={access}/>}/>
-            <Route path="/posting/edit/:postingId" element={<PrivateRoute component={<Post/>} authenticated={access}/>}/>
-            <Route path="/create/room" element={<PrivateRoute component={<CreateRoom/>} authenticated={access}/>}/>
-            <Route path="/detail/room/chat/:roomId" element={<PrivateRoute component={<ChatRoom/>} authenticated={access}/>}/>
+            <Route path="/posting" element={<PrivateRoute component={<Post/>} authenticated={token}/>}/>
+            <Route path="/posting/edit/:postingId" element={<PrivateRoute component={<Post/>} authenticated={token}/>}/>
+            <Route path="/create/room" element={<PrivateRoute component={<CreateRoom/>} authenticated={token}/>}/>
+            <Route path="/detail/room/chat/:roomId" element={<PrivateRoute component={<ChatRoom/>} authenticated={token}/>}/>
           </Routes>
           </AnimatePresence>  
         </Content>
