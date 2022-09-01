@@ -94,10 +94,15 @@ const MyPwWrapper = styled.div`
   width: 100%;
   height: calc(100% - 60px - 71px);
   position: fixed;
+  left:50%;
+  transform:translate(-50%, 0);
+  top:0;
   color: #757575;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  max-width:480px;
+  
   input {
     box-sizing: border-box;
     height: 46px;
@@ -147,7 +152,7 @@ const NewPwBox = styled.div`
 //   }
 // `;
 
-const ChangeMyPwBtn = styled.div`
+const ChangeMyPwBtn = styled.button`
     width: 335px;
     margin: 310px auto 0px;
     background: #3549FF;
@@ -159,4 +164,5 @@ const ChangeMyPwBtn = styled.div`
     font-size: 18px;
     font-weight: bold;
     border-radius: 40px;
+    border:none;
 `;

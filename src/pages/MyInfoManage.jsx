@@ -87,6 +87,9 @@ const MyInfoWrapper = styled.div`
   height: calc(100% - 60px - 71px);
   position: fixed;
   color: #757575;
+  max-width:480px;
+  left:50%;
+  transform:translate(-50%, 0);
   input {
     box-sizing: border-box;
     height: 46px;
@@ -144,7 +147,7 @@ const UserTypeBox = styled.div`
   }
 `;
 
-const ChangeMyInfoBtn = styled.div`
+const ChangeMyInfoBtn = styled.button`
     width: 335px;
     margin: 379px auto 0px;
     background: #3549FF;
@@ -156,4 +159,5 @@ const ChangeMyInfoBtn = styled.div`
     font-size: 18px;
     font-weight: bold;
     border-radius: 40px;
+    border:none;
 `;
