@@ -58,11 +58,14 @@ export default React.memo(SubmitForm);
 
 const CommentAddBox = styled.div`
   background: #EFEFEF;
+  margin: 0 auto;
   width: 100%;
+  max-width: 480px;
   height: 63px;
   position: fixed;
   bottom: 0;
-  left: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
   display: flex;
   align-items: center;
   ${props => {
