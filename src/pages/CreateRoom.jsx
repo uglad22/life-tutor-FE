@@ -39,6 +39,9 @@ const CreateRoom = () => {
             setInputs({...inputs, hashtagInput:""});
             return;
         }
+        else if(inputs.hashtagInput.length > 6) {
+            alert("해시태그는 6자리까지 설정 할 수 있습니다.");
+        }
         else {
             setHashtag([...hashtag, inputs.hashtagInput]);
             setInputs({...inputs, hashtagInput:""});

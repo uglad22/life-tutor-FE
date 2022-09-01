@@ -49,6 +49,9 @@ const Post = () => {
                 setHashInput('');
                 return;
             }
+            else if(hashInput.length > 6) {
+                alert("해시태그는 6자리까지 설정 할 수 있습니다.");
+            }
             else {
                 // 스페이스바로 추가하면 공백문자가 포함되기 때문에 trim()을 해줌
                 setPostData({...postData, hashtag:[...postData.hashtag, hashInput.trim()]})
@@ -71,6 +74,9 @@ const Post = () => {
             alert("해시태그는 3개까지 등록 가능합니다.");
             setHashInput('');
             return;
+        }
+        else if(hashInput.length > 6) {
+            alert("해시태그는 6자리까지 설정 할 수 있습니다.");
         }
         else {
             setPostData({...postData, hashtag:[...postData.hashtag, hashInput.trim()]})
