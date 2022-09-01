@@ -22,11 +22,13 @@ const Search = () => {
             return;
         }
         if(!searchInput) return;
+
+        const inputResult = searchInput.replace(/[/!@#$%^&*~)(/?><\s]/g, "");
         if(pathname.includes("/posting")) {
-            navigate(`/viewer/posting/search/${searchInput}`);
+            navigate(`/viewer/posting/search/${inputResult}`);
         }
         else {
-            navigate(`/viewer/room/search/${searchInput}`);
+            navigate(`/viewer/room/search/${inputResult}`);
         }
     }
 

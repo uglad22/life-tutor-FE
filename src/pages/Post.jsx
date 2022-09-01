@@ -53,8 +53,9 @@ const Post = () => {
                 alert("해시태그는 6자리까지 설정 할 수 있습니다.");
             }
             else {
-                // 스페이스바로 추가하면 공백문자가 포함되기 때문에 trim()을 해줌
-                setPostData({...postData, hashtag:[...postData.hashtag, hashInput.trim()]})
+                // 특수문자, 공백문자 제거
+                const result = hashInput.replace(/[/!@#$%^&*~)(/?><\s]/g, "");
+                setPostData({...postData, hashtag:[...postData.hashtag, result]})
                 setHashInput('');
             }
             
@@ -79,7 +80,8 @@ const Post = () => {
             alert("해시태그는 6자리까지 설정 할 수 있습니다.");
         }
         else {
-            setPostData({...postData, hashtag:[...postData.hashtag, hashInput.trim()]})
+            const result = hashInput.replace(/[/!@#$%^&*~)(/?><\s]/g, "");
+            setPostData({...postData, hashtag:[...postData.hashtag, result]})
             setHashInput('');
         }
     }
