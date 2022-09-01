@@ -5,6 +5,7 @@ import instance from '../shared/axios';
 
 import Header from '../components/header/Header';
 import { userContext } from '../components/context/UserProvider';
+import { Helmet } from 'react-helmet'
 
 const MyInfoManage = () => {
   const navigate = useNavigate();
@@ -61,6 +62,12 @@ const MyInfoManage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>IT-ing</title>
+        <link rel="apple-touch-icon" sizes="180x180" href="180.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="32.ico" />
+        <link rel="icon" type="image/png" sizes="16x16" href="16.ico" />
+      </Helmet>
       <Header title="개인정보 변경" isAction={true} />
       <MyInfoWrapper>
         <NicknameBox>

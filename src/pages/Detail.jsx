@@ -84,9 +84,9 @@ const Detail = () => {
       <ContentBox>
         <Helmet>
             <title>IT-ing</title>
-            <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/180.ico" />
-            <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/32.ico" />
-            <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/16.ico" />
+            <link rel="apple-touch-icon" sizes="180x180" href="180.ico" />
+            <link rel="icon" type="image/png" sizes="32x32" href="32.ico" />
+            <link rel="icon" type="image/png" sizes="16x16" href="16.ico" />
         </Helmet>
         <TitleAndWriterBox>
           <Title>

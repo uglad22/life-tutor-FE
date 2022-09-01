@@ -58,9 +58,9 @@ const PostingViewer = () => {
       <PostingViewerWrapper>
         <Helmet>
           <title>IT-ing</title>
-          <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/180.ico" />
-          <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/32.ico" />
-          <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/16.ico" />
+          <link rel="apple-touch-icon" sizes="180x180" href="180.ico" />
+          <link rel="icon" type="image/png" sizes="32x32" href="32.ico" />
+          <link rel="icon" type="image/png" sizes="16x16" href="16.ico" />
         </Helmet>
         <Header/>
             {!paramHashtag&&(listData.pages[0]?.posts?.length===0?<Notice title={"게시글이 없습니다!"} text={"첫 게시글을 등록해보세요!"}/>:listData.pages?.map((page, index) => (
