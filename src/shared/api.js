@@ -54,7 +54,7 @@ export const chatroomAPI = {
     },
     fetchSearchRoomsListWithScroll: async (pageParams, hashtag) => {
         console.log(hashtag);
-        const res = await instance.get(`/api/search/rooms?hash_tag=${hashtag}&page=${pageParams}&size=10`);
+        const res = await instance.get(`/api/search/rooms?hashtag=${hashtag}&page=${pageParams}&size=10`);
         const { content } = res.data;
         const { isLast } = res.data;
 
