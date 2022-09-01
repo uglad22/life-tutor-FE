@@ -4,13 +4,19 @@ import Header from "../components/header/Header";
 import ManagementCard from "../components/card/ManagementCard";
 import { userContext } from "../components/context/UserProvider";
 import { userTypeTrans } from "../shared/sharedFn";
+import { useNavigate } from 'react-router-dom';
+
+// FIXME: 카카오로그인이면 비밀번호 변경 렌더링 안되게
 
 const Mypage = () => {
   const context = useContext(userContext);
   const { userInfo } = context.state;
+
+  const navigate = useNavigate();
+
   return (
     <>
-      <Header title="마이페이지" isAction={true}/>
+      <Header title="마이페이지" isAction={true} />
       <MemberInfoAndCategoryBox>
         <MemberInfo>
           <ProfilePicture>
@@ -39,7 +45,7 @@ const Mypage = () => {
           </MemberNameTypeAndEmail>
         </MemberInfo>
         <CategoryBox>
-          <Mypostings>
+          <Mypostings onClick={()=> navigate("/viewer/posting/mypostings")}>
             <CategoryIcon>
               <svg
                 width="35"
@@ -84,6 +90,7 @@ const Mypage = () => {
       </MemberInfoAndCategoryBox>
       <MemberManagementBox>
         <ManagementCard
+          isShow={true}
           managementType="개인정보 변경"
           svg={
             <svg
@@ -102,19 +109,21 @@ const Mypage = () => {
               />
             </svg>
           }
+          pathUrl="/mypage/myinfomanage"
         />
         <ManagementCard
+          isShow={!userInfo.kakao}
           managementType="비밀번호 변경"
           svg={
             <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
+              width="22"
+              height="22"
+              viewBox="0 0 22 22"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M7 11V7C7 5.67392 7.52678 4.40215 8.46447 3.46447C9.40215 2.52678 10.6739 2 12 2C13.3261 2 14.5979 2.52678 15.5355 3.46447C16.4732 4.40215 17 5.67392 17 7V11M5 11H19C20.1046 11 21 11.8954 21 13V20C21 21.1046 20.1046 22 19 22H5C3.89543 22 3 21.1046 3 20V13C3 11.8954 3.89543 11 5 11Z"
+                d="M14.5003 6.5L18.0003 3M20.0003 1L18.0003 3L20.0003 1ZM10.3903 10.61C10.9066 11.1195 11.3171 11.726 11.598 12.3948C11.879 13.0635 12.0249 13.7813 12.0273 14.5066C12.0297 15.232 11.8887 15.9507 11.6122 16.6213C11.3357 17.2919 10.9293 17.9012 10.4164 18.4141C9.90351 18.9271 9.2942 19.3334 8.62358 19.6099C7.95296 19.8864 7.23427 20.0275 6.50891 20.025C5.78354 20.0226 5.06582 19.8767 4.39707 19.5958C3.72831 19.3148 3.12174 18.9043 2.61227 18.388C1.6104 17.3507 1.05604 15.9614 1.06857 14.5193C1.0811 13.0772 1.65953 11.6977 2.67927 10.678C3.69902 9.65825 5.07849 9.07982 6.52057 9.06729C7.96265 9.05476 9.35196 9.60913 10.3893 10.611L10.3903 10.61ZM10.3903 10.61L14.5003 6.5L10.3903 10.61ZM14.5003 6.5L17.5003 9.5L21.0003 6L18.0003 3L14.5003 6.5Z"
                 stroke="#656565"
                 strokeWidth="2"
                 strokeLinecap="round"
@@ -122,8 +131,10 @@ const Mypage = () => {
               />
             </svg>
           }
+          pathUrl="/mypage/mypwmanage"
         />
         <ManagementCard
+          isShow={true}
           managementType="피드백 남기기"
           svg={
             <svg
@@ -222,14 +233,14 @@ const Mypostings = styled.div`
 `;
 
 const CategoryIcon = styled.div`
-    width: 62px;
-    height: 62px;
-    background: #E8EAFF;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    margin-bottom: 10px;
+  width: 62px;
+  height: 62px;
+  background: #e8eaff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-bottom: 10px;
 `;
 
 const MyCommentsInPost = styled.div`
@@ -243,5 +254,4 @@ const MyCommentsInPost = styled.div`
 
 const MemberManagementBox = styled.div`
   background: white;
-  height: 300px;
 `;

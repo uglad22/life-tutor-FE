@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from 'react'
-import styled from 'styled-components';
+import React, { useRef } from 'react'
+import styled, { css } from 'styled-components';
 import instance from '../../shared/axios';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocation } from 'react-router-dom';
@@ -7,12 +7,12 @@ import { useLocation } from 'react-router-dom';
 import { BiRightArrowCircle } from 'react-icons/bi';
 
 
-const SubmitForm = ({ postingId, placeholderText, sendMsg }) => {
+const SubmitForm = ({ postingId, placeholderText, sendMsg, commentEditStateForSubmit }) => {
     const commentInput = useRef();
     const queryClient = useQueryClient();
     const location = useLocation();
 
-    console.log('render');
+    // console.log('render');
 
     const addComment = async () => {
         const comment = { content: commentInput.current.value };
@@ -40,7 +40,7 @@ const SubmitForm = ({ postingId, placeholderText, sendMsg }) => {
 
   return (
     <>
-    <CommentAddBox>
+    <CommentAddBox onSubmit={submitButtonHandler} isShow={commentEditStateForSubmit}>
         <CommentInputBox>
           <input type="text" placeholder={placeholderText} ref={commentInput} />
           <CommentAddBtn
@@ -56,15 +56,25 @@ const SubmitForm = ({ postingId, placeholderText, sendMsg }) => {
 
 export default React.memo(SubmitForm);
 
-const CommentAddBox = styled.div`
+const CommentAddBox = styled.form`
   background: #EFEFEF;
+  margin: 0 auto;
   width: 100%;
+  max-width: 480px;
   height: 63px;
   position: fixed;
   bottom: 0;
-  left: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
   display: flex;
   align-items: center;
+  ${props => {
+            if(props.isShow === true) {
+                return css`
+                    visibility: hidden;
+                `
+            }
+        }}
 `;
 
 const CommentInputBox = styled.div`

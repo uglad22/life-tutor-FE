@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { userContext } from '../context/UserProvider';
 
 const Search = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const pathname = location.pathname;
+    const context = useContext(userContext);
+    const { username } = context.state.userInfo;
     const [searchInput, setSearchInput] = useState("");
 
     const searchChangeHandler = (e) => {
@@ -14,16 +17,23 @@ const Search = () => {
 
     const submitHandler = (e) => {
         e.preventDefault();
+        if(!username) {
+            alert("로그인이 필요합니다.");
+            return;
+        }
         if(!searchInput) return;
+
+        const inputResult = searchInput.replace(/[/!@#$%^&*~)(/?><\s]/g, "");
         if(pathname.includes("/posting")) {
-            navigate(`/viewer/posting/search/${searchInput}`);
+            navigate(`/viewer/posting/search/${inputResult}`);
         }
         else {
-            navigate(`/viewer/room/search/${searchInput}`);
+            navigate(`/viewer/room/search/${inputResult}`);
         }
     }
 
     if(!pathname.includes('/viewer/')) return null;
+    else if(pathname === "/viewer/posting/mypostings") return null;
 
     return(
         <SearchWrapper onSubmit={submitHandler}>

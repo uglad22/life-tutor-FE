@@ -6,6 +6,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useLocation, useParams } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { chatroomAPI } from '../shared/api';
+import Notice from '../components/notice/Notice';
 
 
 const RoomViewer = () => {
@@ -30,7 +31,7 @@ const RoomViewer = () => {
         }
     )
 
-    const {data:searchData, fetchNextPage:searchFetchNextPage, isFetchingNextPage:isSearchFetchingNextPage} = useInfiniteQuery(
+    const {data:searchListData, fetchNextPage:searchFetchNextPage, isFetchingNextPage:isSearchFetchingNextPage} = useInfiniteQuery(
         ["rooms", "search", hashtagParam],
         ({ pageParam = 1}) => chatroomAPI.fetchSearchRoomsListWithScroll(pageParam, hashtagParam),
         {
@@ -55,20 +56,20 @@ const RoomViewer = () => {
     return(   
         <RoomViewerWrapper>
             <Header title={"채팅 리스트"} isAction={true}/>
-            {!hashtagParam&&listData.pages?.map((page, index) => (
+            {!hashtagParam&&(listData.pages[0]?.rooms?.length===0?<Notice title={"채팅방이 없습니다!"} text={"채팅방을 개설하고 대화해보세요!"}/>:listData.pages?.map((page, index) => (
                 <Page key={index}>
                     {page.rooms.map((room) => (
                         <RoomCard key={room.roomId} room={room}></RoomCard>
                     ))}
                 </Page>
-            ))}
-             {!hashtagParam||searchData.pages?.map((page, index) => (
+            )))}
+             {!hashtagParam||(searchListData.pages[0]?.rooms?.length===0?<Notice title={"채팅방이 없습니다!"} text={"다른 해시태그로 검색해보세요!"}/>:searchListData.pages?.map((page, index) => (
                 <Page key={index}>
                     {page.rooms.map((room) => (
                          <RoomCard key={room.roomId} room={room}></RoomCard>
                     ))}
                 </Page>
-            ))}
+            )))}
         </RoomViewerWrapper>
     )
 }

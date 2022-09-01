@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import NomalBadge from '../hashtag/NomalBadge';
 import { useNavigate } from 'react-router-dom';
@@ -6,10 +6,17 @@ import { userTypeTrans } from '../../shared/sharedFn';
 import { editPostingTime } from '../../shared/sharedFn';
 import { AiOutlineLike } from 'react-icons/ai';
 import { IoChatboxEllipsesOutline } from 'react-icons/io5';
+import { userContext } from '../context/UserProvider';
 
 const PostingCard = ({post}) => {
+    const context = useContext(userContext);
+    const { username } = context.state.userInfo;
     const navigate = useNavigate();
     const cardClickHandler = () => {
+        if(!username){
+            alert("로그인이 필요합니다.");
+            return;
+        }
         navigate(`/detail/posting/${post.posting_id}`);
     }
 
@@ -53,6 +60,7 @@ const PostingCardWrapper = styled.div`
     box-sizing:border-box;
     margin:0 auto;
     box-shadow: 1px 1px 1px lightgray;
+    cursor:pointer;
 `
 
 const PostingCardBody = styled.div`
