@@ -28,7 +28,7 @@ const Login = () => {
         }
 
         //공란이면 알럿 띄우기
-        if (email_ref || pw_ref === null) {
+        if (!email_ref || !pw_ref) {
             alert ('ID 또는 비밀번호를 입력하세요!')
         } else {
 

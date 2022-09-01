@@ -82,7 +82,7 @@ const Signup = () => {
     const submitId = async () => {
         if (emailcheck == null) {
             alert('ID를 입력해주세요!');
-        } else if (emailcheck == false) {
+        } else if (emailcheck === false) {
             alert('ID 형식을 확인해주세요!');
         } else {
             try {
@@ -99,9 +99,9 @@ const Signup = () => {
     }
 
     const submitNickName = async () => {
-        if (nicknamecheck == null) {
+        if (nicknamecheck === null) {
             alert('닉네임을 입력해주세요!');
-        } else if (nicknamecheck == false) {
+        } else if (nicknamecheck === false) {
             alert('닉네임 형식을 확인해주세요!');
         } else {
             try {
