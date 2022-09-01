@@ -7,8 +7,7 @@ import Header from '../components/header/Header';
 import instance from '../shared/axios';
 
 const MyPwManage = () => {
-  //FIXME: 비밀번호 정규식 수정필요
-    const _pwcheck = /^[0-9a-zA-Z!@#$%^&.*]{4,20}$/;
+    const _pwcheck = /^[0-9a-zA-Z!@#$%^&.*]{8,20}$/;
     const nowPw_ref = useRef();
     const newPw_ref = useRef();
     const newConfirmPw_ref = useRef();
