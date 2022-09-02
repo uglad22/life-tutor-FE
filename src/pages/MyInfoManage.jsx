@@ -11,51 +11,73 @@ const MyInfoManage = () => {
   const context = useContext(userContext);
   const { userInfo } = context.state;
   const { setUserInfo } = context.actions;
-  const [ nicknameCheck, setNicknameCheck ] = useState(false);
+  const [ nicknameCheck, setNicknameCheck ] = useState(true);
 
-  const _reg = /^(?=.*[ㄱ-ㅎ가-힣])[a-zA-Z0-9ㄱ-ㅎ가-힣]{2,5}$/;
+  const [ dupCheckBtnState, setDupCheckBtnState ] = useState(false);
+  const [ changeBtnState, setChangeBtnState ] = useState(false);
+
+  const _nickReg = /^[a-zA-Z0-9ㄱ-ㅎ가-힣]{2,10}$/;
 
   const nickname_ref = useRef();
   const usertype_ref = useRef();
 
   const nicknameCheckHandler = async () => {
-    if (!_reg.test(nickname_ref.current.value)) {
-      return alert("닉네임은 2자 이상 5자 이하 한글로 해주세요.");
-    }
     try {
       const res = await instance.get(
         `/api/users/nickname/${nickname_ref.current.value}`
       );
       console.log(res);
-      setNicknameCheck(true);
+      setChangeBtnState(true);
       alert("사용 가능한 닉네임입니다.");
     } catch (err) {
       console.log(err);
-      setNicknameCheck(false);
-      alert("이미 사용된 닉네임입니다.");
+      setChangeBtnState(false);
+      alert(err.response.data);
     }
   };
 
-  const myInfoChangeHandler = async () => {
-    if (nickname_ref.current.value === userInfo.nickname || nicknameCheck) {
-      const data = {
-        nickname: nickname_ref.current.value,
-        user_type: usertype_ref.current.value,
-      };
-      try {
-        const res = await instance.put("/api/mypage/user/info", data);
-        console.log("성공", res);
-        alert("개인정보가 변경되었습니다.");
-        const { nickname, user_type } = data;
-        const { username, kakao } = userInfo;
-        const userData = { username, nickname, user_type, kakao };
-        setUserInfo(userData);
-        navigate("/mypage");
-      } catch (err) {
-        console.log("실패", err);
-      }
+  const nicknameHandler = () => {
+    if (nickname_ref.current.value === userInfo.nickname) {
+      setNicknameCheck(true);
+      setChangeBtnState(true);
     } else {
-      alert("닉네임 중복 확인을 해주세요.");
+      setNicknameCheck(false);
+      setChangeBtnState(false);
+    };
+
+    if (_nickReg.test(nickname_ref.current.value) && nickname_ref.current.value !== '' && nickname_ref.current.value !== userInfo.nickname) {
+      return setDupCheckBtnState(true);
+    } else {
+      return setDupCheckBtnState(false);
+    };
+  }
+
+  console.log(nicknameCheck);
+
+  const userTypeHandler = () => {
+    if (usertype_ref.current.value !== userInfo.user_type && nicknameCheck) {
+      return setChangeBtnState(true);
+    } else {
+      return setChangeBtnState(false);
+    }
+  }
+
+  const myInfoChangeHandler = async () => {
+    const data = {
+      nickname: nickname_ref.current.value,
+      user_type: usertype_ref.current.value,
+    };
+    try {
+      const res = await instance.put("/api/mypage/user/info", data);
+      console.log("성공", res);
+      alert("개인정보가 변경되었습니다.");
+      const { nickname, user_type } = data;
+      const { username, kakao } = userInfo;
+      const userData = { username, nickname, user_type, kakao };
+      setUserInfo(userData);
+      navigate("/mypage");
+    } catch (err) {
+      console.log("실패", err);
     }
   };
 
@@ -66,30 +88,18 @@ const MyInfoManage = () => {
         <NicknameBox>
           <p>닉네임</p>
           <NicknameInputBox>
-            <input ref={nickname_ref} defaultValue={userInfo.nickname}></input>
-            <NicknameCheckBtn
-              onClick={() => {
-                nicknameCheckHandler();
-              }}
-            >
-              중복 확인
-            </NicknameCheckBtn>
+            <input ref={nickname_ref} defaultValue={userInfo.nickname} onChange={nicknameHandler}></input>
+            <NicknameCheckBtn onClick={nicknameCheckHandler} disabled={!dupCheckBtnState}> 중복 확인 </NicknameCheckBtn>
           </NicknameInputBox>
         </NicknameBox>
         <UserTypeBox>
-          <select ref={usertype_ref} defaultValue={userInfo.user_type}>
+          <select ref={usertype_ref} onChange={userTypeHandler} defaultValue={userInfo.user_type}>
             <option value="SEEKER">취준생</option>
             <option value="JUNIOR">주니어</option>
             <option value="SENIOR">시니어</option>
           </select>
         </UserTypeBox>
-        <ChangeMyInfoBtn
-          onClick={() => {
-            myInfoChangeHandler();
-          }}
-        >
-          변경하기
-        </ChangeMyInfoBtn>
+        <ChangeMyInfoBtn onClick={myInfoChangeHandler} disabled={!changeBtnState} > 변경하기 </ChangeMyInfoBtn>
       </MyInfoWrapper>
     </>
   );
@@ -138,15 +148,18 @@ const NicknameInputBox = styled.div`
   }
 `;
 
-const NicknameCheckBtn = styled.div`
+const NicknameCheckBtn = styled.button`
   width: 128px;
   height: 46px;
-  background: #3549ff;
+  background: ${(props) => (props.disabled ? "#757575" : "#3549FF")};
+  cursor: ${(props) => (props.disabled ? "default" : "pointer")};
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 8px;
+  border: none;
+  font-weight: bold;
 `;
 
 const UserTypeBox = styled.div`
@@ -167,7 +180,8 @@ const UserTypeBox = styled.div`
 const ChangeMyInfoBtn = styled.button`
   width: 335px;
   margin: 35px auto 0px;
-  background: #3549ff;
+  background: ${(props) => (props.disabled ? "#757575" : "#3549FF")};
+  cursor: ${(props) => (props.disabled ? "default" : "pointer")};
   color: white;
   height: 60px;
   display: flex;
