@@ -103,8 +103,8 @@ const Detail = () => {
         <ContentAndHashtagBox>
           <Content>
             {data.posting_content.split('\n').map((line, idx) => {
-              return <p key={idx}>{line}</p>;
-            })};
+              return <p key={idx}>{line}</p>
+            })}
           </Content>
           <Hashtag>
             {data.hashtag.map((d, idx) => (
@@ -248,6 +248,7 @@ const ContentLikeTrueBtn = styled.div`
   align-items: center;
   svg {
     margin-right: 5px;
+    cursor:pointer;
   }
 `;
 
@@ -258,6 +259,7 @@ const ContentLikeFalseBtn = styled.div`
   align-items: center;
   svg {
     margin-right: 5px;
+    cursor:pointer;
   }
 `;
 
