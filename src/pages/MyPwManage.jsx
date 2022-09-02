@@ -8,7 +8,7 @@ import instance from '../shared/axios';
 import { Helmet } from 'react-helmet'
 
 const MyPwManage = () => {
-    const _pwcheck = /^[0-9a-zA-Z!@#$%^&.*]{8,20}$/;
+    const _pwcheck = /^(?=.*[!@#$%^&.*])[0-9a-zA-Z!@#$%^&.*]{8,20}$/;
     const nowPw_ref = useRef();
     const newPw_ref = useRef();
     const newConfirmPw_ref = useRef();
@@ -16,53 +16,40 @@ const MyPwManage = () => {
 
     const context = useContext(userContext);
     const { userInfo } = context.state;
-    
-    const [ newPwCheck, setNewPwCheck ] = useState(false);
-    const [ newPwConfirmCheck, setNewPwConfirmCheck ] = useState(false);
-    
-    const newPwCheckHandler = () => {
-        if (_pwcheck.test(newPw_ref.current.value)) {
-            setNewPwCheck(true);
-        } else {
-            setNewPwCheck(false);
-        }
-    }
 
-    const newPwConfirmCheckHandler = () => {
-        if (newPw_ref.current.value === newConfirmPw_ref.current.value) {
-            setNewPwConfirmCheck(true);
-        } else {
-            setNewPwConfirmCheck(false);
-        }
-    }
+    const [ changeBtnState, setChangeBtnState ] = useState(false);
+
+    const pwCheckHandler = () => {
+      if(_pwcheck.test(nowPw_ref.current.value) && _pwcheck.test(newPw_ref.current.value) && newPw_ref.current.value.length === newConfirmPw_ref.current.value.length) {
+        return setChangeBtnState(true);
+      } else {
+        return setChangeBtnState(false);
+      }
+    };
 
     const myPwChangeHandler = async () => {
-        if (newPwCheck && newPwConfirmCheck) {
-            const data = {
-                password: nowPw_ref.current.value,
-                changePassword: newPw_ref.current.value,
-                confirmChangePassword: newConfirmPw_ref.current.value
-            }
-            try {
-                const res = await instance.put("/api/mypage/user/password", data);
-                console.log(res);
-                alert('비밀번호를 변경하였습니다.');
-                navigate("/mypage");
-            } catch (err) {
-                console.log(err);
-                alert('비밀번호가 일치하지 않습니다.');
-            }
-        } else {
-            alert('변경하려는 비밀번호가 일치하지 않습니다.');
-        }
-    }
+      const data = {
+          password: nowPw_ref.current.value,
+          changePassword: newPw_ref.current.value,
+          confirmChangePassword: newConfirmPw_ref.current.value
+      }
+      try {
+          const res = await instance.put("/api/mypage/user/password", data);
+          // console.log(res);
+          alert('비밀번호를 변경하였습니다.');
+          navigate("/mypage");
+      } catch (err) {
+          // console.log(err.response.data);
+          alert(err.response.data);
+      }
+    };
 
     useEffect(() => {
       if (userInfo.kakao) {
         alert("카카오회원은 비밀번호 변경을 할 수 없습니다.");
         return navigate("/mypage");
       }
-    }, [])
+    }, []);
 
   return (
     <>
@@ -76,14 +63,14 @@ const MyPwManage = () => {
       <MyPwWrapper>
         <NowPwBox>
           <p>현재 비밀번호</p>
-          <input ref={nowPw_ref} type="password"></input>
+          <input ref={nowPw_ref} type="password" onChange={pwCheckHandler} autoComplete="off"></input>
         </NowPwBox>
         <NewPwBox>
           <p>신규 비밀번호</p>
-          <input ref={newPw_ref} type="password" placeholder="영문 8-20자, 특수문자(!@#$%^&.*)포함" onChange={() => {newPwCheckHandler()}}></input>
-          <input ref={newConfirmPw_ref} type="password" placeholder="비밀번호 확인" onChange={() => {newPwConfirmCheckHandler()}}></input>
+          <input ref={newPw_ref} type="password" placeholder="영문이나 숫자, 특수문자(!@#$%^&.*)포함 8~20자" onChange={pwCheckHandler} autoComplete="off"></input>
+          <input ref={newConfirmPw_ref} type="password" placeholder="비밀번호 확인" onChange={pwCheckHandler} autoComplete="off"></input>
         </NewPwBox>
-        <ChangeMyPwBtn onClick={() => {myPwChangeHandler()}}>변경하기</ChangeMyPwBtn>
+        <ChangeMyPwBtn onClick={() => {myPwChangeHandler()}} disabled={!changeBtnState}>변경하기</ChangeMyPwBtn>
       </MyPwWrapper>
     </>
   );
@@ -103,7 +90,6 @@ const MyPwWrapper = styled.div`
   color: #757575;
   display: flex;
   flex-direction: column;
-  gap: 10px;
   max-width:480px;
   input {
     box-sizing: border-box;
@@ -120,7 +106,7 @@ const MyPwWrapper = styled.div`
 
 const NowPwBox = styled.div`
   width: 336px;
-  margin: 27.5px auto 0px;
+  margin: 27.5px auto 22px;
   display: flex;
   flex-direction: column;
   p {
@@ -146,7 +132,8 @@ const NewPwBox = styled.div`
 const ChangeMyPwBtn = styled.button`
     width: 335px;
     margin: 20px auto 0px;
-    background: #3549FF;
+    background: ${(props) => (props.disabled ? "#757575" : "#3549FF")};
+    cursor: ${(props) => (props.disabled ? "default" : "pointer")};
     color: white;
     height: 60px;
     display: flex;

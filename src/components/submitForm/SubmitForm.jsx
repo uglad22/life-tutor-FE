@@ -86,7 +86,6 @@ const CommentInputBox = styled.div`
   justify-content: center;
   border: 1px solid #D8D8D8;
   border-radius: 30px;
-  gap: 5px;
   background: white;
   input {
     border: none;

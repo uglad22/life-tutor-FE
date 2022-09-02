@@ -40,7 +40,7 @@ const Detail = () => {
     refetchOnWindowFocus: false,
   });
 
-  console.log(data);
+  // console.log(data);
 
   // 게시글 기능관련
 
@@ -102,7 +102,9 @@ const Detail = () => {
         </TitleAndWriterBox>
         <ContentAndHashtagBox>
           <Content>
-            <p>{data.posting_content}</p>
+            {data.posting_content.split('\n').map((line, idx) => {
+              return <p key={idx}>{line}</p>;
+            })};
           </Content>
           <Hashtag>
             {data.hashtag.map((d, idx) => (
@@ -185,9 +187,9 @@ const WriterAndTimeBox = styled.div`
 
 const Writer = styled.div`
   display: flex;
-  gap: 10px;
   font-weight: bold;
   p:last-child {
+    margin-left: 10px;
     color: #3549FF;
   }
 `;
@@ -213,24 +215,30 @@ const Content = styled.div`
 
 const Hashtag = styled.div`
   display: flex;
-  gap: 7px;
   margin: 20px;
   font-size: 25px;
+  div{
+    margin-right: 5px;
+  }
 `;
 
 const CommentCountAndLikeCountBox = styled.div`
   display: flex;
   align-items: center;
   margin: 20px;
-  gap: 30px;
   font-size: 20px;
   color: #656565;
+  div {
+    margin-right: 24px;
+  }
 `;
 
 const CommentCount = styled.div`
   display: flex;
   align-items: center;
-  gap: 5px;
+  svg {
+    margin-right: 5px;
+  }
 `;
 
 const ContentLikeTrueBtn = styled.div`
@@ -238,7 +246,9 @@ const ContentLikeTrueBtn = styled.div`
   color: #3549FF;
   display: flex;
   align-items: center;
-  gap: 5px;
+  svg {
+    margin-right: 5px;
+  }
 `;
 
 const ContentLikeFalseBtn = styled.div`
@@ -246,7 +256,9 @@ const ContentLikeFalseBtn = styled.div`
   color: #656565;
   display: flex;
   align-items: center;
-  gap: 5px;
+  svg {
+    margin-right: 5px;
+  }
 `;
 
 const CommentBox = styled.div`

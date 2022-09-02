@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import instance from '../shared/axios';
@@ -12,53 +12,87 @@ const MyInfoManage = () => {
   const context = useContext(userContext);
   const { userInfo } = context.state;
   const { setUserInfo } = context.actions;
-  const [ nicknameCheck, setNicknameCheck ] = useState(false);
 
-  const _reg = /^(?=.*[ㄱ-ㅎ가-힣])[a-zA-Z0-9ㄱ-ㅎ가-힣]{2,5}$/;
+  const [ nicknameState, setNicknameState] = useState(true);
+  const [ nicknameCheck, setNicknameCheck ] = useState(false);
+  const [ userTypeState, setUserTypeState ] = useState(false);
+  const [ dupCheckBtnState, setDupCheckBtnState ] = useState(false);
+  const [ changeBtnState, setChangeBtnState ] = useState(false);
+
+  const _nickReg = /^[a-zA-Z0-9ㄱ-ㅎ가-힣]{2,10}$/;
 
   const nickname_ref = useRef();
   const usertype_ref = useRef();
 
+  const nicknameHandler = () => {
+    setNicknameState(false);
+    // 닉네임 정규식이 참이고, 빈값이 아니고, 기존닉네임에서 값이 바뀐 경우 중복확인 버튼 렌더링
+    if (_nickReg.test(nickname_ref.current.value) && nickname_ref.current.value !== '' && nickname_ref.current.value !== userInfo.nickname) {
+      setNicknameState(false);
+      return setDupCheckBtnState(true);
+    } else {
+      setNicknameState(true);
+      return setDupCheckBtnState(false);
+    };
+  }
+
   const nicknameCheckHandler = async () => {
-    if (!_reg.test(nickname_ref.current.value)) {
-      return alert("닉네임은 2자 이상 5자 이하 한글로 해주세요.");
-    }
     try {
       const res = await instance.get(
         `/api/users/nickname/${nickname_ref.current.value}`
       );
-      console.log(res);
+      // console.log(res);
       setNicknameCheck(true);
+      setNicknameState(true);
       alert("사용 가능한 닉네임입니다.");
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setNicknameCheck(false);
-      alert("이미 사용된 닉네임입니다.");
+      setNicknameState(false);
+      alert(err.response.data);
     }
   };
 
-  const myInfoChangeHandler = async () => {
-    if (nickname_ref.current.value === userInfo.nickname || nicknameCheck) {
-      const data = {
-        nickname: nickname_ref.current.value,
-        user_type: usertype_ref.current.value,
-      };
-      try {
-        const res = await instance.put("/api/mypage/user/info", data);
-        console.log("성공", res);
-        alert("개인정보가 변경되었습니다.");
-        const { nickname, user_type } = data;
-        const { username, kakao } = userInfo;
-        const userData = { username, nickname, user_type, kakao };
-        setUserInfo(userData);
-        navigate("/mypage");
-      } catch (err) {
-        console.log("실패", err);
-      }
+  const userTypeHandler = () => {
+    if (usertype_ref.current.value !== userInfo.user_type) {
+      return setUserTypeState(true);
     } else {
-      alert("닉네임 중복 확인을 해주세요.");
+      return setUserTypeState(false);
+    }
+  }
+
+  const myInfoChangeHandler = async () => {
+    const data = {
+      nickname: nickname_ref.current.value,
+      user_type: usertype_ref.current.value,
+    };
+    try {
+      const res = await instance.put("/api/mypage/user/info", data);
+      // console.log("성공", res);
+      alert("개인정보가 변경되었습니다.");
+      const { nickname, user_type } = data;
+      const { username, kakao } = userInfo;
+      const userData = { username, nickname, user_type, kakao };
+      setUserInfo(userData);
+      navigate("/mypage");
+    } catch (err) {
+      // console.log("실패", err);
     }
   };
+
+  useEffect(() => {
+    if (nicknameState && userTypeState) {
+      return setChangeBtnState(true);
+    } else if (!nicknameState && userTypeState) {
+      return setChangeBtnState(false);
+    } else if (!nicknameCheck && userTypeState) {
+      return setChangeBtnState(false);
+    } else if (nicknameCheck && userTypeState) {
+      return setChangeBtnState(true);
+    } else if (nicknameCheck && nicknameState) {
+      return setChangeBtnState(true);
+    }
+  }, [nicknameCheck, userTypeState, nicknameState])
 
   return (
     <>
@@ -73,30 +107,18 @@ const MyInfoManage = () => {
         <NicknameBox>
           <p>닉네임</p>
           <NicknameInputBox>
-            <input ref={nickname_ref} defaultValue={userInfo.nickname}></input>
-            <NicknameCheckBtn
-              onClick={() => {
-                nicknameCheckHandler();
-              }}
-            >
-              중복 확인
-            </NicknameCheckBtn>
+            <input ref={nickname_ref} defaultValue={userInfo.nickname} onChange={nicknameHandler} ></input>
+            <NicknameCheckBtn onClick={nicknameCheckHandler} disabled={!dupCheckBtnState}> 중복 확인 </NicknameCheckBtn>
           </NicknameInputBox>
         </NicknameBox>
         <UserTypeBox>
-          <select ref={usertype_ref} defaultValue={userInfo.user_type}>
+          <select ref={usertype_ref} onChange={userTypeHandler} defaultValue={userInfo.user_type}>
             <option value="SEEKER">취준생</option>
             <option value="JUNIOR">주니어</option>
             <option value="SENIOR">시니어</option>
           </select>
         </UserTypeBox>
-        <ChangeMyInfoBtn
-          onClick={() => {
-            myInfoChangeHandler();
-          }}
-        >
-          변경하기
-        </ChangeMyInfoBtn>
+        <ChangeMyInfoBtn onClick={myInfoChangeHandler} disabled={!changeBtnState} > 변경하기 </ChangeMyInfoBtn>
       </MyInfoWrapper>
     </>
   );
@@ -139,21 +161,24 @@ const NicknameBox = styled.div`
 const NicknameInputBox = styled.div`
   display: flex;
   align-items: center;
-  gap: 5px;
   input {
     width: 203px;
+    margin-right: 5px;
   }
 `;
 
-const NicknameCheckBtn = styled.div`
+const NicknameCheckBtn = styled.button`
   width: 128px;
   height: 46px;
-  background: #3549ff;
+  background: ${(props) => (props.disabled ? "#757575" : "#3549FF")};
+  cursor: ${(props) => (props.disabled ? "default" : "pointer")};
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 8px;
+  border: none;
+  font-weight: bold;
 `;
 
 const UserTypeBox = styled.div`
@@ -174,7 +199,8 @@ const UserTypeBox = styled.div`
 const ChangeMyInfoBtn = styled.button`
   width: 335px;
   margin: 35px auto 0px;
-  background: #3549ff;
+  background: ${(props) => (props.disabled ? "#757575" : "#3549FF")};
+  cursor: ${(props) => (props.disabled ? "default" : "pointer")};
   color: white;
   height: 60px;
   display: flex;
