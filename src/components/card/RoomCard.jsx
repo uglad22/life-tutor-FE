@@ -14,7 +14,7 @@ const RoomCard = ({ room }) => {
             alert("채팅방이 꽉 찼습니다.");
             return;
         }
-        else navigate(`/detail/room/chat/${room.roomId}`)
+        else navigate(`/detail/room/chat/${room.roomId}`, {state:{title:`${room.title}`, isHost:false}});
     }
 
     return(

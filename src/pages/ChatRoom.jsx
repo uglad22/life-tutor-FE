@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState, useRef } from 'react';
 import styled from 'styled-components';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import SockJS from 'sockjs-client';
 import * as StompJS from 'stompjs'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -29,6 +29,8 @@ const ChatRoom = () => {
     const { userInfo } = context.state;
 
     const navigate = useNavigate();
+    const {state:navigateState} = useLocation();
+    // console.log(host);
     const roomId = useParams().roomId;
 
     const sock = new SockJS(`${process.env.REACT_APP_API_URL}/iting`);
@@ -84,6 +86,12 @@ const ChatRoom = () => {
         })
 
         return(()=> {
+            client.send(`/api/pub/${roomId}`, {}, JSON.stringify({
+                "enter":"EXIT",
+                "messageType":"TEXT",
+                "nickname":nicknameRef.current,
+                "message":`${nicknameRef.current}님이 퇴장하였습니다.`
+            }))
             exitRoom(roomId);
             disConnect();
         })
@@ -97,7 +105,17 @@ const ChatRoom = () => {
 
     /** 메세지가 쌓여 스크롤이 생기면 자동으로 스크롤을 내려주는 코드 */
     useEffect(()=> {
+        const msglen = messages.length;
         scrollToBottom();
+        if(messages[msglen - 1]?.enter === "EXIT") {
+            if(!navigateState.isHost) {
+                alert("호스트가 퇴장하였습니다.");
+                navigate("/viewer/room");
+            }
+        }
+        console.log(msglen);
+        console.log(messages[msglen - 1]?.enter);
+
     }, [messages])
 
     
@@ -113,7 +131,7 @@ const ChatRoom = () => {
         </Helmet>
         <Header/>
         <ChatArea>
-            {messages?.map((msg, index) => msg.enter==="ENTER"? <Notice key={index}>{msg.message}</Notice>:
+            {messages?.map((msg, index) => (msg.enter==="ENTER"|| msg.enter==="EXIT")? <Notice key={index}>{msg.message}</Notice>:
              msg.nickname === nicknameRef.current ?
             <MyBubble messageTime={msg.time} key={index}>{msg.message}</MyBubble>:<OtherBubble messageTime={msg.time} key={index}>{msg.message}</OtherBubble>)}
             <div ref={chatRef} style={{height:"10px"}}></div>
