@@ -95,7 +95,9 @@ const Detail = () => {
         </TitleAndWriterBox>
         <ContentAndHashtagBox>
           <Content>
-            <p>{data.posting_content}</p>
+            {data.posting_content.split('\n').map((line, idx) => {
+              return <p key={idx}>{line}</p>;
+            })};
           </Content>
           <Hashtag>
             {data.hashtag.map((d, idx) => (
