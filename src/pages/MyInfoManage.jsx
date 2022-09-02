@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import instance from '../shared/axios';
@@ -11,8 +11,10 @@ const MyInfoManage = () => {
   const context = useContext(userContext);
   const { userInfo } = context.state;
   const { setUserInfo } = context.actions;
-  const [ nicknameCheck, setNicknameCheck ] = useState(true);
 
+  const [ nicknameState, setNicknameState] = useState(true);
+  const [ nicknameCheck, setNicknameCheck ] = useState(false);
+  const [ userTypeState, setUserTypeState ] = useState(false);
   const [ dupCheckBtnState, setDupCheckBtnState ] = useState(false);
   const [ changeBtnState, setChangeBtnState ] = useState(false);
 
@@ -21,44 +23,40 @@ const MyInfoManage = () => {
   const nickname_ref = useRef();
   const usertype_ref = useRef();
 
+  const nicknameHandler = () => {
+    setNicknameState(false);
+    // 닉네임 정규식이 참이고, 빈값이 아니고, 기존닉네임에서 값이 바뀐 경우 중복확인 버튼 렌더링
+    if (_nickReg.test(nickname_ref.current.value) && nickname_ref.current.value !== '' && nickname_ref.current.value !== userInfo.nickname) {
+      setNicknameState(false);
+      return setDupCheckBtnState(true);
+    } else {
+      setNicknameState(true);
+      return setDupCheckBtnState(false);
+    };
+  }
+
   const nicknameCheckHandler = async () => {
     try {
       const res = await instance.get(
         `/api/users/nickname/${nickname_ref.current.value}`
       );
-      console.log(res);
-      setChangeBtnState(true);
+      // console.log(res);
+      setNicknameCheck(true);
+      setNicknameState(true);
       alert("사용 가능한 닉네임입니다.");
     } catch (err) {
-      console.log(err);
-      setChangeBtnState(false);
+      // console.log(err);
+      setNicknameCheck(false);
+      setNicknameState(false);
       alert(err.response.data);
     }
   };
 
-  const nicknameHandler = () => {
-    if (nickname_ref.current.value === userInfo.nickname) {
-      setNicknameCheck(true);
-      setChangeBtnState(true);
-    } else {
-      setNicknameCheck(false);
-      setChangeBtnState(false);
-    };
-
-    if (_nickReg.test(nickname_ref.current.value) && nickname_ref.current.value !== '' && nickname_ref.current.value !== userInfo.nickname) {
-      return setDupCheckBtnState(true);
-    } else {
-      return setDupCheckBtnState(false);
-    };
-  }
-
-  console.log(nicknameCheck);
-
   const userTypeHandler = () => {
-    if (usertype_ref.current.value !== userInfo.user_type && nicknameCheck) {
-      return setChangeBtnState(true);
+    if (usertype_ref.current.value !== userInfo.user_type) {
+      return setUserTypeState(true);
     } else {
-      return setChangeBtnState(false);
+      return setUserTypeState(false);
     }
   }
 
@@ -69,7 +67,7 @@ const MyInfoManage = () => {
     };
     try {
       const res = await instance.put("/api/mypage/user/info", data);
-      console.log("성공", res);
+      // console.log("성공", res);
       alert("개인정보가 변경되었습니다.");
       const { nickname, user_type } = data;
       const { username, kakao } = userInfo;
@@ -77,9 +75,23 @@ const MyInfoManage = () => {
       setUserInfo(userData);
       navigate("/mypage");
     } catch (err) {
-      console.log("실패", err);
+      // console.log("실패", err);
     }
   };
+
+  useEffect(() => {
+    if (nicknameState && userTypeState) {
+      return setChangeBtnState(true);
+    } else if (!nicknameState && userTypeState) {
+      return setChangeBtnState(false);
+    } else if (!nicknameCheck && userTypeState) {
+      return setChangeBtnState(false);
+    } else if (nicknameCheck && userTypeState) {
+      return setChangeBtnState(true);
+    } else if (nicknameCheck && nicknameState) {
+      return setChangeBtnState(true);
+    }
+  }, [nicknameCheck, userTypeState, nicknameState])
 
   return (
     <>
@@ -88,7 +100,7 @@ const MyInfoManage = () => {
         <NicknameBox>
           <p>닉네임</p>
           <NicknameInputBox>
-            <input ref={nickname_ref} defaultValue={userInfo.nickname} onChange={nicknameHandler}></input>
+            <input ref={nickname_ref} defaultValue={userInfo.nickname} onChange={nicknameHandler} ></input>
             <NicknameCheckBtn onClick={nicknameCheckHandler} disabled={!dupCheckBtnState}> 중복 확인 </NicknameCheckBtn>
           </NicknameInputBox>
         </NicknameBox>
@@ -142,9 +154,9 @@ const NicknameBox = styled.div`
 const NicknameInputBox = styled.div`
   display: flex;
   align-items: center;
-  gap: 5px;
   input {
     width: 203px;
+    margin-right: 5px;
   }
 `;
 
