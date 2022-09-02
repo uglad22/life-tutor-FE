@@ -31,11 +31,11 @@ function App() {
   const location = useLocation();
   const access = context.state.userInfo.username;
   const { setUserInfo } = context.actions;
-  const token = localStorage.getItem("Authorization");
+  const token = sessionStorage.getItem("Authorization");
 
   useEffect(()=> {
     const getUserInfo = async () => {
-      const token = localStorage.getItem("Authorization");
+      const token = sessionStorage.getItem("Authorization");
       /* 토큰이 웹 스토리지에 없는 경우(로그인 X) */
       if(!token) {
         // 혹시나 context에 저장되어 있을 경우를 방지 default 값으로 초기화

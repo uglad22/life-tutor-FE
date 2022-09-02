@@ -4,7 +4,7 @@ export const postingsAPI = {
     fetchPostingsListWithScroll: async (pageParams, category) => {
         let apiurl;
         if(category === "list") {
-            const token = localStorage.getItem("Authorization");
+            const token = sessionStorage.getItem("Authorization");
             apiurl = token? `/api/main/user/postings?page=${pageParams}&size=10`:`/api/main/postings?page=${pageParams}&size=10`
         }
         else if(category === "mypostings") {

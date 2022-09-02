@@ -38,7 +38,7 @@ const Login = () => {
                 const { username, nickname, user_type, kakao } = res.data;
                 const userData = {username, nickname, user_type, kakao};
                 setUserInfo(userData);
-                localStorage.setItem("Authorization", token);
+                sessionStorage.setItem("Authorization", token);
                 alert('환영합니다!');
                 navigate('/viewer/posting/list');
             } catch (err) {
