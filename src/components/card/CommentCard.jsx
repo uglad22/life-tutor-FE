@@ -10,7 +10,7 @@ import { userContext } from "../context/UserProvider";
 const CommentCard = ({ data, postingId, commentEditStateForSubmit, setCommentEditStateForSubmit }) => {
   const commentEditInput = useRef();
   const queryClient = useQueryClient();
-  console.log(data);
+  // console.log(data);
 
   const [commentEditState, setCommentEditState] = useState(false);
 
@@ -47,12 +47,10 @@ const CommentCard = ({ data, postingId, commentEditStateForSubmit, setCommentEdi
 
   const commentLike = async () => {
     if (data.like === true) {
-        console.log("dd")
       return await instance.delete(
         `/api/comment/${data.id}/likes`
       );
     } else {
-        console.log("ss")
       return await instance.post(
         `/api/comment/${data.id}/likes`
       );
@@ -83,7 +81,7 @@ const CommentCard = ({ data, postingId, commentEditStateForSubmit, setCommentEdi
     const years = days / 365;
     return `${Math.floor(years)}년 전`;
   };
-  console.log(commentEditStateForSubmit);
+
   return (
     <>
       <Comment>

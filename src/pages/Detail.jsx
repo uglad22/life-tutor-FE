@@ -39,7 +39,7 @@ const Detail = () => {
     refetchOnWindowFocus: false,
   });
 
-  console.log(data);
+  // console.log(data);
 
   // 게시글 기능관련
 
