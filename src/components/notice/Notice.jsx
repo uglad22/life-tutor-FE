@@ -26,7 +26,8 @@ const NoticeWrapper = styled.div`
     flex-direction:column;
     width:100%;
     max-width:480px;
-    height:80vh;
+    height:100vh;
+    padding-bottom:160px;
     /* padding-top:50px; */
     box-sizing:border-box;
     gap:10px;
