@@ -173,7 +173,6 @@ const MemberInfoAndCategoryBox = styled.div`
 const MemberInfo = styled.div`
   display: flex;
   align-items: center;
-  gap: 15px;
   height: 130px;
   box-sizing: border-box;
   border-bottom: 1px solid #e6e6e6;
@@ -189,6 +188,7 @@ const ProfilePicture = styled.div`
   background: #ebebeb;
   color: #c8c8c8;
   border-radius: 78px;
+  margin-right: 17px;
 `;
 
 const MemberNameTypeAndEmail = styled.div``;
@@ -196,12 +196,12 @@ const MemberNameTypeAndEmail = styled.div``;
 const MemberNameAndType = styled.div`
   display: flex;
   align-items: center;
-  gap: 3px;
 `;
 
 const MemberName = styled.div`
   color: #656565;
   font-weight: bold;
+  margin-right: 4px;
 `;
 
 const MemberType = styled.div`
@@ -219,7 +219,6 @@ const CategoryBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 70px;
   padding: 7px 0;
 `;
 
@@ -230,6 +229,7 @@ const Mypostings = styled.div`
   font-weight: bold;
   text-align: center;
   font-size: 14px;
+  margin-right: 76px;
 `;
 
 const CategoryIcon = styled.div`

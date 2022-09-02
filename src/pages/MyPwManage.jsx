@@ -83,7 +83,6 @@ const MyPwWrapper = styled.div`
   color: #757575;
   display: flex;
   flex-direction: column;
-  gap: 10px;
   max-width:480px;
   input {
     box-sizing: border-box;
@@ -100,7 +99,7 @@ const MyPwWrapper = styled.div`
 
 const NowPwBox = styled.div`
   width: 336px;
-  margin: 27.5px auto 0px;
+  margin: 27.5px auto 22px;
   display: flex;
   flex-direction: column;
   p {

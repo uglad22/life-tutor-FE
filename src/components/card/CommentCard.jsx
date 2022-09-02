@@ -191,12 +191,12 @@ const Comment = styled.div`
 
 const CommentWriter = styled.div`
   display: flex;
-  gap: 7px;
   font-weight: bold;
   font-size: 15px;
   color: #656565;
   p:last-child {
     color: #3549ff;
+    margin-left: 7px;
   }
 `;
 
@@ -223,19 +223,22 @@ const CommentArea = styled.textarea`
 const CommentEditCancelAndSaveBtn = styled.div`
   display: flex;
   justify-content: right;
-  gap: 10px;
+  height: 30px;
 `;
 
-const CommentEditCancelBtn = styled.div`
+const CommentEditCancelBtn = styled.button`
   width: 50px;
   text-align: center;
+  margin-right: 10px;
+  border: none;
 `;
 
-const CommentEditSaveBtn = styled.div`
+const CommentEditSaveBtn = styled.button`
   width: 50px;
   background: #3549ff;
   text-align: center;
   color: white;
+  border: none;
 `;
 
 const CommentLikeAndEditDelBox = styled.div`
@@ -245,23 +248,22 @@ const CommentLikeAndEditDelBox = styled.div`
 
 const CommentDateAndLikeBox = styled.div`
   display: flex;
-  gap: 10px;
   color: #656565;
-  p:last-child {
+  p {
     display: flex;
     align-items: center;
-    gap: 3px;
+    margin-right: 10px;
   }
 `;
 
 const CommentEditAndDelBox = styled.div`
   display: ${(props) => (props.state ? "none" : "flex")};
   justify-content: space-between;
-  gap: 10px;
   color: #3549ff;
 `;
 
 const CommentEdit = styled.div`
+  margin-right: 10px;
   cursor: pointer;
 `;
 
@@ -273,13 +275,17 @@ const CommentLikeFalseBtn = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 3px;
+  svg {
+    margin-right: 3px;
+  }
 `;
 
 const CommentLikeTrueBtn = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 3px;
   color: #3549ff;
+  svg {
+    margin-right: 3px;
+  }
 `;

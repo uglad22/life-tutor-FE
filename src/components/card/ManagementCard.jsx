@@ -20,7 +20,9 @@ const ManagementWrapper = styled.div`
     display: ${(props) => (props.isShow ? "flex" : "none")};
     padding: 20px;
     color: #656565;
-    gap: 20px;
     border-bottom: 1px solid #E6E6E6;
     cursor: pointer;
+    p {
+      margin-left: 20px;
+    }
 `;
