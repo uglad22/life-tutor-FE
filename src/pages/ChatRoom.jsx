@@ -30,12 +30,11 @@ const ChatRoom = () => {
 
     const navigate = useNavigate();
     const {state:navigateState} = useLocation();
-    // console.log(host);
     const roomId = useParams().roomId;
 
     const sock = new SockJS(`${process.env.REACT_APP_API_URL}/iting`);
     const client= StompJS.over(sock);
-    const headers = {}; // TODO: 토큰 말고 어떤걸 넣을지?
+    const headers = {}; 
 
     const { mutate: exitRoom } = useMutation(chatroomAPI.exitRoom, {
         onSuccess:() => {
@@ -45,8 +44,8 @@ const ChatRoom = () => {
 
     const disConnect = () => {
         client.disconnect(() => {
-            client.unsubscribe();
-        });
+            exitRoom(roomId);
+        }, {});
     }
 
     const sendMsg = (messageText) => {
@@ -68,7 +67,10 @@ const ChatRoom = () => {
         chatroomAPI.enterRoom(roomId).then((res) => {
             nicknameRef.current = res.data;
         }).catch((e) => {
-            console.log(e);
+            console.log(e.response.status);
+            alert("방이 꽉 찼습니다!");
+            navigate("/viewer/room");
+            return;
         });
        
         client.connect(headers, ()=> {
@@ -92,11 +94,12 @@ const ChatRoom = () => {
                 "nickname":nicknameRef.current,
                 "message":`${nicknameRef.current}님이 퇴장하였습니다.`
             }))
-            exitRoom(roomId);
             disConnect();
+            // exitRoom(roomId);
         })
     }, []);
 
+    /** 새로고침 시 로직 */
     useEffect(()=> {
         if(!userInfo.nickname) {
             navigate("/viewer/room");
@@ -107,15 +110,14 @@ const ChatRoom = () => {
     useEffect(()=> {
         const msglen = messages.length;
         scrollToBottom();
+
+        /**  메세지가 추가될 때 마다 EXIT인지 확인 후 호스트 퇴장? >>게스트 퇴장 */
         if(messages[msglen - 1]?.enter === "EXIT") {
             if(!navigateState.isHost) {
                 alert("호스트가 퇴장하였습니다.");
                 navigate("/viewer/room");
             }
         }
-        console.log(msglen);
-        console.log(messages[msglen - 1]?.enter);
-
     }, [messages])
 
     

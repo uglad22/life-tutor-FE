@@ -81,7 +81,9 @@ const PageTitle = ({ title, isAction }) => {
     const backBtnHandler = () => {
         if (pathname===`/detail/posting/${postingId}`) {
             navigate("/viewer/posting/list");
-        } else {
+        }
+        else if(pathname.includes('/detail/room')) navigate("/viewer/room");
+         else {
             navigate(-1);
         }
     }
