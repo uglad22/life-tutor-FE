@@ -14,15 +14,14 @@ import { Helmet } from 'react-helmet'
 
 const RoomViewer = () => {
     const location = useLocation();
-    const pathname = location.pathname;
-    const hashtagParam = useParams().hashtag;
+    const paramHashtag = useParams().hashtag;
     const { ref, inView } = useInView();
 
     const { data:listData, fetchNextPage:listFetchNextPage, isFetchingNextPage:isListFetchingNextPage } = useInfiniteQuery(
         ["rooms"],
         ({ pageParam = 1 }) => chatroomAPI.fetchRoomsListWithScroll(pageParam),
         {
-            enabled:!!(!hashtagParam),
+            enabled:!!(!paramHashtag),
             getNextPageParam: (lastPage) =>
             !lastPage.isLast ? lastPage.nextPage : undefined,
             
@@ -35,10 +34,10 @@ const RoomViewer = () => {
     )
 
     const {data:searchListData, fetchNextPage:searchFetchNextPage, isFetchingNextPage:isSearchFetchingNextPage} = useInfiniteQuery(
-        ["rooms", "search", hashtagParam],
-        ({ pageParam = 1}) => chatroomAPI.fetchSearchRoomsListWithScroll(pageParam, hashtagParam),
+        ["rooms", "search", paramHashtag],
+        ({ pageParam = 1}) => chatroomAPI.fetchSearchRoomsListWithScroll(pageParam, paramHashtag),
         {
-            enabled:!!hashtagParam,
+            enabled:!!paramHashtag,
             getNextPageParam: (lastPage) =>
             !lastPage.isLast ? lastPage.nextPage : undefined,
             onSuccess:(data) => {
@@ -52,7 +51,7 @@ const RoomViewer = () => {
 
     useEffect(()=> {
         if(inView) {
-            listFetchNextPage();
+            !paramHashtag?listFetchNextPage():searchFetchNextPage();
         }
     }, [inView])
 
@@ -65,20 +64,22 @@ const RoomViewer = () => {
                 <link rel="icon" type="image/png" sizes="16x16" href="16.ico" />
             </Helmet>
             <Header title={"채팅 리스트"} isAction={true}/>
-            {!hashtagParam&&(listData.pages[0]?.rooms?.length===0?<Notice title={"채팅방이 없습니다!"} text={"채팅방을 개설하고 대화해보세요!"}/>:listData.pages?.map((page, index) => (
+            {!paramHashtag&&(listData.pages[0]?.rooms?.length===0?<Notice title={"채팅방이 없습니다!"} text={"채팅방을 개설하고 대화해보세요!"}/>:listData.pages?.map((page, index) => (
                 <Page key={index}>
                     {page.rooms.map((room) => (
                         <RoomCard key={room.roomId} room={room}></RoomCard>
                     ))}
                 </Page>
             )))}
-             {!hashtagParam||(searchListData.pages[0]?.rooms?.length===0?<Notice title={"채팅방이 없습니다!"} text={"다른 해시태그로 검색해보세요!"}/>:searchListData.pages?.map((page, index) => (
+             {!paramHashtag||(searchListData.pages[0]?.rooms?.length===0?<Notice title={"채팅방이 없습니다!"} text={"다른 해시태그로 검색해보세요!"}/>:searchListData.pages?.map((page, index) => (
                 <Page key={index}>
                     {page.rooms.map((room) => (
                          <RoomCard key={room.roomId} room={room}></RoomCard>
                     ))}
                 </Page>
             )))}
+            {!paramHashtag&&(isListFetchingNextPage ? <div>로딩중입니다!!!!</div>: <div ref={ref} style={{height:"70px"}}></div>)}
+        {!paramHashtag||(isSearchFetchingNextPage ? <div>로딩중입니다!!!!</div>: <div ref={ref} style={{height:"50px"}}></div>)}
         </RoomViewerWrapper>
     )
 }
