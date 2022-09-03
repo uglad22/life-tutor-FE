@@ -81,7 +81,9 @@ const MyInfoManage = () => {
   };
 
   useEffect(() => {
-    if (nicknameState && userTypeState) {
+    if (!_nickReg.test(nickname_ref.current.value)) {
+      return setChangeBtnState(false);
+    } else if (nicknameState && userTypeState) {
       return setChangeBtnState(true);
     } else if (!nicknameState && userTypeState) {
       return setChangeBtnState(false);
