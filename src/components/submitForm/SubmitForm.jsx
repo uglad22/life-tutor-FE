@@ -27,9 +27,10 @@ const SubmitForm = ({ postingId, placeholderText, sendMsg, commentEditStateForSu
     })
 
     const submitButtonHandler = (e) => {
+      e.preventDefault();
       if(!commentInput.current.value) return;
 
-      e.preventDefault();
+      
       if(location.pathname.includes("/detail/room/chat")) {
         sendMsg(commentInput.current.value);
         commentInput.current.value="";
