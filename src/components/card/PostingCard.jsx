@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import NomalBadge from '../hashtag/NomalBadge';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,7 @@ import { userContext } from '../context/UserProvider';
 
 const PostingCard = ({post}) => {
     const context = useContext(userContext);
+    const [isLike, setIsLike] = useState(()=> post.like?true:false);
     const { username } = context.state.userInfo;
     const navigate = useNavigate();
     const cardClickHandler = () => {
@@ -36,7 +37,7 @@ const PostingCard = ({post}) => {
             <HRDiv/>
             <PostingCardFooter>
                 <div className='posting-actions-icon'>
-                    <p className='posting-actions-icon-wrapper posting-actions-icon-like'>
+                    <p className='posting-actions-icon-wrapper posting-actions-icon-like' style={{color:isLike?"#3549FF":null}}>
                         <AiOutlineLike/>
                         {post.like_count}
                     </p>

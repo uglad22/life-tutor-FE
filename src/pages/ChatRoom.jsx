@@ -34,6 +34,7 @@ const ChatRoom = () => {
 
     const sock = new SockJS(`${process.env.REACT_APP_API_URL}/iting`);
     const client= StompJS.over(sock);
+    client.debug = null;
     const headers = {}; 
 
     const { mutate: exitRoom } = useMutation(chatroomAPI.exitRoom, {
@@ -66,6 +67,18 @@ const ChatRoom = () => {
     useEffect(()=> {
         chatroomAPI.enterRoom(roomId).then((res) => {
             nicknameRef.current = res.data;
+            client.connect(headers, ()=> {
+                client.subscribe(`/api/sub/${roomId}`, (data) => {
+                    const newMessage = JSON.parse(data.body);
+                    setMessages((prev) => [...prev, newMessage]);
+                })
+    
+                client.send(`/api/pub/${roomId}`, {}, JSON.stringify({
+                    "enter":"ENTER",
+                    "messageType":"TEXT",
+                    "nickname":nicknameRef.current
+                }))
+            })
         }).catch((e) => {
             console.log(e.response.status);
             alert("방이 꽉 찼습니다!");
@@ -73,28 +86,22 @@ const ChatRoom = () => {
             return;
         });
        
-        client.connect(headers, ()=> {
-
-            client.subscribe(`/api/sub/${roomId}`, (data) => {
-                const newMessage = JSON.parse(data.body);
-                setMessages((prev) => [...prev, newMessage]);
-            })
-
-            client.send(`/api/pub/${roomId}`, {}, JSON.stringify({
-                "enter":"ENTER",
-                "messageType":"TEXT",
-                "nickname":nicknameRef.current
-            }))
-        })
+        
 
         return(()=> {
-            client.send(`/api/pub/${roomId}`, {}, JSON.stringify({
-                "enter":"EXIT",
-                "messageType":"TEXT",
-                "nickname":nicknameRef.current,
-                "message":`${nicknameRef.current}님이 퇴장하였습니다.`
-            }))
-            disConnect();
+            try {
+                client.send(`/api/pub/${roomId}`, {}, JSON.stringify({
+                    "enter":"EXIT",
+                    "messageType":"TEXT",
+                    "nickname":nicknameRef.current,
+                    "message":`${nicknameRef.current}님이 퇴장하였습니다.`
+                }))
+                disConnect();
+            }
+           catch(e) {
+            // console.log(e);
+            navigate("/viewer/room");
+           }
             // exitRoom(roomId);
         })
     }, []);
