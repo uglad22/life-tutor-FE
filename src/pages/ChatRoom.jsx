@@ -166,6 +166,4 @@ const ChatArea = styled.div`
     display:flex;
     flex-direction:column;
     justify-content:flex-end;
-    gap:10px;
-    
 `

@@ -240,7 +240,7 @@ const HashTagForm = styled.form`
     .hashtag-viewer {
         display:flex;
         /* flex-wrap:wrap; */
-        gap:5px;
+        /* gap:5px; */
     }
 
     .hashtag-submit-button {
@@ -256,8 +256,11 @@ const HashTagForm = styled.form`
 
 const HashtagViewer = styled.div`
     display:flex;
-    gap:10px;
+    /* gap:10px; */
     flex-wrap:wrap;
     width:100%;
     margin-bottom:100px;
+    div {
+        margin-right: 5px;
+    }
 `

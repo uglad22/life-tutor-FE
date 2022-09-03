@@ -117,7 +117,7 @@ const LoginWrapper = styled.div`
         flex-direction: row;
         align-items: center;
         padding: 16px;
-        gap: 4px;
+        /* gap: 4px; */
 
         width: 327px;
         height: 58px;
@@ -152,7 +152,7 @@ const Buttonarea = styled.div`
         margin-bottom : 20px;
         justify-content: center;
         padding: 18px 0px;
-        gap: 8px;
+        /* gap: 8px; */
 
         width: 335px;
         height: 60px;

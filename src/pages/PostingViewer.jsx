@@ -88,7 +88,7 @@ export default PostingViewer;
 const PostingViewerWrapper = styled.div`
   display:flex;
   flex-direction:column;
-  gap:10px;
+  /* gap:10px; */
   width:100%;
   margin:0 auto;
   padding-top:87px;
@@ -98,5 +98,4 @@ const PostingViewerWrapper = styled.div`
 const Page = styled.div`
   display:flex;
   flex-direction:column;
-  gap:10px;
 `

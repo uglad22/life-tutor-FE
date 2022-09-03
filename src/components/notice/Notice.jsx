@@ -30,7 +30,6 @@ const NoticeWrapper = styled.div`
     padding-bottom:160px;
     /* padding-top:50px; */
     box-sizing:border-box;
-    gap:10px;
     background:white;
     user-select:none;
 `

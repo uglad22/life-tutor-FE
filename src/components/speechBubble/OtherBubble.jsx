@@ -17,13 +17,13 @@ export default OtherBubble;
 const OtherBubbleWrapper = styled.div`
     display:flex;
     width:100%;
+    margin-bottom: 10px;
 `
 
 const OtherBubbleBox = styled.div`
     display:flex;
     padding-left:20px;
     width:80%;
-    gap:5px;
 `
 const BubbleTime = styled.div`
     display:flex;
@@ -45,5 +45,5 @@ const Bubble = styled.div`
     font-weight:500;
     background:black;
     color:white;
-    
+    margin-right: 5px;
 `
