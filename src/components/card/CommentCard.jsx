@@ -10,6 +10,7 @@ import { userContext } from "../context/UserProvider";
 const CommentCard = ({ data, postingId, commentEditStateForSubmit, setCommentEditStateForSubmit }) => {
   const commentEditInput = useRef();
   const queryClient = useQueryClient();
+  
   // console.log(data);
 
   const [commentEditState, setCommentEditState] = useState(false);
@@ -18,7 +19,6 @@ const CommentCard = ({ data, postingId, commentEditStateForSubmit, setCommentEdi
   const context = useContext(userContext);
   const { userInfo } = context.state;
   const loginNickname = userInfo.nickname;
-
 
   // 댓글 기능관련
   const editComment = async (commentId) => {
@@ -117,10 +117,10 @@ const CommentCard = ({ data, postingId, commentEditStateForSubmit, setCommentEdi
             <>
               <CommentDateAndLikeBox>
                 <p>{timeSet(data.date)}</p>
-                <CommentLikeFalseBtn>
+                <CommentLikeBtn onClick={() => {commentlikeHandler(`${data.id}`);}} isLike={data.like} >
                   <AiOutlineLike />
                   {data.like_count}
-                </CommentLikeFalseBtn>
+                </CommentLikeBtn>
               </CommentDateAndLikeBox>
               <CommentEditAndDelBox state={commentEditState}>
                 <CommentEdit
@@ -141,32 +141,14 @@ const CommentCard = ({ data, postingId, commentEditStateForSubmit, setCommentEdi
                 </CommentDel>
               </CommentEditAndDelBox>
             </>
-          ) : data.like === true ? (
-            <>
-              <CommentDateAndLikeBox>
-                <p>{timeSet(data.date)}</p>
-                <CommentLikeTrueBtn
-                  onClick={() => {
-                    commentlikeHandler(`${data.id}`);
-                  }}
-                >
-                  <AiOutlineLike />
-                  {data.like_count}
-                </CommentLikeTrueBtn>
-              </CommentDateAndLikeBox>
-            </>
           ) : (
             <>
               <CommentDateAndLikeBox>
                 <p>{timeSet(data.date)}</p>
-                <CommentLikeFalseBtn
-                  onClick={() => {
-                    commentlikeHandler(`${data.id}`);
-                  }}
-                >
+                <CommentLikeBtn onClick={() => {commentlikeHandler(`${data.id}`);}} isLike={data.like} >
                   <AiOutlineLike />
                   {data.like_count}
-                </CommentLikeFalseBtn>
+                </CommentLikeBtn>
               </CommentDateAndLikeBox>
             </>
           )}
@@ -269,20 +251,11 @@ const CommentDel = styled.div`
   cursor: pointer;
 `;
 
-const CommentLikeFalseBtn = styled.div`
+const CommentLikeBtn = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
-  svg {
-    margin-right: 3px;
-  }
-`;
-
-const CommentLikeTrueBtn = styled.div`
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  color: #3549ff;
+  color: ${(props) => (props.isLike && "#3549ff")};
   svg {
     margin-right: 3px;
   }
