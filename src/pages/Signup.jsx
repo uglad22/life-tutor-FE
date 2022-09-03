@@ -269,8 +269,7 @@ const SignupWrapper =styled.div`
 const SingupContent =styled.div`
     margin-left: auto;
     margin-right: auto;
-    gap : 5px;
-
+    /* gap : 5px; */
     p {
         color : #757575;
         font-size: 14px;
@@ -323,15 +322,16 @@ const PwBox = styled.div`
     width : 336px;
     display : flex;
     flex-direction: column;
-    gap : 8px;
     margin-bottom : 37px;
+    input:first-child{
+        margin-bottom: 8px;
+    }
 `
 
 const NicknameBox = styled.div`
     display : flex;
-    gap : 5px;
-
     input {
+        margin-right: 5px;
         width : 203px;
     }
 
@@ -380,7 +380,7 @@ const SignupBottom = styled.div`
 
     button {
         padding: 18px 0px;
-        gap: 8px;
+        /* gap: 8px; */
         margin-top : 81px;
 
         // position: absolute;

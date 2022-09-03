@@ -16,15 +16,13 @@ import SubmitForm from "../components/submitForm/SubmitForm";
 import Header from "../components/header/Header";
 import { Helmet } from 'react-helmet'
 
-// FIXME: 게시글 본문 줄바꿈처리
-
 const Detail = () => {
   const params = useParams();
   const postingId = params.postingId;
   const queryClient = useQueryClient();
   const [ commentEditStateForSubmit, setCommentEditStateForSubmit ] = useState(false);
+  
   // 로그인한 유저의 닉네임 가져오기
-
   const context = useContext(userContext);
   const { userInfo } = context.state;
   const loginNickname = userInfo.nickname;
@@ -116,29 +114,9 @@ const Detail = () => {
           <CommentCount>
             <IoChatboxEllipsesOutline />{data.comments.length}
           </CommentCount>
-        {data.nickname === loginNickname ? (
-          <>
-            <ContentLikeFalseBtn><AiOutlineLike />{data.like_count}</ContentLikeFalseBtn>
-          </>
-        ) : (
-          data.like ? (
-          <>
-            <ContentLikeTrueBtn onClick={() => {
-                contentlikeHandler();
-              }}>
-              <AiOutlineLike />{data.like_count}
-            </ContentLikeTrueBtn>
-          </>
-          ):(
-          <>
-            <ContentLikeFalseBtn onClick={() => {
-                contentlikeHandler();
-              }}>
-              <AiOutlineLike />{data.like_count}
-            </ContentLikeFalseBtn>
-          </>
-          )
-        )}
+          <ContentLikeBtn onClick={contentlikeHandler} isLike={data.like}>
+            <AiOutlineLike />{data.like_count}
+          </ContentLikeBtn>
         </CommentCountAndLikeCountBox>
       </ContentBox>
 
@@ -241,9 +219,9 @@ const CommentCount = styled.div`
   }
 `;
 
-const ContentLikeTrueBtn = styled.div`
+const ContentLikeBtn = styled.div`
   padding: 0.3rem;
-  color: #3549FF;
+  color: ${(props) => (props.isLike ? "#3549FF" : "#656565")};
   display: flex;
   align-items: center;
   svg {
@@ -252,16 +230,6 @@ const ContentLikeTrueBtn = styled.div`
   }
 `;
 
-const ContentLikeFalseBtn = styled.div`
-  padding: 0.3rem;
-  color: #656565;
-  display: flex;
-  align-items: center;
-  svg {
-    margin-right: 5px;
-    cursor:pointer;
-  }
-`;
 
 const CommentBox = styled.div`
   background: white;

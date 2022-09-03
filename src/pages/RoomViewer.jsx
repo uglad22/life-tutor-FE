@@ -90,7 +90,7 @@ const RoomViewerWrapper = styled.div`
     display:flex;
     position:relative;
     flex-direction: column;
-    gap:0.5px;
+    /* gap:0.5px; */
     width:100%;
     /* background:red; */
     padding-top:119px;

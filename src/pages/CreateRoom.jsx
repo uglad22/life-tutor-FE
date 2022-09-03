@@ -133,10 +133,9 @@ const CreateRoomWrapper = styled.div`
 const CreateRoomForm = styled.form`
     display:flex;
     flex-direction:column;
-    gap:8px;
     margin-bottom:20px;
-
     p {
+        margin-bottom:8px;
         font-weight:600;
         font-size:14px;
         letter-spacing:-0.3px;
@@ -154,9 +153,11 @@ const CreateRoomForm = styled.form`
 
 const HashtagArea = styled.div`
     display:flex;
-    gap:10px;
     flex-wrap:wrap;
     width:100%;
+    div {
+        margin-right: 5px;
+    }
 `
 
 const CreateButton = styled.button`

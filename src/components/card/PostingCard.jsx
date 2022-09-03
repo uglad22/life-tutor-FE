@@ -59,7 +59,7 @@ const PostingCardWrapper = styled.div`
     background:white;
     /* padding:20px; */
     box-sizing:border-box;
-    margin:0 auto;
+    margin:0 auto 10px;
     box-shadow: 1px 1px 1px lightgray;
     cursor:pointer;
 `
@@ -67,14 +67,13 @@ const PostingCardWrapper = styled.div`
 const PostingCardBody = styled.div`
     display:flex;
     flex-direction:column;
-    gap:15px;
     padding:20px;
     box-sizing:border-box;
 `
 
 const PostingCardTitle = styled.div`
     font-size:18px;
-    
+    margin-bottom: 15px;
     font-weight:500;
     line-height: 22px;
 `
@@ -82,7 +81,7 @@ const PostingCardTitle = styled.div`
 const PostingCardContent = styled.p`
     font-weight:500;
     font-size:11px;
-    
+    margin-bottom:15px;
     letter-spacing: -0.3px;
     line-height: 16px;
     color:${({ theme }) => theme.colors.lightGray};
@@ -93,10 +92,13 @@ const PostingCardContent = styled.p`
 `
 
 const PostingCardHashtagArea = styled.div`
+    margin-bottom:15px;
     width:100%;
     display:flex;
     flex-wrap:wrap;
-    gap:5px;
+    div {
+        margin-right: 2.5px;
+    }
 `
 
 const HRDiv = styled.div`
@@ -111,10 +113,9 @@ const HRDiv = styled.div`
 
 const PostingCardUserInfo = styled.div`
     display:flex;
-    gap:8px;
     width:100%;
     p {
-        margin:0;
+        margin-right: 8px;
         color:gray;
         font-weight:700;
         font-size:13px;
@@ -131,13 +132,15 @@ const PostingCardFooter = styled.div`
     }
     .posting-actions-icon {
         display:flex;
-        gap:10px;
         flex:1;
 
         .posting-actions-icon-wrapper {
             display:flex;
             align-items:center;
-            gap:3px;
+            margin-right:10px;
+            svg {
+                margin-right: 3px;
+            }
         }
 
         .posting-actions-icon-like {

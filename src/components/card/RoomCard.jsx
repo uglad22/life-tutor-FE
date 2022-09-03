@@ -73,7 +73,6 @@ const RoomCardTitle = styled.div`
 
 const RoomCardUserInfo = styled.div`
     display:flex;
-    gap:8px;
     width:100%;
     margin-bottom:10px;
 
@@ -82,6 +81,7 @@ const RoomCardUserInfo = styled.div`
         letter-spacing:-0.3px;
         color:${({theme})=> theme.colors.darkGray};
         font-weight:500;
+        margin-right: 8px;
     }
 
     .room-host-level {
@@ -95,7 +95,9 @@ const RoomCardUserInfo = styled.div`
 const RoomCardHashtagArea = styled.div`
     display:flex;
     flex-wrap:wrap;
-    gap:5px;
+    div {
+        margin-right: 2.5px;
+    }
 `
 
 const RoomCardPersonCount = styled.div`
