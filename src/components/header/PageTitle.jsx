@@ -155,11 +155,13 @@ const HeaderActions = styled.div`
     letter-spacing:-0.3px;
     font-weight:600;
     display: flex;
-    gap: 5px;
     p {
         cursor:pointer;
         display:flex;
         align-items:center;
+    }
+    p:first-child {
+        margin-right: 5px;
     }
     ${props => {
             if(props.isShow === false) {

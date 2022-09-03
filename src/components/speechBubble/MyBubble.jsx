@@ -20,6 +20,7 @@ const MyBubbleWrapper = styled.div`
     display:flex;
     justify-content:flex-end;
     width:100%;  
+    margin-bottom: 10px;
 `
 
 const MyBubbleBox = styled.div`
@@ -27,7 +28,6 @@ const MyBubbleBox = styled.div`
     display:flex;
     justify-content:flex-end;
     width:80%;
-    gap:5px;
 `
 const BubbleTime = styled.div`
     display:flex;
@@ -38,7 +38,7 @@ const BubbleTime = styled.div`
     font-size:11px;
     font-weight:700;
     letter-spacing:-0.3px;
-
+    margin-right: 5px;
 `
 
 const Bubble = styled.div`
