@@ -8,6 +8,7 @@ import { useInView } from 'react-intersection-observer';
 import { chatroomAPI } from '../shared/api';
 
 import Notice from '../components/notice/Notice';
+import Loading from '../components/loading/Loading';
 
 import { Helmet } from 'react-helmet'
 
@@ -78,8 +79,8 @@ const RoomViewer = () => {
                     ))}
                 </Page>
             )))}
-            {!paramHashtag&&(isListFetchingNextPage ? <div>로딩중입니다!!!!</div>: <div ref={ref} style={{height:"70px"}}></div>)}
-        {!paramHashtag||(isSearchFetchingNextPage ? <div>로딩중입니다!!!!</div>: <div ref={ref} style={{height:"50px"}}></div>)}
+            {!paramHashtag&&(isListFetchingNextPage ? <Loading/>: <div ref={ref} style={{height:"70px"}}></div>)}
+        {!paramHashtag||(isSearchFetchingNextPage ? <Loading/>: <div ref={ref} style={{height:"50px"}}></div>)}
         </RoomViewerWrapper>
     )
 }

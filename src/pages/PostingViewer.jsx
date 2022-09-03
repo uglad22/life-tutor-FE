@@ -7,6 +7,7 @@ import { useInView } from 'react-intersection-observer';
 import PostingCard from '../components/card/PostingCard';
 import Header from '../components/header/Header';
 import Notice from '../components/notice/Notice';
+import Loading from '../components/loading/Loading';
 
 import { Helmet } from 'react-helmet'
 
@@ -77,8 +78,8 @@ const PostingViewer = () => {
                   ))}
               </Page>
             )))}
-        {!paramHashtag&&(isListFetching ? <div>로딩중입니다!!!!</div>: <div ref={ref} style={{height:"70px"}}></div>)}
-        {!paramHashtag||(isSearchListFetching ? <div>로딩중입니다!!!!</div>: <div ref={ref} style={{height:"50px"}}></div>)}
+        {!paramHashtag&&(isListFetching ? <Loading/>: <div ref={ref} style={{height:"70px"}}></div>)}
+        {!paramHashtag||(isSearchListFetching ? <Loading/>: <div ref={ref} style={{height:"70px"}}></div>)}
         </PostingViewerWrapper>
     );
 }
