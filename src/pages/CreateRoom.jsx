@@ -40,8 +40,8 @@ const CreateRoom = () => {
                 setInputs({...inputs, hashtagInput:""});
                 return;
             }
-            else if(inputs.hashtagInput.length > 6) {
-                alert("해시태그는 6자리까지 설정 할 수 있습니다.");
+            else if(inputs.hashtagInput.length > 6 || inputs.hashtagInput.length === 1) {
+                alert("해시태그는 2~6자리까지 설정 할 수 있습니다.");
             }
             else {
                 const result = inputs.hashtagInput.replace(/[/!@#$%^&*~)(/?><\s]/g, "");
@@ -63,7 +63,7 @@ const CreateRoom = () => {
             setInputs({...inputs, hashtagInput:""});
             return;
         }
-        else if(inputs.hashtagInput.length > 6) {
+        else if(inputs.hashtagInput.length > 6 || inputs.hashtagInput.length === 1) {
             alert("해시태그는 6자리까지 설정 할 수 있습니다.");
         }
         else {

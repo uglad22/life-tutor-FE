@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Header from '../components/header/Header';
 import RoomCard from '../components/card/RoomCard';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useLocation, useParams } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { chatroomAPI } from '../shared/api';
 
@@ -13,9 +13,9 @@ import { Helmet } from 'react-helmet'
 
 
 const RoomViewer = () => {
-    const location = useLocation();
     const paramHashtag = useParams().hashtag;
     const { ref, inView } = useInView();
+    const navigate = useNavigate();
 
     const { data:listData, fetchNextPage:listFetchNextPage, isFetchingNextPage:isListFetchingNextPage } = useInfiniteQuery(
         ["rooms"],

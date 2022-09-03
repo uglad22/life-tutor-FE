@@ -50,8 +50,8 @@ const Post = () => {
                 setHashInput('');
                 return;
             }
-            else if(hashInput.length > 6) {
-                alert("해시태그는 6자리까지 설정 할 수 있습니다.");
+            else if(hashInput.length > 6 || hashInput.length === 1) {
+                alert("해시태그는 2~6자리까지 설정 할 수 있습니다.");
             }
             else {
                 // 특수문자, 공백문자 제거
@@ -77,7 +77,7 @@ const Post = () => {
             setHashInput('');
             return;
         }
-        else if(hashInput.length > 6) {
+        else if(hashInput.length > 6 || hashInput.length === 1) {
             alert("해시태그는 6자리까지 설정 할 수 있습니다.");
         }
         else {
