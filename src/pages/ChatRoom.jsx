@@ -110,6 +110,7 @@ const ChatRoom = () => {
     useEffect(()=> {
         if(!userInfo.nickname) {
             navigate("/viewer/room");
+            disConnect();
         }
     }, [])
 
