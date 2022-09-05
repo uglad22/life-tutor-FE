@@ -40,51 +40,56 @@ const Post = () => {
     // velog 처럼 해시태그 추가할 때 스페이스바 누르면 추가되는 기능
     const keyupSpace = (e) => {
         if(e.code === "Space") {
-            const valid = hashtagValidation(hashInput.trim());
-            if(!valid) {
-                setHashInput('');
+            if(!hashInput.trim()) {
+                setHashInput("");
                 return;
             }
-            else if(postData.hashtag.length === 3) {
-                alert("해시태그는 3개까지 등록 가능합니다.");
-                setHashInput('');
-                return;
-            }
-            else if(hashInput.length > 6 || hashInput.length === 1) {
-                alert("해시태그는 2~6자리까지 설정 할 수 있습니다.");
-            }
-            else {
-                // 특수문자, 공백문자 제거
-                const result = hashInput.replace(/[/!@#$%^&*~)(/?><\s]/g, "");
+            else  {
+              const result = hashInput.replace(/[/!@#$%^&*~)(/?><\s]/g, "");
+              const valid = hashtagValidation(result, hashtag);
+              if(!valid) return;
+              else {
                 setPostData({...postData, hashtag:[...postData.hashtag, result]})
-                setHashInput('');
+                setHashInput("");
+              }  
             }
-            
         }
-        else return;
     }
 
     // 해시태그 추가
     const hashtagSubmit = (e) => {
         e.preventDefault();
-        const valid = hashtagValidation(hashInput);
-        if(!valid){
-            setHashInput('');
-            return;
-        } 
-        else if(postData.hashtag.length === 3) {
-            alert("해시태그는 3개까지 등록 가능합니다.");
-            setHashInput('');
+        if(!hashInput) {
             return;
         }
-        else if(hashInput.length > 6 || hashInput.length === 1) {
-            alert("해시태그는 6자리까지 설정 할 수 있습니다.");
-        }
-        else {
+        else  {
             const result = hashInput.replace(/[/!@#$%^&*~)(/?><\s]/g, "");
-            setPostData({...postData, hashtag:[...postData.hashtag, result]})
-            setHashInput('');
+            const valid = hashtagValidation(result, hashtag);
+            if(!valid) return;
+            else {
+                setPostData({...postData, hashtag:[...postData.hashtag, result]})
+                setHashInput('');
+            }
+
         }
+        // const valid = hashtagValidation(hashInput);
+        // if(!valid){
+        //     setHashInput('');
+        //     return;
+        // } 
+        // else if(postData.hashtag.length === 3) {
+        //     alert("해시태그는 3개까지 등록 가능합니다.");
+        //     setHashInput('');
+        //     return;
+        // }
+        // else if(hashInput.length > 6 || hashInput.length === 1) {
+        //     alert("해시태그는 6자리까지 설정 할 수 있습니다.");
+        // }
+        // else {
+        //     const result = hashInput.replace(/[/!@#$%^&*~)(/?><\s]/g, "");
+        //     setPostData({...postData, hashtag:[...postData.hashtag, result]})
+        //     setHashInput('');
+        // }
     }
 
     useEffect(() => {
