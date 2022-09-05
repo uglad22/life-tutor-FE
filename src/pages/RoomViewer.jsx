@@ -8,8 +8,10 @@ import { useInView } from 'react-intersection-observer';
 import { chatroomAPI } from '../shared/api';
 
 import Notice from '../components/notice/Notice';
+import Loading from '../components/loading/Loading';
 
 import { Helmet } from 'react-helmet'
+import ErrorFound from '../components/notice/NotFound';
 
 
 const RoomViewer = () => {
@@ -17,32 +19,28 @@ const RoomViewer = () => {
     const { ref, inView } = useInView();
     const navigate = useNavigate();
 
-    const { data:listData, fetchNextPage:listFetchNextPage, isFetchingNextPage:isListFetchingNextPage } = useInfiniteQuery(
+    const { data:listData, fetchNextPage:listFetchNextPage, isFetchingNextPage:isListFetchingNextPage, isError: listFetchError } = useInfiniteQuery(
         ["rooms"],
         ({ pageParam = 1 }) => chatroomAPI.fetchRoomsListWithScroll(pageParam),
         {
             enabled:!!(!paramHashtag),
+
             getNextPageParam: (lastPage) =>
             !lastPage.isLast ? lastPage.nextPage : undefined,
-            
-            onSuccess:(data) => {
-                console.log(data);
-            },
+
             staleTime:3000,
             retry:false
         }
     )
 
-    const {data:searchListData, fetchNextPage:searchFetchNextPage, isFetchingNextPage:isSearchFetchingNextPage} = useInfiniteQuery(
+    const {data:searchListData, fetchNextPage:searchFetchNextPage, isFetchingNextPage:isSearchFetchingNextPage, isError: searchListFetchError} = useInfiniteQuery(
         ["rooms", "search", paramHashtag],
         ({ pageParam = 1}) => chatroomAPI.fetchSearchRoomsListWithScroll(pageParam, paramHashtag),
         {
             enabled:!!paramHashtag,
+
             getNextPageParam: (lastPage) =>
             !lastPage.isLast ? lastPage.nextPage : undefined,
-            onSuccess:(data) => {
-                console.log(data);
-            },
             
             staleTime:3000,
             retry:false
@@ -54,6 +52,10 @@ const RoomViewer = () => {
             !paramHashtag?listFetchNextPage():searchFetchNextPage();
         }
     }, [inView])
+
+    if(listFetchError || searchListFetchError){
+        return <ErrorFound title={"Error!"} text={"에러가 발생했어요!"}/>
+      } 
 
     return(   
         <RoomViewerWrapper>
@@ -78,8 +80,8 @@ const RoomViewer = () => {
                     ))}
                 </Page>
             )))}
-            {!paramHashtag&&(isListFetchingNextPage ? <div>로딩중입니다!!!!</div>: <div ref={ref} style={{height:"70px"}}></div>)}
-        {!paramHashtag||(isSearchFetchingNextPage ? <div>로딩중입니다!!!!</div>: <div ref={ref} style={{height:"50px"}}></div>)}
+            {!paramHashtag&&(isListFetchingNextPage ? <Loading/>: <div ref={ref} style={{height:"70px"}}></div>)}
+        {!paramHashtag||(isSearchFetchingNextPage ? <Loading/>: <div ref={ref} style={{height:"50px"}}></div>)}
         </RoomViewerWrapper>
     )
 }

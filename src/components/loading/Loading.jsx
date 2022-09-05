@@ -31,7 +31,7 @@ const LoadingWrapper = styled.div`
     height:100vh;
     top:0;
     left:0;
-    background:rgba(236,236,236,0.7);
+    background:rgba(250,250,250,0.8);
     left:50%;
     transform:translate(-50%, 0);
 `

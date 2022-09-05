@@ -7,6 +7,8 @@ import { useInView } from 'react-intersection-observer';
 import PostingCard from '../components/card/PostingCard';
 import Header from '../components/header/Header';
 import Notice from '../components/notice/Notice';
+import Loading from '../components/loading/Loading';
+import ErrorFound from '../components/notice/NotFound';
 
 import { Helmet } from 'react-helmet'
 
@@ -15,7 +17,7 @@ const PostingViewer = () => {
     const paramHashtag = useParams().hashtag;
     const { ref, inView} = useInView();
 
-    const { data:listData, fetchNextPage:fetchListNextPage, isFetchingNextPage:isListFetching } = useInfiniteQuery(
+    const { data:listData, fetchNextPage:fetchListNextPage, isFetchingNextPage:isListFetching, isError: listFetchError } = useInfiniteQuery(
       ["postings", paramCategory],
       ({ pageParam = 0 }) => postingsAPI.fetchPostingsListWithScroll(pageParam, paramCategory),
       {
@@ -28,11 +30,10 @@ const PostingViewer = () => {
           console.log(data);
         },
         retry:false,
-        keepPreviousData:true
       },
     );
 
-    const { data:searchListData, fetchNextPage:fetchSearchListNextPage, isFetchingNextPage:isSearchListFetching} = useInfiniteQuery(
+    const { data:searchListData, fetchNextPage:fetchSearchListNextPage, isFetchingNextPage:isSearchListFetching, isError:searchListFetchError} = useInfiniteQuery(
       ["postings", "search", paramHashtag],
       ({ pageParam = 0}) => postingsAPI.fetchSearchPostingsListWithScroll(pageParam, paramHashtag),
       {
@@ -44,7 +45,6 @@ const PostingViewer = () => {
           console.log(data);
         },
         retry:false,
-        keepPreviousData:true
       }
     )
 
@@ -52,7 +52,11 @@ const PostingViewer = () => {
       if(inView){
         !paramHashtag?fetchListNextPage():fetchSearchListNextPage();
       } 
-    }, [inView])    
+    }, [inView])
+
+    if(listFetchError || searchListFetchError){
+      return <ErrorFound title={"Error!"} text={"에러가 발생했어요!"}/>
+    } 
   
     return (
       <PostingViewerWrapper>
@@ -77,8 +81,8 @@ const PostingViewer = () => {
                   ))}
               </Page>
             )))}
-        {!paramHashtag&&(isListFetching ? <div>로딩중입니다!!!!</div>: <div ref={ref} style={{height:"70px"}}></div>)}
-        {!paramHashtag||(isSearchListFetching ? <div>로딩중입니다!!!!</div>: <div ref={ref} style={{height:"50px"}}></div>)}
+        {!paramHashtag&&(isListFetching ? <Loading/>: <div ref={ref} style={{height:"70px"}}></div>)}
+        {!paramHashtag||(isSearchListFetching ? <Loading/>: <div ref={ref} style={{height:"70px"}}></div>)}
         </PostingViewerWrapper>
     );
 }

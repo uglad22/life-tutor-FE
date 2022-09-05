@@ -20,6 +20,7 @@ const NoticeWrapper = styled.div`
     height:31px;
     width:100%;
     background:${({theme})=> theme.colors.lightBlue};
+    margin-bottom:10px;
     p {
         color:#7986F7;
         font-weight:700;
