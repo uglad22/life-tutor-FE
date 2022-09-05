@@ -106,12 +106,19 @@ const ChatRoom = () => {
         })
     }, []);
 
-    /** 새로고침 시 로직 */
+
+
+    const reloadFunction = () => {
+        disConnect();
+        navigate("/viewer/room");
+    }
+
     useEffect(()=> {
-        if(!userInfo.nickname) {
-            navigate("/viewer/room");
-            disConnect();
-        }
+        window.addEventListener("beforeunload", reloadFunction);
+        
+        return(()=> {
+            window.removeEventListener("beforeunload", reloadFunction);
+        })
     }, [])
 
     /** 메세지가 쌓여 스크롤이 생기면 자동으로 스크롤을 내려주는 코드 */
