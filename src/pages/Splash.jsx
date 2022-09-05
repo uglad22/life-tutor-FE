@@ -10,7 +10,7 @@ const Splash = () => {
     useEffect(()=> {
         setTimeout(()=> {
             navigate("/viewer/posting/list");
-        }, 3500)
+        }, 2000)
     }, [])
     return (
         <AnimationPage>
