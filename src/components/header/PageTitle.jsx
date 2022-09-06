@@ -96,7 +96,7 @@ const PageTitle = ({ title, isAction }) => {
             <PageTitleContent>
                 {/* <div className='back-icon' onClick={()=>navigate(-1)}><p><MdArrowBackIosNew/></p></div> */}
                 <div className='back-icon' onClick={backBtnHandler}><p><MdArrowBackIosNew/></p></div>
-                <p>{title}</p>
+                <p className='page-title-text'>{title}</p>
                 <HeaderActions isShow={isAction}>
                     {pathname==="/posting" && <p onClick={postSubmitHandler}>등록</p>}
                     {pathname===`/detail/posting/${postingId}` && <><p onClick={postEditNavigateHandler}>수정</p><p onClick={postDeleteHandler}>삭제</p></>}
@@ -140,6 +140,14 @@ const PageTitleContent = styled.div`
         cursor: pointer;
     }
 
+    .page-title-text {
+        max-width:50%;
+        display:-webkit-box;
+        -webkit-line-clamp:1;
+        -webkit-box-orient:vertical;
+        overflow:hidden;
+    }
+
     p {
         font-size:16px;
         letter-spacing:-0.3px;
@@ -155,6 +163,7 @@ const HeaderActions = styled.div`
     letter-spacing:-0.3px;
     font-weight:600;
     display: flex;
+    min-width:30px;
     p {
         cursor:pointer;
         display:flex;

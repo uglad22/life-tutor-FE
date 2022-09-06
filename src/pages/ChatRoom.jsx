@@ -128,7 +128,7 @@ const ChatRoom = () => {
 
         /**  메세지가 추가될 때 마다 EXIT인지 확인 후 호스트 퇴장? >>게스트 퇴장 */
         if(messages[msglen - 1]?.enter === "EXIT") {
-            if(!navigateState.isHost) {
+            if(!navigateState?.isHost) {
                 alert("호스트가 퇴장하였습니다.");
                 navigate("/viewer/room");
             }
@@ -146,7 +146,7 @@ const ChatRoom = () => {
             <link rel="icon" type="image/png" sizes="32x32" href="32.ico" />
             <link rel="icon" type="image/png" sizes="16x16" href="16.ico" />
         </Helmet>
-        <Header/>
+        <Header title={navigateState?.title}/>
         <ChatArea>
             {messages?.map((msg, index) => (msg.enter==="ENTER"|| msg.enter==="EXIT")? <Notice key={index}>{msg.message}</Notice>:
              msg.nickname === nicknameRef.current ?

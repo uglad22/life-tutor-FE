@@ -21,7 +21,7 @@ const CreateRoom = () => {
 
     const { mutate:createRoom, isError:createRoomError } = useMutation(chatroomAPI.createChatRoom, {
         onSuccess:(data)=> {
-            navigate(`/detail/room/chat/${data}`, {state:{isHost:true}});
+            navigate(`/detail/room/chat/${data}`, {state:{title:inputs.titleInput, isHost:true}});
         }
     })
 
