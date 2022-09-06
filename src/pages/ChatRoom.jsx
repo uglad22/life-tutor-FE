@@ -34,6 +34,7 @@ const ChatRoom = () => {
 
     const sock = new SockJS(`${process.env.REACT_APP_API_URL}/iting`);
     const client= StompJS.over(sock);
+    // client.reconnect_delay = 5000;
     // client.debug = null;
     const headers = {}; 
 
@@ -67,7 +68,6 @@ const ChatRoom = () => {
     useEffect(()=> {
         chatroomAPI.enterRoom(roomId).then((res) => {
             nicknameRef.current = res.data;
-        }).then(()=> {
             client.connect(headers, ()=> {
 
                 client.subscribe(`/api/sub/${roomId}`, (data) => {
@@ -103,6 +103,7 @@ const ChatRoom = () => {
                     "message":`${nicknameRef.current}님이 퇴장하였습니다.`
                 }))
                 disConnect();
+                
             }
            catch(e) {
             navigate("/viewer/room");
