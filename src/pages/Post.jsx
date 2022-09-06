@@ -71,24 +71,6 @@ const Post = () => {
             }
 
         }
-        // const valid = hashtagValidation(hashInput);
-        // if(!valid){
-        //     setHashInput('');
-        //     return;
-        // } 
-        // else if(postData.hashtag.length === 3) {
-        //     alert("해시태그는 3개까지 등록 가능합니다.");
-        //     setHashInput('');
-        //     return;
-        // }
-        // else if(hashInput.length > 6 || hashInput.length === 1) {
-        //     alert("해시태그는 6자리까지 설정 할 수 있습니다.");
-        // }
-        // else {
-        //     const result = hashInput.replace(/[/!@#$%^&*~)(/?><\s]/g, "");
-        //     setPostData({...postData, hashtag:[...postData.hashtag, result]})
-        //     setHashInput('');
-        // }
     }
 
     useEffect(() => {
@@ -172,11 +154,9 @@ export default Post;
 
 const PostWrapper = styled.div`
     // app.js의 content가 480px로 limit
-    /* position:relative; */
     padding-top:60px;
     width:calc(100% - 40px);
     margin:0 auto;
-    /* background:blue; */
 
     hr {
         max-width:480px;
@@ -222,9 +202,7 @@ const PostContent = styled.div`
 const HashTagForm = styled.form`
     position:relative;
     width:100%;
-    /* height:52px; */
     border:1px solid rgba(0, 0, 0, 0.12);
-    /* background:red; */
     border-radius: 8px;
     display:flex;
     box-sizing:border-box;
@@ -232,7 +210,6 @@ const HashTagForm = styled.form`
     overflow-x:auto;
     margin-bottom:10px;
     
-    /* background:red; */
     input {
         width:100%;
         height:52px;
@@ -243,8 +220,6 @@ const HashTagForm = styled.form`
     }
     .hashtag-viewer {
         display:flex;
-        /* flex-wrap:wrap; */
-        /* gap:5px; */
     }
 
     .hashtag-submit-button {

@@ -62,24 +62,6 @@ const CreateRoom = () => {
                 setInputs({...inputs, hashtagInput:""});
             }
         }
-        // const valid = hashtagValidation(inputs.hashtagInput, hashtag);
-        // if(!valid) {
-        //     setInputs({...inputs, hashtagInput:""});
-        //     return;
-        // }
-        // else if(hashtag.length === 3) {
-        //     alert('해시태그는 3개까지 등록 가능합니다.');
-        //     setInputs({...inputs, hashtagInput:""});
-        //     return;
-        // }
-        // else if(inputs.hashtagInput.length > 6 || inputs.hashtagInput.length === 1) {
-        //     alert("해시태그는 6자리까지 설정 할 수 있습니다.");
-        // }
-        // else {
-        //     const result = inputs.hashtagInput.replace(/[/!@#$%^&*~)(/?><\s]/g, "");
-        //     setHashtag([...hashtag, result]);
-        //     setInputs({...inputs, hashtagInput:""});
-        // }
         
     }
 
