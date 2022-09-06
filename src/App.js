@@ -97,7 +97,6 @@ function App() {
           </AnimatePresence>
          
         </Content>
-        <button type="button" onClick={()=>{throw Error("Oops, something has gone wrong")}}>do not click this button</button>  
         <Navigation/>
     </div>
     </ThemeProvider>
