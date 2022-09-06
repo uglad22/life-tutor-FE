@@ -34,7 +34,7 @@ const ChatRoom = () => {
 
     const sock = new SockJS(`${process.env.REACT_APP_API_URL}/iting`);
     const client= StompJS.over(sock);
-    client.debug = null;
+    // client.debug = null;
     const headers = {}; 
 
     const { mutate: exitRoom } = useMutation(chatroomAPI.exitRoom, {
@@ -67,17 +67,23 @@ const ChatRoom = () => {
     useEffect(()=> {
         chatroomAPI.enterRoom(roomId).then((res) => {
             nicknameRef.current = res.data;
+        }).then(()=> {
             client.connect(headers, ()=> {
+
                 client.subscribe(`/api/sub/${roomId}`, (data) => {
                     const newMessage = JSON.parse(data.body);
                     setMessages((prev) => [...prev, newMessage]);
                 })
-    
+
                 client.send(`/api/pub/${roomId}`, {}, JSON.stringify({
                     "enter":"ENTER",
                     "messageType":"TEXT",
                     "nickname":nicknameRef.current
                 }))
+    
+                
+            }, ()=> {
+                alert("connect error");
             })
         }).catch((e) => {
             alert("방이 꽉 찼습니다!");
