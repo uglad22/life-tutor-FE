@@ -24,7 +24,6 @@ import PrivateRoute from './components/limitAuthRoute/PrivateRoute';
 import UserLimitRoute from './components/limitAuthRoute/UserLimitRoute';
 import { Helmet } from 'react-helmet'
 import ErrorFound from './components/notice/NotFound';
-import * as Sentry from "@sentry/react";
 
 
 function App() {
