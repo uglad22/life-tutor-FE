@@ -103,7 +103,8 @@ function App() {
   );
 }
 
-export default Sentry.withProfiler(App);
+// export default Sentry.withProfiler(App);
+export default App;
 
 const Content = styled.div`
   width:100vw;

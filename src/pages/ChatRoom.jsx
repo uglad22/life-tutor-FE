@@ -83,7 +83,8 @@ const ChatRoom = () => {
     
                 
             }, ()=> {
-                alert("connect error");
+                alert("채팅방 연결 실패!");
+                navigate("/viewer/room");
             })
         }).catch((e) => {
             alert("방이 꽉 찼습니다!");

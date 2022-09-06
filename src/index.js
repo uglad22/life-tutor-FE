@@ -15,15 +15,15 @@ import ScrollToTop from './components/scroll/ScrollToTop';
 
 import Loading from "./components/loading/Loading";
 
-Sentry.init({
-  dsn: "https://e811b519a47f4967ab7c164c201fccb9@o1397196.ingest.sentry.io/6722339",
-  integrations: [new BrowserTracing()],
+// Sentry.init({
+//   dsn: "https://e811b519a47f4967ab7c164c201fccb9@o1397196.ingest.sentry.io/6722339",
+//   integrations: [new BrowserTracing()],
 
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of transactions for performance monitoring.
-  // We recommend adjusting this value in production
-  tracesSampleRate: 1.0,
-});
+//   // Set tracesSampleRate to 1.0 to capture 100%
+//   // of transactions for performance monitoring.
+//   // We recommend adjusting this value in production
+//   tracesSampleRate: 1.0,
+// });
 
 const queryClient = new QueryClient({
   defaultOptions: {
