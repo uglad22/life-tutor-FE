@@ -26,9 +26,6 @@ const PostingViewer = () => {
         getNextPageParam: (lastPage) =>
           !lastPage.isLast ? lastPage.nextPage : undefined,
 
-        onSuccess:(data) => {
-          console.log(data);
-        },
         retry:false,
       },
     );
@@ -41,9 +38,6 @@ const PostingViewer = () => {
         staleTime:3000,
         getNextPageParam: (lastPage) =>
         !lastPage.isLast? lastPage.nextPage : undefined,
-        onSuccess:(data) => {
-          console.log(data);
-        },
         retry:false,
       }
     )

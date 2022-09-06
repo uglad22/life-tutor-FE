@@ -80,7 +80,6 @@ const ChatRoom = () => {
                 }))
             })
         }).catch((e) => {
-            console.log(e.response.status);
             alert("방이 꽉 찼습니다!");
             navigate("/viewer/room");
             return;
@@ -99,10 +98,8 @@ const ChatRoom = () => {
                 disConnect();
             }
            catch(e) {
-            // console.log(e);
             navigate("/viewer/room");
            }
-            // exitRoom(roomId);
         })
     }, []);
 

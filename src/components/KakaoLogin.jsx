@@ -11,7 +11,6 @@ function KakaoLogin() {
     navigate('/login');
   } else {
     sessionStorage.setItem("Authorization", `BEARER ${params.token}`);
-    console.log(sessionStorage.Authorization);
     navigate('/viewer/posting/list')
   
   };

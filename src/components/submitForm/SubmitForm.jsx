@@ -12,8 +12,6 @@ const SubmitForm = ({ postingId, placeholderText, sendMsg, commentEditStateForSu
     const queryClient = useQueryClient();
     const location = useLocation();
 
-    // console.log('render');
-
     const addComment = async () => {
         const comment = { content: commentInput.current.value };
         return await instance.post(`/api/board/${postingId}/comment`, comment);
@@ -34,7 +32,6 @@ const SubmitForm = ({ postingId, placeholderText, sendMsg, commentEditStateForSu
       if(location.pathname.includes("/detail/room/chat")) {
         sendMsg(commentInput.current.value);
         commentInput.current.value="";
-        // commentInput.current.focus();
       }
       else commentAddHandler();
     }

@@ -19,8 +19,6 @@ const PageTitle = ({ title, isAction }) => {
     
     const { mutate:submitPosting, isError:mutateError } = useMutation(postingsAPI.postPosting, {
         onSuccess: ({data}) => {
-            console.log(data);
-            // queryClient.invalidateQueries(["postings", "list"]);
             queryClient.invalidateQueries(["postings"]);
         }
     });
@@ -37,7 +35,6 @@ const PageTitle = ({ title, isAction }) => {
             hashtag,
             imgUrl:'shdlfl' // TODO: 지우기
         }
-        console.log(newData);
         submitPosting(newData);
         navigate('/viewer/posting/list');
     }
@@ -74,7 +71,6 @@ const PageTitle = ({ title, isAction }) => {
             hashtag,
             imgUrl:'shdlfl'
         }
-        console.log(newData);
         submitEditing({postingId, newData});
     }
 

@@ -87,7 +87,6 @@ const Signup = () => {
         } else {
             try {
                 const res = await instance.get(`/api/users/email/${email_ref.current.value}`);
-                console.log(res);
                 alert('사용 가능한 ID 입니다!');
             //   navigate('/login');
             } catch (err) {
@@ -106,7 +105,6 @@ const Signup = () => {
         } else {
             try {
                 const res = await instance.get(`/api/users/nickname/${nickname_ref.current.value}`);
-                console.log(res);
                 alert('사용 가능한 닉네임 입니다!');
             //   navigate('/login');
             } catch (err) {
@@ -117,7 +115,6 @@ const Signup = () => {
     }
     
     const submitSignup = async () => {
-        console.log(emailcheck, nicknamecheck, pwcheck, pwrecheck, userType)
 
         //input 값에 공란이 있으면 알럿 띄우기
         if (email_ref.current.value === '') {
@@ -144,12 +141,10 @@ const Signup = () => {
                 user_type : userType
             }
 
-            console.log(user_data);
             // alert('가입을 축하드려요!')
 
             try {
                 const res = await instance.post('/api/signup', user_data);
-                console.log(res);
                 alert('회원가입이 완료되었습니다!');
                 navigate('/login');
             } catch (err) {

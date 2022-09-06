@@ -25,7 +25,6 @@ const Post = () => {
     const params = useParams();
     const postingId = params.postingId;
     const navigate = useNavigate();
-    console.log(pathname, postingId);
 
     const changeHashInput = (e) => {
         setHashInput(e.target.value);

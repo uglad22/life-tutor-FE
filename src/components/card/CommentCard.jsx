@@ -11,7 +11,6 @@ const CommentCard = ({ data, postingId, commentEditStateForSubmit, setCommentEdi
   const commentEditInput = useRef();
   const queryClient = useQueryClient();
   
-  // console.log(data);
 
   const [commentEditState, setCommentEditState] = useState(false);
 
