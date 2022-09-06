@@ -27,8 +27,24 @@ export const editPostingTime = (timeValue) => {
     }
 }
 
-export const hashtagValidation = (hashtagInput) => {
-    if(!hashtagInput) return false;
+// export const hashtagValidation = (hashtagInput) => {
+//     if(!hashtagInput) return false;
+//     return true;
+// }
+
+export const hashtagValidation = (hashtagInput, hashtagArray) => {
+    if(!hashtagInput) {
+        alert("특수문자, 공백은 사용할 수 없습니다!");
+        return false;
+    }
+    else if(hashtagInput.length === 1 || hashtagInput.length > 6) {
+        alert("해시태그는 2~6자리까지 등록 할 수 있습니다.(특수문자, 공백 사용불가)");
+        return false;
+    }
+    else if(hashtagArray.length === 3) {
+        alert("해시태그는 3개까지 등록 할 수 있습니다.");
+        return false;
+    }
     return true;
 }
 

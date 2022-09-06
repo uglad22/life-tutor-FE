@@ -25,7 +25,6 @@ const Post = () => {
     const params = useParams();
     const postingId = params.postingId;
     const navigate = useNavigate();
-    console.log(pathname, postingId);
 
     const changeHashInput = (e) => {
         setHashInput(e.target.value);
@@ -40,50 +39,37 @@ const Post = () => {
     // velog 처럼 해시태그 추가할 때 스페이스바 누르면 추가되는 기능
     const keyupSpace = (e) => {
         if(e.code === "Space") {
-            const valid = hashtagValidation(hashInput.trim());
-            if(!valid) {
-                setHashInput('');
+            if(!hashInput.trim()) {
+                setHashInput("");
                 return;
             }
-            else if(postData.hashtag.length === 3) {
-                alert("해시태그는 3개까지 등록 가능합니다.");
-                setHashInput('');
-                return;
-            }
-            else if(hashInput.length > 6) {
-                alert("해시태그는 6자리까지 설정 할 수 있습니다.");
-            }
-            else {
-                // 특수문자, 공백문자 제거
-                const result = hashInput.replace(/[/!@#$%^&*~)(/?><\s]/g, "");
+            else  {
+              const result = hashInput.replace(/[/!@#$%^&*~)(/?><\s]/g, "");
+              const valid = hashtagValidation(result, hashtag);
+              if(!valid) return;
+              else {
                 setPostData({...postData, hashtag:[...postData.hashtag, result]})
-                setHashInput('');
+                setHashInput("");
+              }  
             }
-            
         }
-        else return;
     }
 
     // 해시태그 추가
     const hashtagSubmit = (e) => {
         e.preventDefault();
-        const valid = hashtagValidation(hashInput);
-        if(!valid){
-            setHashInput('');
-            return;
-        } 
-        else if(postData.hashtag.length === 3) {
-            alert("해시태그는 3개까지 등록 가능합니다.");
-            setHashInput('');
+        if(!hashInput) {
             return;
         }
-        else if(hashInput.length > 6) {
-            alert("해시태그는 6자리까지 설정 할 수 있습니다.");
-        }
-        else {
+        else  {
             const result = hashInput.replace(/[/!@#$%^&*~)(/?><\s]/g, "");
-            setPostData({...postData, hashtag:[...postData.hashtag, result]})
-            setHashInput('');
+            const valid = hashtagValidation(result, hashtag);
+            if(!valid) return;
+            else {
+                setPostData({...postData, hashtag:[...postData.hashtag, result]})
+                setHashInput('');
+            }
+
         }
     }
 
@@ -168,11 +154,9 @@ export default Post;
 
 const PostWrapper = styled.div`
     // app.js의 content가 480px로 limit
-    /* position:relative; */
     padding-top:60px;
     width:calc(100% - 40px);
     margin:0 auto;
-    /* background:blue; */
 
     hr {
         max-width:480px;
@@ -218,9 +202,7 @@ const PostContent = styled.div`
 const HashTagForm = styled.form`
     position:relative;
     width:100%;
-    /* height:52px; */
     border:1px solid rgba(0, 0, 0, 0.12);
-    /* background:red; */
     border-radius: 8px;
     display:flex;
     box-sizing:border-box;
@@ -228,7 +210,6 @@ const HashTagForm = styled.form`
     overflow-x:auto;
     margin-bottom:10px;
     
-    /* background:red; */
     input {
         width:100%;
         height:52px;
@@ -239,8 +220,6 @@ const HashTagForm = styled.form`
     }
     .hashtag-viewer {
         display:flex;
-        /* flex-wrap:wrap; */
-        /* gap:5px; */
     }
 
     .hashtag-submit-button {

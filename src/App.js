@@ -23,6 +23,8 @@ import MyPwManage from './pages/MyPwManage';
 import PrivateRoute from './components/limitAuthRoute/PrivateRoute';
 import UserLimitRoute from './components/limitAuthRoute/UserLimitRoute';
 import { Helmet } from 'react-helmet'
+import ErrorFound from './components/notice/NotFound';
+import * as Sentry from "@sentry/react";
 
 
 function App() {
@@ -90,17 +92,18 @@ function App() {
             <Route path="/posting/edit/:postingId" element={<PrivateRoute component={<Post/>} authenticated={token}/>}/>
             <Route path="/create/room" element={<PrivateRoute component={<CreateRoom/>} authenticated={token}/>}/>
             <Route path="/detail/room/chat/:roomId" element={<PrivateRoute component={<ChatRoom/>} authenticated={token}/>}/>
+            <Route path="*" element={<ErrorFound title={"NOT FOUND"} text={"페이지를 찾지 못했어요!"}/>}/>
           </Routes>
-          </AnimatePresence>  
+          </AnimatePresence>
+         
         </Content>
-        
         <Navigation/>
     </div>
     </ThemeProvider>
   );
 }
 
-export default App;
+export default Sentry.withProfiler(App);
 
 const Content = styled.div`
   width:100vw;

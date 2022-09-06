@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Header from '../components/header/Header';
 import DeletableBadge from '../components/hashtag/DeletableBadge';
+import ErrorFound from '../components/notice/NotFound';
 import { WhiteBackground } from '../style/sharedStyle'
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
@@ -20,7 +21,7 @@ const CreateRoom = () => {
 
     const { mutate:createRoom, isError:createRoomError } = useMutation(chatroomAPI.createChatRoom, {
         onSuccess:(data)=> {
-            navigate(`/detail/room/chat/${data}`, {state:{isHost:true}});
+            navigate(`/detail/room/chat/${data}`, {state:{title:inputs.titleInput, isHost:true}});
         }
     })
 
@@ -30,46 +31,36 @@ const CreateRoom = () => {
 
     const keyupSpace = (e) => {
         if(e.code === "Space") {
-            const valid = hashtagValidation(inputs.hashtagInput.trim());
-            if(!valid) {
+            if(!inputs.hashtagInput.trim()) {
                 setInputs({...inputs, hashtagInput:""});
                 return;
             }
-            else if(hashtag.length === 3) {
-                alert('해시태그는 3개까지 등록 가능합니다.');
-                setInputs({...inputs, hashtagInput:""});
-                return;
-            }
-            else if(inputs.hashtagInput.length > 6) {
-                alert("해시태그는 6자리까지 설정 할 수 있습니다.");
-            }
+            
             else {
                 const result = inputs.hashtagInput.replace(/[/!@#$%^&*~)(/?><\s]/g, "");
-                setHashtag([...hashtag, result]);
-                setInputs({...inputs, hashtagInput:""});
+                const valid = hashtagValidation(result, hashtag);
+                if(!valid) return;
+                else {
+                    setHashtag([...hashtag, result]);
+                    setInputs({...inputs, hashtagInput:""});
+                }
             }
         }
     }
 
     const hashtagSubmitHandler = (e) => {
         e.preventDefault();
-        const valid = hashtagValidation(inputs.hashtagInput);
-        if(!valid) {
-            setInputs({...inputs, hashtagInput:""});
+        if(!inputs.hashtagInput) {
             return;
-        }
-        else if(hashtag.length === 3) {
-            alert('해시태그는 3개까지 등록 가능합니다.');
-            setInputs({...inputs, hashtagInput:""});
-            return;
-        }
-        else if(inputs.hashtagInput.length > 6) {
-            alert("해시태그는 6자리까지 설정 할 수 있습니다.");
         }
         else {
             const result = inputs.hashtagInput.replace(/[/!@#$%^&*~)(/?><\s]/g, "");
-            setHashtag([...hashtag, result]);
-            setInputs({...inputs, hashtagInput:""});
+            const valid = hashtagValidation(result, hashtag);
+            if(!valid) return;
+            else {
+                setHashtag([...hashtag, result]);
+                setInputs({...inputs, hashtagInput:""});
+            }
         }
         
     }
@@ -89,7 +80,7 @@ const CreateRoom = () => {
         })
     }, [])
 
-    if(createRoomError) return <p>에러</p>
+    if(createRoomError) return <ErrorFound title={"Error!"} text={"에러가 발생했어요!"}/>
     return(
         <WhiteBackground>
             <Helmet>

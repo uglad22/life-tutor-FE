@@ -23,7 +23,17 @@ const Search = () => {
         }
         if(!searchInput) return;
 
-        const inputResult = searchInput.replace(/[/!@#$%^&*~)(/?><\s]/g, "");
+        const inputResult = searchInput.replace(/[/!@#$%^&*~)(/?><,.\s]/g, "");
+        if(!inputResult) {
+            alert("특수문자 입력은 안 돼요!");
+            setSearchInput("");
+            return;
+        }
+        else if(inputResult.length === 1 || searchInput.length === 1) {
+            alert("한 글자 이상으로 검색해주세요!");
+            return;
+        }
+
         if(pathname.includes("/posting")) {
             navigate(`/viewer/posting/search/${inputResult}`);
         }

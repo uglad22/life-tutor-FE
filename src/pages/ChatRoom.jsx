@@ -80,7 +80,6 @@ const ChatRoom = () => {
                 }))
             })
         }).catch((e) => {
-            console.log(e.response.status);
             alert("방이 꽉 찼습니다!");
             navigate("/viewer/room");
             return;
@@ -99,18 +98,24 @@ const ChatRoom = () => {
                 disConnect();
             }
            catch(e) {
-            // console.log(e);
             navigate("/viewer/room");
            }
-            // exitRoom(roomId);
         })
     }, []);
 
-    /** 새로고침 시 로직 */
+
+
+    const reloadFunction = () => {
+        disConnect();
+        navigate("/viewer/room");
+    }
+
     useEffect(()=> {
-        if(!userInfo.nickname) {
-            navigate("/viewer/room");
-        }
+        window.addEventListener("beforeunload", reloadFunction);
+        
+        return(()=> {
+            window.removeEventListener("beforeunload", reloadFunction);
+        })
     }, [])
 
     /** 메세지가 쌓여 스크롤이 생기면 자동으로 스크롤을 내려주는 코드 */
@@ -120,7 +125,7 @@ const ChatRoom = () => {
 
         /**  메세지가 추가될 때 마다 EXIT인지 확인 후 호스트 퇴장? >>게스트 퇴장 */
         if(messages[msglen - 1]?.enter === "EXIT") {
-            if(!navigateState.isHost) {
+            if(!navigateState?.isHost) {
                 alert("호스트가 퇴장하였습니다.");
                 navigate("/viewer/room");
             }
@@ -138,7 +143,7 @@ const ChatRoom = () => {
             <link rel="icon" type="image/png" sizes="32x32" href="32.ico" />
             <link rel="icon" type="image/png" sizes="16x16" href="16.ico" />
         </Helmet>
-        <Header/>
+        <Header title={navigateState?.title}/>
         <ChatArea>
             {messages?.map((msg, index) => (msg.enter==="ENTER"|| msg.enter==="EXIT")? <Notice key={index}>{msg.message}</Notice>:
              msg.nickname === nicknameRef.current ?

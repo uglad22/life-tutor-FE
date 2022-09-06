@@ -68,7 +68,6 @@ const MyInfoManage = () => {
     };
     try {
       const res = await instance.put("/api/mypage/user/info", data);
-      // console.log("성공", res);
       alert("개인정보가 변경되었습니다.");
       const { nickname, user_type } = data;
       const { username, kakao } = userInfo;
@@ -76,7 +75,7 @@ const MyInfoManage = () => {
       setUserInfo(userData);
       navigate("/mypage");
     } catch (err) {
-      // console.log("실패", err);
+      console.log("실패", err);
     }
   };
 

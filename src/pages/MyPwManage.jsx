@@ -57,11 +57,9 @@ const MyPwManage = () => {
       }
       try {
           const res = await instance.put("/api/mypage/user/password", data);
-          // console.log(res);
           alert('비밀번호를 변경하였습니다.');
           navigate("/mypage");
       } catch (err) {
-          // console.log(err.response.data);
           alert(err.response.data);
       }
     };
