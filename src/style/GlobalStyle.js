@@ -22,6 +22,7 @@ const GlobalStyle = createGlobalStyle`
 
     body {
         background:${({ theme }) => theme.colors.backgroundGray};
+        overflow-y:scroll;
     }
 
 
