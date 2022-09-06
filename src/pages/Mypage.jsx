@@ -144,6 +144,7 @@ const Mypage = () => {
         <ManagementCard
           isShow={true}
           managementType="피드백 남기기"
+          feedbackUrl={"https://docs.google.com/forms/d/e/1FAIpQLSeW9YlrfOrokRe4OsK5mZ48Ms6RuOOzphReRiGnvMZvVdmJ2A/viewform?usp=sf_link"}
           svg={
             <svg
               width="24"

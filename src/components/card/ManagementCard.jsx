@@ -2,11 +2,15 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const ManagementCard = ({isShow, svg, managementType, pathUrl}) => {
+const ManagementCard = ({isShow, svg, managementType, pathUrl, feedbackUrl}) => {
   const navigate = useNavigate();
+  const ClickHandler = () => {
+    if(!feedbackUrl) navigate(pathUrl);
+    else window.open(feedbackUrl);
+  }
   return (
     <>
-        <ManagementWrapper isShow={isShow} onClick={() => {navigate(pathUrl)}}>
+        <ManagementWrapper isShow={isShow} onClick={ClickHandler}>
             {svg}
             <p>{managementType}</p>
         </ManagementWrapper>
