@@ -66,32 +66,7 @@ const ChatRoom = () => {
 
 
     useEffect(()=> {
-        // chatroomAPI.enterRoom(roomId).then((res) => {
-        //     nicknameRef.current = res.data;
-        //     client.connect(headers, ()=> {
-
-        //         client.subscribe(`/api/sub/${roomId}`, (data) => {
-        //             const newMessage = JSON.parse(data.body);
-        //             setMessages((prev) => [...prev, newMessage]);
-        //         })
-
-        //         client.send(`/api/pub/${roomId}`, {}, JSON.stringify({
-        //             "enter":"ENTER",
-        //             "messageType":"TEXT",
-        //             "nickname":nicknameRef.current
-        //         }))
-    
-                
-        //     }, ()=> {
-        //         alert("채팅방 연결 실패!");
-        //         navigate("/viewer/room");
-        //     })
-        // }).catch((e) => {
-        //     alert("방이 꽉 찼습니다!");
-        //     navigate("/viewer/room");
-        //     return;
-        // });
-
+       
         client.connect(headers, () => {
             client.subscribe(`/api/sub/${roomId}`, (data) => {
                 const newMessage = JSON.parse(data.body);
@@ -113,10 +88,6 @@ const ChatRoom = () => {
             alert("채팅방 연결 실패!");
             navigate("/viewer/room");
         })
-
-       
-       
-        
 
         return(()=> {
             try {
