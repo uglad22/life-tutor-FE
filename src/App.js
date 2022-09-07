@@ -25,6 +25,9 @@ import UserLimitRoute from './components/limitAuthRoute/UserLimitRoute';
 import { Helmet } from 'react-helmet'
 import ErrorFound from './components/notice/NotFound';
 
+import * as Sentry from "@sentry/react";
+import { BrowserTracing } from "@sentry/tracing";
+
 
 function App() {
 
@@ -102,8 +105,7 @@ function App() {
   );
 }
 
-// export default Sentry.withProfiler(App);
-export default App;
+export default Sentry.withProfiler(App);
 
 const Content = styled.div`
   width:100vw;
