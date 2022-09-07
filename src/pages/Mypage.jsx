@@ -74,7 +74,7 @@ const Mypage = () => {
             <p>내가 쓴 글</p>
           </Mypostings>
 
-          <MyCommentsInPost>
+          <MyCommentsInPost onClick={()=> alert("추후 지원 예정인 서비스입니다.")}>
             <CategoryIcon>
               <svg
                 width="35"
@@ -239,6 +239,7 @@ const Mypostings = styled.div`
   text-align: center;
   font-size: 14px;
   margin-right: 76px;
+  cursor:pointer;
 `;
 
 const CategoryIcon = styled.div`
@@ -259,6 +260,7 @@ const MyCommentsInPost = styled.div`
   font-weight: bold;
   text-align: center;
   font-size: 14px;
+  cursor:pointer;
 `;
 
 const MemberManagementBox = styled.div`
