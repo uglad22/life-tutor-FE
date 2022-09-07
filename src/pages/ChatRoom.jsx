@@ -35,7 +35,7 @@ const ChatRoom = () => {
     const sock = new SockJS(`${process.env.REACT_APP_API_URL}/iting`);
     const client= StompJS.over(sock);
     // client.reconnect_delay = 5000;
-    // client.debug = null;
+    client.debug = null;
     const headers = {}; 
 
     const { mutate: exitRoom } = useMutation(chatroomAPI.exitRoom, {
@@ -72,6 +72,7 @@ const ChatRoom = () => {
                 const newMessage = JSON.parse(data.body);
                 setMessages((prev) => [...prev, newMessage]);
             })
+            
             chatroomAPI.enterRoom(roomId).then((res) => {
                 nicknameRef.current = res.data;
                 client.send(`/api/pub/${roomId}`, {}, JSON.stringify({
@@ -89,8 +90,11 @@ const ChatRoom = () => {
             navigate("/viewer/room");
         })
 
+        
+
         return(()=> {
             try {
+                if(!nicknameRef.current) return;
                 client.send(`/api/pub/${roomId}`, {}, JSON.stringify({
                     "enter":"EXIT",
                     "messageType":"TEXT",
