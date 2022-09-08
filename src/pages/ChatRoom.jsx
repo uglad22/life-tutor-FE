@@ -40,7 +40,7 @@ const ChatRoom = () => {
 
     const { mutate: exitRoom } = useMutation(chatroomAPI.exitRoom, {
         onSuccess:() => {
-            queryClient.invalidateQueries(["rooms"]);
+            return queryClient.invalidateQueries(["rooms"]);
         }
     })
 

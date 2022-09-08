@@ -19,7 +19,8 @@ const PageTitle = ({ title, isAction }) => {
     
     const { mutate:submitPosting, isError:mutateError } = useMutation(postingsAPI.postPosting, {
         onSuccess: ({data}) => {
-            queryClient.invalidateQueries(["postings"]);
+            navigate('/viewer/posting/list');
+            return queryClient.invalidateQueries(["postings"]);
         }
     });
     const postSubmitHandler = () => {
@@ -36,7 +37,7 @@ const PageTitle = ({ title, isAction }) => {
             imgUrl:'shdlfl' // TODO: 지우기
         }
         submitPosting(newData);
-        navigate('/viewer/posting/list');
+       
     }
 
     const postEditNavigateHandler = async () => {
@@ -45,8 +46,8 @@ const PageTitle = ({ title, isAction }) => {
 
     const { mutate:deletePosting } = useMutation(postingsAPI.postDelete, {
         onSuccess: () => {
-            queryClient.invalidateQueries(["postings"]);
             navigate("/viewer/posting/list");
+            return queryClient.invalidateQueries(["postings"]);
         }
     });
     const postDeleteHandler = async () => {
@@ -58,9 +59,9 @@ const PageTitle = ({ title, isAction }) => {
 
     const { mutate:submitEditing } = useMutation(postingsAPI.postEditing, {
         onSuccess: () => {
-            queryClient.invalidateQueries(["postings"]);
             alert('게시글이 수정되었습니다.');
             navigate(`/detail/posting/${postingId}`);
+            return queryClient.invalidateQueries(["postings"]);
         }
     });
     const postEditHandler = () => {
