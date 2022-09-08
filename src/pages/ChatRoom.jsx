@@ -49,6 +49,19 @@ const ChatRoom = () => {
             exitRoom(roomId);
         }, {});
     }
+    const socketReConnectFunc = (stompClient, callback) => {
+        setTimeout(() => {
+            /** Stomp.client에는 ws.readyState라는 integer 값이 있는데, 소켓 연결이 완료되었을 경우 이 값은 1로 설정됨 */
+            /** 연결이 완료 되었으면 callback을 실행함 */
+            if(stompClient.ws.readyState === 1) {
+                callback();
+            }
+            /** 연결이 되지 않았을 경우 다시 실행 */
+            else {
+                socketReConnectFunc(stompClient, callback);
+            }
+        }, 1)
+    }
 
     const sendMsg = (messageText) => {
         const sendMessage = {
@@ -57,12 +70,16 @@ const ChatRoom = () => {
             "nickname":nicknameRef.current,
             "message":messageText
         }
-        client.send(`/api/pub/${roomId}`, {}, JSON.stringify(sendMessage));
+        socketReConnectFunc(client, () => {
+            client.send(`/api/pub/${roomId}`, {}, JSON.stringify(sendMessage));
+        })
     }
 
     const scrollToBottom = () => {
         chatRef.current.scrollIntoView({ behavior: "smooth" });
     }
+
+    
 
 
     useEffect(()=> {
@@ -127,9 +144,9 @@ const ChatRoom = () => {
 
     /** 메세지가 쌓여 스크롤이 생기면 자동으로 스크롤을 내려주는 코드 */
     useEffect(()=> {
-        const msglen = messages.length;
         scrollToBottom();
-
+        
+        const msglen = messages.length;
         /**  메세지가 추가될 때 마다 EXIT인지 확인 후 호스트 퇴장? >>게스트 퇴장 */
         if(messages[msglen - 1]?.enter === "EXIT") {
             if(!navigateState?.isHost) {
