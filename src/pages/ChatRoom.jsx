@@ -71,7 +71,7 @@ const ChatRoom = () => {
             "message":messageText
         }
         socketReConnectFunc(client, () => {
-            client.send(`/api/pub/${roomId}`, {}, JSON.stringify(sendMessage));
+            client.send(`/api/pub/${roomId}`, headers, JSON.stringify(sendMessage));
         })
     }
 
@@ -92,7 +92,7 @@ const ChatRoom = () => {
             
             chatroomAPI.enterRoom(roomId).then((res) => {
                 nicknameRef.current = res.data;
-                client.send(`/api/pub/${roomId}`, {}, JSON.stringify({
+                client.send(`/api/pub/${roomId}`, headers, JSON.stringify({
                     "enter":"ENTER",
                     "messageType":"TEXT",
                     "nickname":nicknameRef.current
@@ -145,7 +145,7 @@ const ChatRoom = () => {
     /** 메세지가 쌓여 스크롤이 생기면 자동으로 스크롤을 내려주는 코드 */
     useEffect(()=> {
         scrollToBottom();
-        
+
         const msglen = messages.length;
         /**  메세지가 추가될 때 마다 EXIT인지 확인 후 호스트 퇴장? >>게스트 퇴장 */
         if(messages[msglen - 1]?.enter === "EXIT") {
@@ -187,12 +187,6 @@ const ChatRoomWrapper = styled.div`
     padding-top:71px;
     padding-bottom:65px;
     width:100%;
-    /* height:calc(100vh - 71px - 70px); */
-    /* height:calc(100vh - 71px - 70px); */
-    /* height:calc(100vh - 71px - 70px);
-    display:flex;
-    flex-direction:column;
-    justify-content:flex-end; */
 `
 
 const ChatArea = styled.div`
