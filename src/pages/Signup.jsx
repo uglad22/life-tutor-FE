@@ -35,7 +35,7 @@ const Signup = () => {
         }
     }
 
-    // 닉네임 제한 조건 : 2자리 이상 5자리 이하 한글
+    // 닉네임 제한 조건 : 2자리 이상 10자리 이하 한글/영문/숫자
     const nickname_limit = (nickname) => {
         let _reg = /^[a-zA-Z0-9ㄱ-ㅎ가-힣]{2,10}$/;
         return _reg.test(nickname);
@@ -190,7 +190,7 @@ const Signup = () => {
                     onBlur={pwCheck}
                 />
                 {(pwcheck == null) ? (<None />) : pwcheck? (<None />)
-                : (<Fail><p>특수문자를 포함 영문(8-20자)으로 작성해주세요!</p></Fail>)}
+                : (<Fail><p>특수문자를 포함 영문/숫자(8-20자)으로 작성해주세요!</p></Fail>)}
                 <input
                     type="password"
                     placeholder="비밀번호 확인"
@@ -214,7 +214,7 @@ const Signup = () => {
                     onClick={submitNickName}> 중복 확인</button>
             </NicknameBox>
                {(nicknamecheck == null) ? (<None />) : nicknamecheck? (<None />)
-                : (<Fail><p>2자리 이상 5자리 이하 한글로 작성해주세요!</p></Fail>)}
+                : (<Fail><p>2-10자리 한글/영문/숫자를 입력해주세요!</p></Fail>)}
 
             <UsertypeBox>
                     <select name="userType" onChange={selectUserType}>
