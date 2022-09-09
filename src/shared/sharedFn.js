@@ -1,36 +1,20 @@
-import moment from "moment"
-
-export const editPostingTime = (timeValue) => {
-    const diffSeconds = moment().diff(moment(timeValue), "seconds");
-    if(diffSeconds <= 60) return `방금 전`;
-    else if(diffSeconds > 60 && diffSeconds < (60 * 60)) {
-        let diffMin = moment().diff(moment(timeValue), "minutes");
-        return `${diffMin}분 전`;
-    }
-    else if(diffSeconds >= (60 * 60) && diffSeconds < (60 * 60 * 24)) {
-        let diffHour = moment().diff(moment(timeValue), "hours");
-        return `${diffHour}시간 전`;
-    }
-    else if(diffSeconds >= (60 * 60 * 24)) {
-        let diffMonth = moment().diff(moment(timeValue), "month");
-        if(diffMonth) {
-            if(diffMonth < 12) return `${diffMonth}달 전`;
-            else {
-                let diffYear = moment().diff(moment(timeValue), "year");
-                return `${diffYear}년 전`;
-            }
-        } 
-        else if(!diffMonth) {
-            let diffDay = moment().diff(moment(timeValue), "day");
-            return `${diffDay}일 전`;
-        }
-    }
+export const editPostingTime = (value) => {
+    const milliSeconds = new Date() - new Date(value);
+    const seconds = milliSeconds / 1000;
+    if(seconds < 60) return `방금 전`
+    const minutes = seconds / 60
+    if (minutes < 60) return `${Math.floor(minutes)}분 전`
+    const hours = minutes / 60
+    if (hours < 24) return `${Math.floor(hours)}시간 전`
+    const days = hours / 24
+    if (days < 7) return `${Math.floor(days)}일 전`
+    const weeks = days / 7
+    if (weeks < 5) return `${Math.floor(weeks)}주 전`
+    const months = days / 30
+    if (months < 12) return `${Math.floor(months)}개월 전`
+    const years = days / 365
+    return `${Math.floor(years)}년 전`
 }
-
-// export const hashtagValidation = (hashtagInput) => {
-//     if(!hashtagInput) return false;
-//     return true;
-// }
 
 export const hashtagValidation = (hashtagInput, hashtagArray) => {
     if(!hashtagInput) {
