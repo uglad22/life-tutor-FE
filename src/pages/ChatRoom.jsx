@@ -45,7 +45,14 @@ const ChatRoom = () => {
     })
 
     const disConnect = () => {
+        client.send(`/api/pub/${roomId}`, headers, JSON.stringify({
+            "enter":"EXIT",
+            "messageType":"TEXT",
+            "nickname":nicknameRef.current,
+            "message":`${nicknameRef.current}님이 퇴장하였습니다.`
+        }))
         client.disconnect(() => {
+            
             exitRoom(roomId);
         }, {});
     }
@@ -112,12 +119,7 @@ const ChatRoom = () => {
         return(()=> {
             try {
                 if(!nicknameRef.current) return;
-                client.send(`/api/pub/${roomId}`, {}, JSON.stringify({
-                    "enter":"EXIT",
-                    "messageType":"TEXT",
-                    "nickname":nicknameRef.current,
-                    "message":`${nicknameRef.current}님이 퇴장하였습니다.`
-                }))
+                
                 disConnect();
                 
             }
@@ -136,9 +138,11 @@ const ChatRoom = () => {
 
     useEffect(()=> {
         window.addEventListener("beforeunload", reloadFunction);
+        window.addEventListener("unload", disConnect); // 브라우저를 닫았을 때
         
         return(()=> {
             window.removeEventListener("beforeunload", reloadFunction);
+            window.removeEventListener("unload", disConnect);
         })
     }, [])
 
@@ -195,5 +199,5 @@ const ChatArea = styled.div`
     height:100%;
     display:flex;
     flex-direction:column;
-    justify-content:flex-end;
+    /* justify-content:flex-end; */
 `
