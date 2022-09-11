@@ -35,10 +35,12 @@ const Login = () => {
             try {
                 const res = await instance.post('/api/login', login_data);
                 const token = res.headers.authorization;
+                const refreshtoken = res.headers.refreshtoken;
                 const { username, nickname, user_type, kakao } = res.data;
                 const userData = {username, nickname, user_type, kakao};
                 setUserInfo(userData);
                 sessionStorage.setItem("Authorization", token);
+                sessionStorage.setItem("Refresh__Token", refreshtoken);
                 alert('환영합니다!');
                 navigate('/viewer/posting/list');
             } catch (err) {

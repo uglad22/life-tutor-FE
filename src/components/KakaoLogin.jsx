@@ -10,6 +10,8 @@ function KakaoLogin() {
     alert("로그인에 실패했습니다ㅠㅠ 카카오 이메일 제공 동의가 필요합니다!")
     navigate('/login');
   } else {
+    console.log(params);
+    alert(params);
     sessionStorage.setItem("Authorization", `BEARER ${params.token}`);
     navigate('/viewer/posting/list')
   
