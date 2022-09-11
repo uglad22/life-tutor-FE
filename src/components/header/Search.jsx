@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { userContext } from '../context/UserProvider';
-import { useInfiniteQuery } from '@tanstack/react-query';
 import AutoCompleteCard from '../card/AutoCompleteCard';
 import { chatroomAPI, postingsAPI } from '../../shared/api'
 import _ from 'lodash';
@@ -16,34 +15,47 @@ const Search = () => {
     const { username } = context.state.userInfo;
     const [searchInput, setSearchInput] = useState("");
 
-    const throttle = (callback, delay) => {
-        let timer;
-        return function() {
-            if(!timer) {
-                timer = setTimeout(async () => {
-                    timer = null;
-                    const res = await callback();
-                    return res;
-                }, delay)
-            }
+   const searchThrottle = async (value) => {
+        let res;
+        if(pathname.includes("/viewer/posting")) {
+            _.throttle(async () => {
+               res = await postingsAPI.fetchAutoCompletePostingList(value);
+            //    console.log(res.data)
+            //    setCompletedList(res.data); 
+            }, 500)
         }
-    }
+        else if(pathname.includes("/viewer/room")) {
+            _.throttle(async () => {
+                res = await chatroomAPI.fetchAutoCompleteRoomList(value);
+                // console.log(res.data);
+                // setCompletedList(res.data);
+            }, 500)
+        }
+        return res;
+   }
 
     const searchChangeHandler = async (e) => {
+        let res;
         setSearchInput(e.target.value);
-        if(!e.target.value) setCompletedList([]);
-        if(!e.target.value || e.target.value.length <= 1) return;
+        if(!e.target.value || e.target.value.length <= 1) {
+            setCompletedList([]);
+            return;
+        }
         else {
             if(pathname.includes("/viewer/room")) {
                 // 자동완성 해시태그 리스트 요청
                 // 해시태그 리스트 state에 저장 (갈아끼우기)
-                const res = await chatroomAPI.fetchAutoCompleteRoomList(e.target.value);
+                res = await chatroomAPI.fetchAutoCompleteRoomList(e.target.value);
                 setCompletedList(res.data);
-                
             }
             else if(pathname.includes("/viewer/posting")) {
-                const res = await postingsAPI.fetchAutoCompletePostingList(e.target.value);
+                // res = await postingsAPI.fetchAutoCompletePostingList(e.target.value);
+                const postingThrottle = _.debounce(async () => await postingsAPI.fetchAutoCompletePostingList(e.target.value), 2000);
+                const res = await postingThrottle();
                 setCompletedList(res.data);
+                // postingThrottle().then((res) => {
+                //     setCompletedList(res.data);
+                // })
             }
         }
     }
