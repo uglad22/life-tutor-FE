@@ -2,8 +2,12 @@ import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { userContext } from '../context/UserProvider';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import AutoCompleteCard from '../card/AutoCompleteCard';
+import { chatroomAPI } from '../../shared/api'
 
 const Search = () => {
+    const [completedList, setCompletedList] = useState([]);
     const location = useLocation();
     const navigate = useNavigate();
     const pathname = location.pathname;
@@ -11,8 +15,22 @@ const Search = () => {
     const { username } = context.state.userInfo;
     const [searchInput, setSearchInput] = useState("");
 
-    const searchChangeHandler = (e) => {
+    const searchChangeHandler = async (e) => {
         setSearchInput(e.target.value);
+        if(!e.target.value) setCompletedList([]);
+        if(!e.target.value || e.target.value.length <= 1) return;
+        else {
+            if(pathname.includes("/viewer/room")) {
+                // 자동완성 해시태그 리스트 요청
+                // 해시태그 리스트 state에 저장 (갈아끼우기)
+                const res = await chatroomAPI.fetchAutoCompleteRoomList(e.target.value);
+                setCompletedList(res.data);
+                console.log(completedList);
+            }
+            else if(pathname.includes("/viewer/posting")) {
+
+            }
+        }
     }
 
     const submitHandler = (e) => {
@@ -48,6 +66,12 @@ const Search = () => {
     return(
         <SearchWrapper onSubmit={submitHandler}>
             <div className='search-wrapper'>
+                <AutoComplete isShow={searchInput?"show":"notshow"}>
+                    {(completedList.length === 0 && searchInput) && <p>검색결과가 없습니다.</p>}
+                    {(!completedList&&completedList.length < 2) || completedList.map((value, index) => {
+                         return <AutoCompleteCard key={index} value={value}/>
+                    })}
+                </AutoComplete>
             <div className='search-icon'>
             <svg width="30" height="25" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M17.6715 16.0839L14.1874 12.5986C16.7944 9.11501 16.0835 4.17776 12.5996 1.57096C9.11577 -1.03583 4.17811 -0.325041 1.5711 3.15854C-1.03592 6.64213 -0.325068 11.5794 3.15881 14.1862C5.95734 16.2802 9.80107 16.2802 12.5996 14.1862L16.0853 17.6715C16.5233 18.1095 17.2335 18.1095 17.6715 17.6715C18.1095 17.2335 18.1095 16.5234 17.6715 16.0854L17.6715 16.0839ZM7.90827 13.5135C4.81197 13.5135 2.30195 11.0037 2.30195 7.90761C2.30195 4.81157 4.81197 2.30176 7.90827 2.30176C11.0046 2.30176 13.5146 4.81157 13.5146 7.90761C13.5113 11.0023 11.0032 13.5102 7.90827 13.5135Z"
@@ -55,7 +79,7 @@ const Search = () => {
             </svg>
             </div>
                 <input type="text" placeholder='ex) 개발자' value={searchInput}
-                 onChange={searchChangeHandler}></input>
+                 onChange={searchChangeHandler} maxLength="5"></input>
             </div>
         </SearchWrapper>
         
@@ -78,6 +102,7 @@ const SearchWrapper = styled.form`
 
     .search-wrapper {
         position:relative;
+        z-index:10;
     }
 
     .search-icon {
@@ -108,4 +133,33 @@ const SearchWrapper = styled.form`
     input::placeholder {color:#CBCBCB;}
     input::-webkit-input-placeholder {color:#CBCBCB;}
     input::-ms-input-placeholder {color:#CBCBCB;}
+`
+
+const AutoComplete = styled.div`
+    position:absolute;
+    top:50%;
+    left:0;
+    z-index:-10;
+    width:100%;
+    max-height:160px;
+    background:#F6F7FF;
+    box-sizing:border-box;
+    padding-top:20px;
+    border-radius: 0px 0px 10px 20px;
+    overflow-y:auto;
+    border: 2px solid lightgray;
+    display:${props => props.isShow !== "show"?"none":null};
+
+    &::-webkit-scrollbar {
+        width:5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color:${({theme}) => theme.colors.mainBlue}; /*스크롤바의 색상*/
+        border-radius: 50px;
+    }
+    &::-webkit-scrollbar-track {
+        background-color:lightgray;
+        border-radius: 50px;
+    }
 `

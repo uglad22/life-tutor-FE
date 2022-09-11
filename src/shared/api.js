@@ -41,7 +41,7 @@ export const chatroomAPI = {
     createChatRoom: async (param) => {
         const { title, hashtag } = param;
         const newData = {title, hashtag};
-        const res = await instance.post('api/chat/room', newData);
+        const res = await instance.post('/api/chat/room', newData);
         return res.data;
     },
     fetchRoomsListWithScroll: async (pageParams) => {
@@ -53,6 +53,7 @@ export const chatroomAPI = {
     },
     fetchSearchRoomsListWithScroll: async (pageParams, hashtag) => {
         const res = await instance.get(`/api/search/rooms?hashtag=${hashtag}&page=${pageParams}&size=10`);
+        // const res = await instance.get(`/api/test/search/rooms?hashtag=${hashtag}&page=${pageParams}&size=10`);
         const { content } = res.data;
         const { isLast } = res.data;
 
@@ -60,9 +61,12 @@ export const chatroomAPI = {
 
     },
     enterRoom: async (roomId) => {
-        return await instance.post(`api/chat/room/${roomId}/enter`);
+        return await instance.post(`/api/chat/room/${roomId}/enter`);
     },
     exitRoom: async (roomId) => {
-        return await instance.delete(`api/chat/room/${roomId}/exit`);
+        return await instance.delete(`/api/chat/room/${roomId}/exit`);
+    },
+    fetchAutoCompleteRoomList: async (hashtag) => {
+        return await instance.get(`/api/hashtags/rooms?hashtag=${hashtag}&page=0&size=10`);
     }
 }

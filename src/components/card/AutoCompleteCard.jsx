@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const AutoCompleteCard = () => {
+const AutoCompleteCard = ({ value }) => {
 
     return (
         <AutoCompleteCardWrapper>
@@ -11,8 +11,8 @@ const AutoCompleteCard = () => {
                     <path d="M17.6715 16.0839L14.1874 12.5986C16.7944 9.11501 16.0835 4.17776 12.5996 1.57096C9.11577 -1.03583 4.17811 -0.325041 1.5711 3.15854C-1.03592 6.64213 -0.325068 11.5794 3.15881 14.1862C5.95734 16.2802 9.80107 16.2802 12.5996 14.1862L16.0853 17.6715C16.5233 18.1095 17.2335 18.1095 17.6715 17.6715C18.1095 17.2335 18.1095 16.5234 17.6715 16.0854L17.6715 16.0839ZM7.90827 13.5135C4.81197 13.5135 2.30195 11.0037 2.30195 7.90761C2.30195 4.81157 4.81197 2.30176 7.90827 2.30176C11.0046 2.30176 13.5146 4.81157 13.5146 7.90761C13.5113 11.0023 11.0032 13.5102 7.90827 13.5135Z" fill="#838383"/>
                 </svg>
                 </p>
-                <p className="auto-hashtag">개발자</p>
-                <p className='auto-comp-count'>(1000)</p>
+                <p className="auto-hashtag">{`${value?.hashtag}`}</p>
+                <p className='auto-comp-count'>{`(${value?.count})`}</p>
             </AutoCompleteCardContent>
         </AutoCompleteCardWrapper>
     )
