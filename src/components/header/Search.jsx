@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useMemo } from 'react';
 import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { userContext } from '../context/UserProvider';
@@ -15,27 +15,19 @@ const Search = () => {
     const { username } = context.state.userInfo;
     const [searchInput, setSearchInput] = useState("");
 
-   const searchThrottle = async (value) => {
-        let res;
-        if(pathname.includes("/viewer/posting")) {
-            _.throttle(async () => {
-               res = await postingsAPI.fetchAutoCompletePostingList(value);
-            //    console.log(res.data)
-            //    setCompletedList(res.data); 
-            }, 500)
-        }
-        else if(pathname.includes("/viewer/room")) {
-            _.throttle(async () => {
-                res = await chatroomAPI.fetchAutoCompleteRoomList(value);
-                // console.log(res.data);
-                // setCompletedList(res.data);
-            }, 500)
-        }
-        return res;
-   }
+    const searchPostDebounce = useMemo(() => _.debounce((value) => {
+        postingsAPI.fetchAutoCompletePostingList(value).then((res) => {
+            setCompletedList(res.data)
+        }).catch(e => console.log(e));
+    }, 400), [completedList])
+
+    const searchRoomDebounce = useMemo(() => _.debounce((value) => {
+        chatroomAPI.fetchAutoCompleteRoomList(value).then((res) => {
+            setCompletedList(res.data);
+        }).catch(e => console.log(e));
+    }, 400), [completedList])
 
     const searchChangeHandler = async (e) => {
-        let res;
         setSearchInput(e.target.value);
         if(!e.target.value || e.target.value.length <= 1) {
             setCompletedList([]);
@@ -43,19 +35,10 @@ const Search = () => {
         }
         else {
             if(pathname.includes("/viewer/room")) {
-                // 자동완성 해시태그 리스트 요청
-                // 해시태그 리스트 state에 저장 (갈아끼우기)
-                res = await chatroomAPI.fetchAutoCompleteRoomList(e.target.value);
-                setCompletedList(res.data);
+                searchRoomDebounce(e.target.value);
             }
             else if(pathname.includes("/viewer/posting")) {
-                // res = await postingsAPI.fetchAutoCompletePostingList(e.target.value);
-                const postingThrottle = _.debounce(async () => await postingsAPI.fetchAutoCompletePostingList(e.target.value), 2000);
-                const res = await postingThrottle();
-                setCompletedList(res.data);
-                // postingThrottle().then((res) => {
-                //     setCompletedList(res.data);
-                // })
+                searchPostDebounce(e.target.value);
             }
         }
     }
