@@ -4,7 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { userContext } from '../context/UserProvider';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import AutoCompleteCard from '../card/AutoCompleteCard';
-import { chatroomAPI } from '../../shared/api'
+import { chatroomAPI, postingsAPI } from '../../shared/api'
+import _ from 'lodash';
 
 const Search = () => {
     const [completedList, setCompletedList] = useState([]);
@@ -14,6 +15,19 @@ const Search = () => {
     const context = useContext(userContext);
     const { username } = context.state.userInfo;
     const [searchInput, setSearchInput] = useState("");
+
+    const throttle = (callback, delay) => {
+        let timer;
+        return function() {
+            if(!timer) {
+                timer = setTimeout(async () => {
+                    timer = null;
+                    const res = await callback();
+                    return res;
+                }, delay)
+            }
+        }
+    }
 
     const searchChangeHandler = async (e) => {
         setSearchInput(e.target.value);
@@ -25,10 +39,11 @@ const Search = () => {
                 // 해시태그 리스트 state에 저장 (갈아끼우기)
                 const res = await chatroomAPI.fetchAutoCompleteRoomList(e.target.value);
                 setCompletedList(res.data);
-                console.log(completedList);
+                
             }
             else if(pathname.includes("/viewer/posting")) {
-
+                const res = await postingsAPI.fetchAutoCompletePostingList(e.target.value);
+                setCompletedList(res.data);
             }
         }
     }
@@ -67,8 +82,8 @@ const Search = () => {
         <SearchWrapper onSubmit={submitHandler}>
             <div className='search-wrapper'>
                 <AutoComplete isShow={searchInput?"show":"notshow"}>
-                    {(completedList.length === 0 && searchInput) && <p>검색결과가 없습니다.</p>}
-                    {(!completedList&&completedList.length < 2) || completedList.map((value, index) => {
+                    {(completedList?.length === 0 && searchInput) && <p>검색결과가 없습니다.</p>}
+                    {(!completedList&&completedList?.length < 2) || completedList?.map((value, index) => {
                          return <AutoCompleteCard key={index} value={value}/>
                     })}
                 </AutoComplete>
