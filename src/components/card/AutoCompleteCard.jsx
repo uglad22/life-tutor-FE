@@ -1,10 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const AutoCompleteCard = ({ value }) => {
+    const navigate = useNavigate();
+    const { pathname } = useLocation();
 
+    const CompleteCardClickHandler = () => {
+        if(pathname.includes("/viewer/room")) {
+            navigate(`/viewer/room/search/${value.hashtag}`);
+        }
+        else if(pathname.includes("/viewer/posting")) {
+            navigate(`/viewer/posting/search/${value.hashtag}`);
+        }
+    }
     return (
-        <AutoCompleteCardWrapper>
+        <AutoCompleteCardWrapper onClick={CompleteCardClickHandler}>
             <AutoCompleteCardContent>
                 <p className="auto-comp-icon">
                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -28,9 +39,10 @@ const AutoCompleteCardWrapper = styled.div`
     box-sizing:border-box;
     border-bottom: 1px solid #B7B7B7;
     cursor:pointer;
+    border-radius:10px;
 
     &:hover {
-        background:blanchedalmond;
+        background:rgba(53, 73, 255, 0.3);
     }
 `
 
