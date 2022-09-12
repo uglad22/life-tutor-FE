@@ -18,10 +18,10 @@ const PageTitle = ({ title, isAction }) => {
     const context = useContext(submitDataContext);
     
     const { mutate:submitPosting, isError:mutateError } = useMutation(postingsAPI.postPosting, {
-        onSuccess: ({data}) => {
-            queryClient.invalidateQueries(["postings"]).then(() => {
-                navigate("/viewer/posting/list");
-            })
+
+        onError: () => {
+            alert("게시글을 등록하지 못했습니다.");
+            navigate("/viewer/posting/list");
         }
     });
     const postSubmitHandler = () => {
@@ -38,6 +38,8 @@ const PageTitle = ({ title, isAction }) => {
             imgUrl:'shdlfl' // TODO: 지우기
         }
         submitPosting(newData);
+        navigate("/viewer/posting/list");
+        return queryClient.invalidateQueries(["postings"]);
     }
 
     const postEditNavigateHandler = async () => {
@@ -45,25 +47,29 @@ const PageTitle = ({ title, isAction }) => {
     };
 
     const { mutate:deletePosting } = useMutation(postingsAPI.postDelete, {
-        onSuccess: () => {
-            queryClient.invalidateQueries(["postings"]).then(()=> {
-                navigate("/viewer/posting/list");
-            })
+        onError:() => {
+            alert("게시글을 삭제하지 못했습니다.");
+            navigate("/viewer/posting/list");
         }
     });
     const postDeleteHandler = async () => {
     const result = window.confirm("게시글을 삭제하시겠습니까?");
     if (result) {
         deletePosting(postingId);
+        navigate("/viewer/posting/list");
+        return queryClient.invalidateQueries(["postings"]);
     }
     };
 
     const { mutate:submitEditing } = useMutation(postingsAPI.postEditing, {
         onSuccess: () => {
             alert("게시글이 수정되었습니다.");
-            queryClient.invalidateQueries(["postings"]).then(() => {
-                navigate(`/detail/posting/${postingId}`);
-            });
+            navigate(`/detail/posting/${postingId}`);
+            return queryClient.invalidateQueries(["postings"]);
+        },
+        onError: () => {
+            alert("게시글을 수정하지 못했습니다.");
+            navigate("/viewer/posting/list");
         }
     });
     const postEditHandler = () => {
@@ -75,7 +81,6 @@ const PageTitle = ({ title, isAction }) => {
             imgUrl:'shdlfl'
         }
         submitEditing({postingId, newData});
-        
     }
 
     const backBtnHandler = () => {
