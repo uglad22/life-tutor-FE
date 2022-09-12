@@ -18,13 +18,25 @@ const Search = () => {
     const searchPostDebounce = useMemo(() => _.debounce((value) => {
         postingsAPI.fetchAutoCompletePostingList(value).then((res) => {
             setCompletedList(res.data)
-        }).catch(e => console.log(e));
+        }).catch((err) => {
+            if(err.response && err.response.status === 500) {
+                alert("로그인이 필요합니다.");
+                setSearchInput("");
+                return;
+            }
+        });
     }, 400), [completedList])
 
     const searchRoomDebounce = useMemo(() => _.debounce((value) => {
         chatroomAPI.fetchAutoCompleteRoomList(value).then((res) => {
             setCompletedList(res.data);
-        }).catch(e => console.log(e));
+        }).catch((err) => {
+            if(err.response && err.response.status === 500) {
+                alert("로그인이 필요합니다.");
+                setSearchInput("");
+                return;
+            }
+        });
     }, 400), [completedList])
 
     const searchChangeHandler = async (e) => {
@@ -34,11 +46,14 @@ const Search = () => {
             return;
         }
         else {
-            if(pathname.includes("/viewer/room")) {
-                searchRoomDebounce(e.target.value);
-            }
-            else if(pathname.includes("/viewer/posting")) {
-                searchPostDebounce(e.target.value);
+            if(!username) return;
+            else {
+                if(pathname.includes("/viewer/room")) {
+                    searchRoomDebounce(e.target.value);
+                }
+                else if(pathname.includes("/viewer/posting")) {
+                    searchPostDebounce(e.target.value);
+                }
             }
         }
     }
@@ -77,7 +92,7 @@ const Search = () => {
         <SearchWrapper onSubmit={submitHandler}>
             <div className='search-wrapper'>
                 <AutoComplete isShow={searchInput?"show":"notshow"}>
-                    {(completedList?.length === 0 && searchInput) && <p>검색결과가 없습니다.</p>}
+                    {(completedList?.length === 0 && searchInput) && <NoData>{!username?"로그인 후 이용해주세요" : "검색결과가 없습니다."}</NoData>}
                     {(!completedList&&completedList?.length < 2) || completedList?.map((value, index) => {
                          return <AutoCompleteCard key={index} value={value}/>
                     })}
@@ -88,7 +103,7 @@ const Search = () => {
                 fill="#3549FF" fillOpacity="0.6"/>
             </svg>
             </div>
-                <input type="text" placeholder='ex) 개발자' value={searchInput}
+                <input type="text" placeholder='ex) 해시태그 검색' value={searchInput}
                  onChange={searchChangeHandler} maxLength="5"></input>
             </div>
         </SearchWrapper>
@@ -155,7 +170,7 @@ const AutoComplete = styled.div`
     background:#F6F7FF;
     box-sizing:border-box;
     padding-top:20px;
-    border-radius: 0px 0px 10px 20px;
+    border-radius: 0px 0px 10px 10px;
     overflow-y:auto;
     border: 2px solid lightgray;
     display:${props => props.isShow !== "show"?"none":null};
@@ -172,4 +187,12 @@ const AutoComplete = styled.div`
         background-color:lightgray;
         border-radius: 50px;
     }
+`
+
+const NoData = styled.div`
+    height:35px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color: gray;
 `
