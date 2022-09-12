@@ -121,7 +121,7 @@ const LoginWrapper = styled.div`
     flex-direction: column;
     /* justify-content: space-between; */
     align-items: center;
-    height:100vh;
+    height:calc(100vh - 80px);
 
     input {
         margin-bottom : 20px;
