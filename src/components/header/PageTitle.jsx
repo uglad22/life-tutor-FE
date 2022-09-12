@@ -35,7 +35,7 @@ const PageTitle = ({ title, isAction }) => {
             title,
             posting_content,
             hashtag,
-            imgUrl:'shdlfl' // TODO: 지우기
+            // imgUrl:'shdlfl' // TODO: 지우기
         }
         submitPosting(newData);
         navigate("/viewer/posting/list");
@@ -78,7 +78,7 @@ const PageTitle = ({ title, isAction }) => {
             title,
             posting_content,
             hashtag,
-            imgUrl:'shdlfl'
+            // imgUrl:'shdlfl'
         }
         submitEditing({postingId, newData});
     }
