@@ -18,10 +18,9 @@ const PageTitle = ({ title, isAction }) => {
     const context = useContext(submitDataContext);
     
     const { mutate:submitPosting, isError:mutateError } = useMutation(postingsAPI.postPosting, {
-        onSuccess: () => {
-            return queryClient.invalidateQueries(["postings"]).then(() => {
-                navigate("/viewer/posting/list");
-            })
+        onSuccess: async () => {
+            await queryClient.invalidateQueries(["postings"]);
+            return navigate("/viewer/posting/list");
         },
         onError: (err) => {
             if(err.response.status === 401) return;
@@ -52,10 +51,9 @@ const PageTitle = ({ title, isAction }) => {
     };
 
     const { mutate:deletePosting } = useMutation(postingsAPI.postDelete, {
-        onSuccess:() => {
-            return queryClient.invalidateQueries(["postings"]).then(() => {
-                navigate("/viewer/posting/list");
-            })
+        onSuccess: async () => {
+            await queryClient.invalidateQueries(["postings"]);
+            return navigate("/viewer/posting/list");
         },
         onError:(err) => {
             if(err.response.status === 401) return;
@@ -71,11 +69,10 @@ const PageTitle = ({ title, isAction }) => {
     };
 
     const { mutate:submitEditing } = useMutation(postingsAPI.postEditing, {
-        onSuccess: () => {
+        onSuccess: async () => {
             alert("게시글이 수정되었습니다.");
-            return queryClient.invalidateQueries(["postings"]).then(()=> {
-                navigate(`/detail/posting/${postingId}`)
-            });
+            await queryClient.invalidateQueries(["postings"]);
+            return navigate(`/detail/posting/${postingId}`);
         },
         onError: (err) => {
             if(err.response.status === 401) return;
