@@ -7,6 +7,8 @@ import Loading from '../components/loading/Loading';
 import Notice from '../components/notice/Notice';
 import { Helmet } from 'react-helmet'
 import Header from '../components/header/Header';
+import CommentInPostCard from '../components/card/CommentInPostCard';
+
 
 const CommentInPost = () => {
     const { ref, inView} = useInView();
@@ -28,7 +30,7 @@ const CommentInPost = () => {
     } 
     }, [inView])
 
-    console.log(data.pages[0].posts);
+    // console.log(data.pages[0].posts);
 
     return (
     <CommentInPostWrapper>
@@ -41,11 +43,13 @@ const CommentInPost = () => {
     <Header title="댓글 단 글" isAction={true}/>
         {/* data.pages[0].posts[0].nickname */}
         <CardList>
-            <CommentInPostCard>
-                <p>댓글 내용</p>
-                <p>날짜</p>
-                <p>게시글 내용</p>
-            </CommentInPostCard>
+            {data.pages.map((page, index) => (
+                <Page key={index}>
+                    {page.posts.map((data, index) => (
+                        <CommentInPostCard key={index} data={data}/>
+                    ))}
+                </Page>
+            ))}
         </CardList>
         {isFetchingNextPage ? <Loading/>: <div ref={ref} style={{height:"70px"}}></div>}
     </CommentInPostWrapper>
@@ -55,23 +59,13 @@ const CommentInPost = () => {
 export default CommentInPost;
 
 const CommentInPostWrapper = styled.div`
-
 `;
 
 const CardList = styled.div`
     margin-top: 60px;
 `;
 
-const CommentInPostCard = styled.div`
-    background: white;
-    color: #979797;
-    overflow:hidden;
-    p {
-        margin: 12px;
-    }
-    p:first-child {
-        color: black;
-        font-weight: bold;
-        font-size: 18px;
-    }
-`;
+const Page = styled.div`
+  display:flex;
+  flex-direction:column;
+`
