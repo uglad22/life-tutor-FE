@@ -27,8 +27,10 @@ const Login = () => {
         }
 
         //공란이면 알럿 띄우기
-        if (!email_ref || !pw_ref) {
-            alert ('ID 또는 비밀번호를 입력하세요!')
+        if (email_ref.current.value === '') {
+            alert ('ID를 입력하세요!')
+        } else if (pw_ref.current.value === '') {
+            alert ('패스워드를 입력하세요!')
         } else {
 
             try {
@@ -44,7 +46,7 @@ const Login = () => {
                 navigate('/viewer/posting/list');
             } catch (err) {
                 console.log(err);
-                alert('로그인에 문제가 생겼어요!');
+                alert('아이디 또는 패스워드를 확인해주세요!');
             }
         }
     }
