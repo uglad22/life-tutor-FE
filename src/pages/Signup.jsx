@@ -20,6 +20,10 @@ const Signup = () => {
     const [pwrecheck, setPwReCheck] = useState(null);
     const [userType, setUserType] = useState('SEEKER');
 
+    //중복확인 여부
+    const [idduple, setIdDuple] = useState(false);
+    const [nicknameduple, setNickNameDuple] = useState(false);
+
     //아이디(이메일) 제한 조건 : 이메일 형식
     const email_limit = (email) => {
         let _reg = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
@@ -88,13 +92,12 @@ const Signup = () => {
             try {
                 const res = await instance.get(`/api/users/email/${email_ref.current.value}`);
                 alert('사용 가능한 ID 입니다!');
-            //   navigate('/login');
+                setIdDuple(true);
             } catch (err) {
                 console.log(err);
                 alert('이미 사용된 ID 입니다!');
             }
         }
-
     }
 
     const submitNickName = async () => {
@@ -106,7 +109,7 @@ const Signup = () => {
             try {
                 const res = await instance.get(`/api/users/nickname/${nickname_ref.current.value}`);
                 alert('사용 가능한 닉네임 입니다!');
-            //   navigate('/login');
+                setNickNameDuple(true);
             } catch (err) {
                 console.log(err);
                 alert('이미 사용된 닉네임 입니다!');
@@ -127,10 +130,14 @@ const Signup = () => {
             alert ('비밀번호를 다시 입력하세요!')
         } else if (userType === null) {
             alert ('유저 타입을 선택해주세요!')
+        } else if (idduple === false) {
+            alert ('아이디 확인이 필요해요!')
+        } else if (nicknameduple === false) {
+            alert ('닉네임 확인이 필요해요!')
         }
-
+ 
         //회원가입 성공시 db는 서버로 보내고 알럿띄우고 login 페이지로 이동
-        if (emailcheck && nicknamecheck && pwcheck && pwrecheck && userType) {
+        if (emailcheck && nicknamecheck && pwcheck && pwrecheck && userType && idduple && nicknameduple) {
 
             //보내줄 데이터 모아서 변수에 담기!
             const user_data = {
@@ -141,8 +148,6 @@ const Signup = () => {
                 user_type : userType
             }
 
-            // alert('가입을 축하드려요!')
-
             try {
                 const res = await instance.post('/api/signup', user_data);
                 alert('회원가입이 완료되었습니다!');
@@ -151,7 +156,7 @@ const Signup = () => {
                 console.log(err);
                 alert('회원가입에 문제가 생겼어요!');
             }
-      }
+        }
 
   }
 
@@ -264,7 +269,6 @@ const SignupWrapper =styled.div`
 const SingupContent =styled.div`
     margin-left: auto;
     margin-right: auto;
-    /* gap : 5px; */
     p {
         color : #757575;
         font-size: 14px;
@@ -299,12 +303,9 @@ const SingupContent =styled.div`
 
         color: #FFFFFF;
     }
-
 `
 
 const IdBox = styled.div`
-    // display : flex;
-    // gap : 5px;
     margin-bottom : 27px;
 
     input {
@@ -333,7 +334,6 @@ const NicknameBox = styled.div`
 `
 
 const UsertypeBox = styled.div`
-
     margin-top : 27px; 
 
     select {
@@ -351,9 +351,7 @@ const UsertypeBox = styled.div`
 
     select option {
         font-family: 'Apple SD Gothic Neo';
-
         font-style: normal;
-        // font-weight: 600;
         font-size: 16px;
         line-height: 19px;
         letter-spacing: -0.3px;
@@ -375,10 +373,7 @@ const SignupBottom = styled.div`
 
     button {
         padding: 18px 0px;
-        /* gap: 8px; */
         margin-top : 81px;
-
-        // position: absolute;
         width: 335px;
         height: 60px;
         left: 20px;
@@ -393,7 +388,6 @@ const SignupBottom = styled.div`
         margin-bottom : 4px;
         color: #717171;
         font-size: 14px;
-
     }
 
     hr {
@@ -411,7 +405,6 @@ const Fail = styled.div `
     p {
         margin-top : 2px;
         font-size : 13px;
-        // padding-bottom : 15px;
         padding-left : 10px;
         color : red;
     }

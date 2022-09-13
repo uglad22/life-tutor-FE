@@ -27,8 +27,10 @@ const Login = () => {
         }
 
         //공란이면 알럿 띄우기
-        if (!email_ref || !pw_ref) {
-            alert ('ID 또는 비밀번호를 입력하세요!')
+        if (email_ref.current.value === '') {
+            alert ('ID를 입력하세요!')
+        } else if (pw_ref.current.value === '') {
+            alert ('패스워드를 입력하세요!')
         } else {
 
             try {
@@ -44,7 +46,7 @@ const Login = () => {
                 navigate('/viewer/posting/list');
             } catch (err) {
                 console.log(err);
-                alert('로그인에 문제가 생겼어요!');
+                alert('아이디 또는 패스워드를 확인해주세요!');
             }
         }
     }
@@ -163,15 +165,11 @@ const Buttonarea = styled.div`
     align-items: center;
     
     .btn-login {
-        /* margin-bottom : 20px; */
         justify-content: center;
         padding: 18px 0px;
-        /* gap: 8px; */
 
         width: 335px;
         height: 60px;
-        // left: 20px;
-        // top: 427px;
 
         background: #3549FF;
         border-radius: 40px;
@@ -179,13 +177,11 @@ const Buttonarea = styled.div`
 
         font-family: 'Apple SD Gothic Neo';
         font-style: normal;
-        // font-weight: 600;
         font-size: 20px;
         line-height: 24px;
         text-align: center;
         letter-spacing: -0.3px;
         color: #FFFFFF;
-
     }
 
     .btn-kakao {
@@ -193,9 +189,7 @@ const Buttonarea = styled.div`
         margin-top : 50px;
         margin-bottom : 18px;
         border : none;
-        background-color : none;
-
-
+        background-color : transparent;
     }
 
     img {
