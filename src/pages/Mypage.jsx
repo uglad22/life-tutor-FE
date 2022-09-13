@@ -74,7 +74,7 @@ const Mypage = () => {
             <p>내가 쓴 글</p>
           </Mypostings>
 
-          <MyCommentsInPost onClick={()=> alert("추후 지원 예정인 서비스입니다.")}>
+          <MyCommentsInPost onClick={()=> navigate("/viewer/commentinpost")}>
             <CategoryIcon>
               <svg
                 width="35"
