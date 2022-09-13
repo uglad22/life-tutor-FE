@@ -21,8 +21,8 @@ const Signup = () => {
     const [userType, setUserType] = useState('SEEKER');
 
     //중복확인 여부
-    const [idduple, setIdDuple] = useState(false);
-    const [nicknameduple, setNickNameDuple] = useState(false);
+    const [idduple, setIdDuple] = useState(null);
+    const [nicknameduple, setNickNameDuple] = useState(null);
 
     //아이디(이메일) 제한 조건 : 이메일 형식
     const email_limit = (email) => {
@@ -96,6 +96,7 @@ const Signup = () => {
             } catch (err) {
                 console.log(err);
                 alert('이미 사용된 ID 입니다!');
+                setIdDuple(false);
             }
         }
     }
@@ -113,6 +114,7 @@ const Signup = () => {
             } catch (err) {
                 console.log(err);
                 alert('이미 사용된 닉네임 입니다!');
+                setNickNameDuple(false);
             }
         }
     }
@@ -180,6 +182,7 @@ const Signup = () => {
                 <button 
                     className={(emailcheck == null) ? ('btnstart') : 
                                 emailcheck? '' : 'btnfalse'}
+                    disabled={emailcheck? false : true}
                     onClick={submitId}> 중복 확인</button>
                 </>
                 {(emailcheck == null) ? (<None />) : emailcheck? (<None />)
@@ -216,6 +219,7 @@ const Signup = () => {
                 <button 
                     className={(nicknamecheck == null) ? ('btnstart') : 
                     nicknamecheck? '' : 'btnfalse'}
+                    disabled={nicknamecheck? false : true}
                     onClick={submitNickName}> 중복 확인</button>
             </NicknameBox>
                {(nicknamecheck == null) ? (<None />) : nicknamecheck? (<None />)
@@ -231,6 +235,9 @@ const Signup = () => {
 
             <SignupBottom>
                 <button
+                    className={ (idduple || nicknameduple == null) ? ('btnstart') :
+                    (idduple || nicknameduple) ? '' : 'btnfalse'}
+                    disabled={(idduple || nicknameduple)? false : true}
                     type="submit"
                     onClick={submitSignup}
                 >가입하기</button>
