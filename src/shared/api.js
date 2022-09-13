@@ -36,8 +36,14 @@ export const postingsAPI = {
     },
     fetchAutoCompletePostingList : async (hashtag) => {
         return await instance.get(`/api/hashtags/posts?hashtag=${hashtag}`);
+    },
+    fetchCommentInPostListWithScroll : async (pageParams) => {
+        const res = await instance.get(`/api/mypage/comments/postings?page=${pageParams}&size=10`)
+        const { content } = res.data;
+        const { last } = res.data;
+        return { posts:content, nextPage:pageParams + 1, isLast:last};
     }
-    
+
 }
 
 export const chatroomAPI = {
@@ -55,7 +61,7 @@ export const chatroomAPI = {
         return { rooms:content, nextPage: pageParams + 1, isLast};
     },
     fetchSearchRoomsListWithScroll: async (pageParams, hashtag) => {
-        const res = await instance.get(`/api/test/search/rooms?hashtag=${hashtag}&page=${pageParams}&size=10`);
+        const res = await instance.get(`/api/search/rooms?hashtag=${hashtag}&page=${pageParams}&size=10`);
         // const res = await instance.get(`/api/test/search/rooms?hashtag=${hashtag}&page=${pageParams}&size=10`);
         const { content } = res.data;
         const { isLast } = res.data;
@@ -70,6 +76,6 @@ export const chatroomAPI = {
         return await instance.delete(`/api/chat/room/${roomId}/exit`);
     },
     fetchAutoCompleteRoomList: async (hashtag) => {
-        return await instance.get(`/api/hashtags/rooms?hashtag=${hashtag}&page=0&size=10`);
+        return await instance.get(`/api/hashtags/rooms?hashtag=${hashtag}`);
     }
 }

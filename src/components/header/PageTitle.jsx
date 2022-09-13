@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { submitDataContext } from '../context/SubmitDataProvider';
 import styled, { css } from 'styled-components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -18,8 +18,12 @@ const PageTitle = ({ title, isAction }) => {
     const context = useContext(submitDataContext);
     
     const { mutate:submitPosting, isError:mutateError } = useMutation(postingsAPI.postPosting, {
-
-        onError: () => {
+        onSuccess: async () => {
+            await queryClient.invalidateQueries(["postings"]);
+            return navigate("/viewer/posting/list");
+        },
+        onError: (err) => {
+            if(err.response.status === 401) return;
             alert("게시글을 등록하지 못했습니다.");
             navigate("/viewer/posting/list");
         }
@@ -38,8 +42,8 @@ const PageTitle = ({ title, isAction }) => {
             // imgUrl:'shdlfl' // TODO: 지우기
         }
         submitPosting(newData);
-        navigate("/viewer/posting/list");
-        return queryClient.invalidateQueries(["postings"]);
+        // navigate("/viewer/posting/list");
+        // return queryClient.invalidateQueries(["postings"]);
     }
 
     const postEditNavigateHandler = async () => {
@@ -47,7 +51,12 @@ const PageTitle = ({ title, isAction }) => {
     };
 
     const { mutate:deletePosting } = useMutation(postingsAPI.postDelete, {
-        onError:() => {
+        onSuccess: async () => {
+            await queryClient.invalidateQueries(["postings"]);
+            return navigate("/viewer/posting/list");
+        },
+        onError:(err) => {
+            if(err.response.status === 401) return;
             alert("게시글을 삭제하지 못했습니다.");
             navigate("/viewer/posting/list");
         }
@@ -56,18 +65,17 @@ const PageTitle = ({ title, isAction }) => {
     const result = window.confirm("게시글을 삭제하시겠습니까?");
     if (result) {
         deletePosting(postingId);
-        navigate("/viewer/posting/list");
-        return queryClient.invalidateQueries(["postings"]);
     }
     };
 
     const { mutate:submitEditing } = useMutation(postingsAPI.postEditing, {
-        onSuccess: () => {
+        onSuccess: async () => {
             alert("게시글이 수정되었습니다.");
-            navigate(`/detail/posting/${postingId}`);
-            return queryClient.invalidateQueries(["postings"]);
+            await queryClient.invalidateQueries(["postings"]);
+            return navigate(`/detail/posting/${postingId}`);
         },
-        onError: () => {
+        onError: (err) => {
+            if(err.response.status === 401) return;
             alert("게시글을 수정하지 못했습니다.");
             navigate("/viewer/posting/list");
         }
@@ -93,6 +101,7 @@ const PageTitle = ({ title, isAction }) => {
         }
     }
 
+
     
     if(mutateError) return <p>error</p>
     if(pathname === '/viewer/posting/list' || pathname.includes('/viewer/posting/search')) return <PageTitleEmpty/>;
@@ -101,7 +110,9 @@ const PageTitle = ({ title, isAction }) => {
             <PageTitleContent>
                 {/* <div className='back-icon' onClick={()=>navigate(-1)}><p><MdArrowBackIosNew/></p></div> */}
                 <div className='back-icon' onClick={backBtnHandler}><p><MdArrowBackIosNew/></p></div>
-                <p className='page-title-text'>{title}</p>
+                <p className='page-title-text'>
+                    {pathname==="/viewer/posting/mypostings"? "내가 쓴 글":`${title}`}
+                </p>
                 <HeaderActions isShow={isAction}>
                     {pathname==="/posting" && <p onClick={postSubmitHandler}>등록</p>}
                     {pathname===`/detail/posting/${postingId}` && <><p onClick={postEditNavigateHandler}>수정</p><p onClick={postDeleteHandler}>삭제</p></>}

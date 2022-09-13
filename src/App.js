@@ -27,6 +27,7 @@ import ErrorFound from './components/notice/NotFound';
 
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
+import CommentInPost from './pages/CommentInPost';
 
 
 function App() {
@@ -72,6 +73,7 @@ function App() {
         <AnimatePresence exitBeforeEnter>
           <Routes key={location.pathname} location={location}>
             <Route path="/" element={<Splash/>}/>
+            <Route path="/viewer/commentinpost" element={<CommentInPost />} />
             <Route path="/viewer/posting/:category" element={<PostingViewer/>}/>
             <Route path="/viewer/posting/search/:hashtag" element={<PrivateRoute component={<PostingViewer/>} authenticated={token}/>}/>
             <Route path="/viewer/room" element={<PrivateRoute component={<RoomViewer/>} authenticated={token}/>}/>

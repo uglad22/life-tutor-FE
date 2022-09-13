@@ -37,13 +37,13 @@ const PostingCard = ({post}) => {
             <HRDiv/>
             <PostingCardFooter>
                 <div className='posting-actions-icon'>
-                    <p className='posting-actions-icon-wrapper posting-actions-icon-like' style={{color:isLike?"#3549FF":null}}>
-                        <AiOutlineLike/>
-                        {post.like_count}
-                    </p>
                     <p className='posting-actions-icon-wrapper'>
                         <IoChatboxEllipsesOutline/>
                         {post.comment_count}
+                    </p>
+                    <p className='posting-actions-icon-wrapper posting-actions-icon-like' style={{color:isLike?"#3549FF":null}}>
+                        <AiOutlineLike/>
+                        {post.like_count}
                     </p>
                 </div>
                 <div className='posting-time'><p>{editPostingTime(post.date)}</p></div>

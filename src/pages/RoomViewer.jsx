@@ -24,25 +24,23 @@ const RoomViewer = () => {
         ({ pageParam = 1 }) => chatroomAPI.fetchRoomsListWithScroll(pageParam),
         {
             enabled:!!(!paramHashtag),
-
+            staleTime:3000,
             getNextPageParam: (lastPage) =>
             !lastPage.isLast ? lastPage.nextPage : undefined,
 
-            staleTime:3000,
             retry:false
         }
     )
 
     const {data:searchListData, fetchNextPage:searchFetchNextPage, isFetchingNextPage:isSearchFetchingNextPage, isError: searchListFetchError} = useInfiniteQuery(
         ["rooms", "search", paramHashtag],
-        ({ pageParam = 1}) => chatroomAPI.fetchSearchRoomsListWithScroll(pageParam, paramHashtag),
+        ({ pageParam = 0}) => chatroomAPI.fetchSearchRoomsListWithScroll(pageParam, paramHashtag),
         {
             enabled:!!paramHashtag,
-
+            staleTime:3000,
             getNextPageParam: (lastPage) =>
             !lastPage.isLast ? lastPage.nextPage : undefined,
-            
-            staleTime:3000,
+    
             retry:false
         }
     )
