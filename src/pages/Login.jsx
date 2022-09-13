@@ -180,7 +180,6 @@ const Buttonarea = styled.div`
         text-align: center;
         letter-spacing: -0.3px;
         color: #FFFFFF;
-
     }
 
     .btn-kakao {
@@ -189,8 +188,6 @@ const Buttonarea = styled.div`
         margin-bottom : 18px;
         border : none;
         background-color : transparent;
-
-
     }
 
     img {
