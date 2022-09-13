@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { userTypeTrans } from "../../shared/sharedFn";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AiOutlineLike } from "react-icons/ai";
+import { editPostingTime } from '../../shared/sharedFn'
 
 import instance from "../../shared/axios";
 import { userContext } from "../context/UserProvider";
@@ -63,23 +64,6 @@ const CommentCard = ({ data, postingId, commentEditStateForSubmit, setCommentEdi
   });
 
   // 시간세팅
-  const timeSet = (value) => {
-    const milliSeconds = new Date() - new Date(value);
-    const seconds = milliSeconds / 1000;
-    if (seconds < 60) return `방금 전`;
-    const minutes = seconds / 60;
-    if (minutes < 60) return `${Math.floor(minutes)}분 전`;
-    const hours = minutes / 60;
-    if (hours < 24) return `${Math.floor(hours)}시간 전`;
-    const days = hours / 24;
-    if (days < 7) return `${Math.floor(days)}일 전`;
-    const weeks = days / 7;
-    if (weeks < 5) return `${Math.floor(weeks)}주 전`;
-    const months = days / 30;
-    if (months < 12) return `${Math.floor(months)}개월 전`;
-    const years = days / 365;
-    return `${Math.floor(years)}년 전`;
-  };
 
   return (
     <>
@@ -115,7 +99,7 @@ const CommentCard = ({ data, postingId, commentEditStateForSubmit, setCommentEdi
           {data.nickname === loginNickname ? (
             <>
               <CommentDateAndLikeBox>
-                <p>{timeSet(data.date)}</p>
+                <p>{editPostingTime(data.date)}</p>
                 <CommentLikeBtn onClick={() => {commentlikeHandler(`${data.id}`);}} isLike={data.like} >
                   <AiOutlineLike />
                   {data.like_count}
@@ -143,7 +127,7 @@ const CommentCard = ({ data, postingId, commentEditStateForSubmit, setCommentEdi
           ) : (
             <>
               <CommentDateAndLikeBox>
-                <p>{timeSet(data.date)}</p>
+                <p>{editPostingTime(data.date)}</p>
                 <CommentLikeBtn onClick={() => {commentlikeHandler(`${data.id}`);}} isLike={data.like} >
                   <AiOutlineLike />
                   {data.like_count}
