@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { submitDataContext } from '../context/SubmitDataProvider';
 import styled, { css } from 'styled-components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -104,6 +104,7 @@ const PageTitle = ({ title, isAction }) => {
         }
     }
 
+
     
     if(mutateError) return <p>error</p>
     if(pathname === '/viewer/posting/list' || pathname.includes('/viewer/posting/search')) return <PageTitleEmpty/>;
@@ -112,7 +113,9 @@ const PageTitle = ({ title, isAction }) => {
             <PageTitleContent>
                 {/* <div className='back-icon' onClick={()=>navigate(-1)}><p><MdArrowBackIosNew/></p></div> */}
                 <div className='back-icon' onClick={backBtnHandler}><p><MdArrowBackIosNew/></p></div>
-                <p className='page-title-text'>{title}</p>
+                <p className='page-title-text'>
+                    {pathname==="/viewer/posting/mypostings"? "내가 쓴 글":`${title}`}
+                </p>
                 <HeaderActions isShow={isAction}>
                     {pathname==="/posting" && <p onClick={postSubmitHandler}>등록</p>}
                     {pathname===`/detail/posting/${postingId}` && <><p onClick={postEditNavigateHandler}>수정</p><p onClick={postDeleteHandler}>삭제</p></>}
