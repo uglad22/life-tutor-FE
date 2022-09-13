@@ -53,7 +53,7 @@ const PostingViewer = () => {
     } 
   
     return (
-      <PostingViewerWrapper>
+      <PostingViewerWrapper paramCategory={paramCategory}>
         <Helmet>
           <title>IT-ing</title>
           <link rel="apple-touch-icon" sizes="180x180" href="180.ico" />
@@ -89,7 +89,7 @@ const PostingViewerWrapper = styled.div`
   /* gap:10px; */
   width:100%;
   margin:0 auto;
-  padding-top:87px;
+  padding-top:${(props) => (props.paramCategory === 'mypostings' ? '60px' : '87px')} ;
   //TODO: 헤더의 개수에 따라 padding-top값 조정하기
 `
 
