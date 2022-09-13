@@ -163,15 +163,11 @@ const Buttonarea = styled.div`
     align-items: center;
     
     .btn-login {
-        /* margin-bottom : 20px; */
         justify-content: center;
         padding: 18px 0px;
-        /* gap: 8px; */
 
         width: 335px;
         height: 60px;
-        // left: 20px;
-        // top: 427px;
 
         background: #3549FF;
         border-radius: 40px;
@@ -179,7 +175,6 @@ const Buttonarea = styled.div`
 
         font-family: 'Apple SD Gothic Neo';
         font-style: normal;
-        // font-weight: 600;
         font-size: 20px;
         line-height: 24px;
         text-align: center;
@@ -193,7 +188,7 @@ const Buttonarea = styled.div`
         margin-top : 50px;
         margin-bottom : 18px;
         border : none;
-        background-color : none;
+        background-color : transparent;
 
 
     }
