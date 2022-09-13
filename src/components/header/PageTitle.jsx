@@ -18,8 +18,13 @@ const PageTitle = ({ title, isAction }) => {
     const context = useContext(submitDataContext);
     
     const { mutate:submitPosting, isError:mutateError } = useMutation(postingsAPI.postPosting, {
-
-        onError: () => {
+        onSuccess: () => {
+            return queryClient.invalidateQueries(["postings"]).then(() => {
+                navigate("/viewer/posting/list");
+            })
+        },
+        onError: (err) => {
+            if(err.response.status === 401) return;
             alert("게시글을 등록하지 못했습니다.");
             navigate("/viewer/posting/list");
         }
@@ -38,8 +43,8 @@ const PageTitle = ({ title, isAction }) => {
             // imgUrl:'shdlfl' // TODO: 지우기
         }
         submitPosting(newData);
-        navigate("/viewer/posting/list");
-        return queryClient.invalidateQueries(["postings"]);
+        // navigate("/viewer/posting/list");
+        // return queryClient.invalidateQueries(["postings"]);
     }
 
     const postEditNavigateHandler = async () => {
@@ -47,7 +52,13 @@ const PageTitle = ({ title, isAction }) => {
     };
 
     const { mutate:deletePosting } = useMutation(postingsAPI.postDelete, {
-        onError:() => {
+        onSuccess:() => {
+            return queryClient.invalidateQueries(["postings"]).then(() => {
+                navigate("/viewer/posting/list");
+            })
+        },
+        onError:(err) => {
+            if(err.response.status === 401) return;
             alert("게시글을 삭제하지 못했습니다.");
             navigate("/viewer/posting/list");
         }
@@ -56,18 +67,18 @@ const PageTitle = ({ title, isAction }) => {
     const result = window.confirm("게시글을 삭제하시겠습니까?");
     if (result) {
         deletePosting(postingId);
-        navigate("/viewer/posting/list");
-        return queryClient.invalidateQueries(["postings"]);
     }
     };
 
     const { mutate:submitEditing } = useMutation(postingsAPI.postEditing, {
         onSuccess: () => {
             alert("게시글이 수정되었습니다.");
-            navigate(`/detail/posting/${postingId}`);
-            return queryClient.invalidateQueries(["postings"]);
+            return queryClient.invalidateQueries(["postings"]).then(()=> {
+                navigate(`/detail/posting/${postingId}`)
+            });
         },
-        onError: () => {
+        onError: (err) => {
+            if(err.response.status === 401) return;
             alert("게시글을 수정하지 못했습니다.");
             navigate("/viewer/posting/list");
         }
