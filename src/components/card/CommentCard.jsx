@@ -28,7 +28,7 @@ const CommentCard = ({ data, postingId, commentEditStateForSubmit, setCommentEdi
 
   const { mutate: commentEditHandler } = useMutation(editComment, {
     onSuccess: () => {
-      queryClient.invalidateQueries("post");
+      queryClient.invalidateQueries(["post"]);
     },
   });
 
@@ -41,7 +41,7 @@ const CommentCard = ({ data, postingId, commentEditStateForSubmit, setCommentEdi
 
   const { mutate: commentDelHandler } = useMutation(deleteComment, {
     onSuccess: () => {
-      queryClient.invalidateQueries("post");
+      queryClient.invalidateQueries(["post"]);
     },
   });
 
@@ -59,7 +59,7 @@ const CommentCard = ({ data, postingId, commentEditStateForSubmit, setCommentEdi
 
   const { mutate: commentlikeHandler } = useMutation(commentLike, {
     onSuccess: () => {
-      queryClient.invalidateQueries("post");
+      queryClient.invalidateQueries(["post"]);
     },
   });
 
