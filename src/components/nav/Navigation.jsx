@@ -18,7 +18,10 @@ const Navigation = () => {
         if(!username) {
             if(url === "/mypage") navigate("/login");
             else if(url === "/viewer/posting/list") return;
-            else alert("로그인이 필요합니다.");
+            else{
+                alert("로그인이 필요합니다.");
+                navigate("/login");
+            }
             
             return;
             

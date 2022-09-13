@@ -22,6 +22,7 @@ const Search = () => {
             if(err.response && err.response.status === 500) {
                 alert("로그인이 필요합니다.");
                 setSearchInput("");
+                navigate("/login");
                 return;
             }
         });
@@ -34,6 +35,7 @@ const Search = () => {
             if(err.response && err.response.status === 500) {
                 alert("로그인이 필요합니다.");
                 setSearchInput("");
+                navigate("/login");
                 return;
             }
         });
@@ -62,7 +64,7 @@ const Search = () => {
         e.preventDefault();
         if(!username) {
             alert("로그인이 필요합니다.");
-            return;
+            return navigate("/login");
         }
         if(!searchInput) return;
 
@@ -105,7 +107,7 @@ const Search = () => {
             </svg>
             </div>
                 <input type="text" placeholder='ex) 해시태그 검색' value={searchInput}
-                 onChange={searchChangeHandler} maxLength="5"></input>
+                 onChange={searchChangeHandler} maxLength="6"></input>
             </div>
         </SearchWrapper>
         

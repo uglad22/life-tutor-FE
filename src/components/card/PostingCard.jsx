@@ -16,7 +16,8 @@ const PostingCard = ({post}) => {
     const cardClickHandler = () => {
         if(!username){
             alert("로그인이 필요합니다.");
-            return;
+
+            return navigate("/login");
         }
         navigate(`/detail/posting/${post.posting_id}`);
     }
