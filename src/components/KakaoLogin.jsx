@@ -6,14 +6,18 @@ function KakaoLogin() {
   const navigate = useNavigate();
   
   useEffect(() => {
-  if(params.token === "fail"){
-    alert("로그인에 실패했습니다ㅠㅠ 카카오 이메일 제공 동의가 필요합니다!")
-    navigate('/login');
-  } else {
-    console.log(params);
-    alert(params);
-    sessionStorage.setItem("Authorization", `BEARER ${params.token}`);
-    navigate('/viewer/posting/list')
+    if(params.token === "fail"){
+      alert("로그인에 실패했습니다ㅠㅠ 카카오 이메일 제공 동의가 필요합니다!")
+      navigate('/login');
+    } else {
+      const splitedToken = params.token.split("&");
+      const accessToken = splitedToken[0].replace("accessToken=", "");
+      const refreshToken = splitedToken[1].replace("refreshToken=", "");
+      sessionStorage.setItem("Authorization", `BEARER ${accessToken}`);
+      sessionStorage.setItem("Refresh__Token", refreshToken);
+      navigate('/viewer/posting/list');
+
+      // alert(params.token);
   
   };
   
