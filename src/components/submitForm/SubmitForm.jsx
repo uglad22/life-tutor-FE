@@ -19,7 +19,7 @@ const SubmitForm = ({ postingId, placeholderText, sendMsg, commentEditStateForSu
     
     const { mutate : commentAddHandler } = useMutation(addComment, {
     onSuccess: () => {
-        queryClient.invalidateQueries("post");
+        queryClient.invalidateQueries(["post"]);
         commentInput.current.value = "";
     }
     })
