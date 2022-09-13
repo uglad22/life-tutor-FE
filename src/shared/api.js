@@ -36,8 +36,14 @@ export const postingsAPI = {
     },
     fetchAutoCompletePostingList : async (hashtag) => {
         return await instance.get(`/api/hashtags/posts?hashtag=${hashtag}`);
+    },
+    fetchCommentInPostListWithScroll : async (pageParams) => {
+        const res = await instance.get(`/api/mypage/comments/postings?page=${pageParams}&size=10`)
+        const { content } = res.data;
+        const { last } = res.data;
+        return { posts:content, nextPage:pageParams + 1, isLast:last};
     }
-    
+
 }
 
 export const chatroomAPI = {
