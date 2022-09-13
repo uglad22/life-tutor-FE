@@ -35,7 +35,7 @@ const Detail = () => {
     return res.data;
   };
 
-  const { data } = useQuery(["post"], getPost, {
+  const { data } = useQuery(["post", postingId], getPost, {
     refetchOnWindowFocus: false,
   });
 
@@ -53,7 +53,7 @@ const Detail = () => {
 
   const { mutate : contentlikeHandler } = useMutation(contentLike, {
     onSuccess: () => {
-      queryClient.invalidateQueries("post");
+      queryClient.invalidateQueries(["post"]);
     }
   })
 
