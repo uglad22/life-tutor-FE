@@ -16,8 +16,6 @@ function KakaoLogin() {
       sessionStorage.setItem("Authorization", `BEARER ${accessToken}`);
       sessionStorage.setItem("Refresh__Token", refreshToken);
       navigate('/viewer/posting/list');
-
-      // alert(params.token);
   
   };
   
