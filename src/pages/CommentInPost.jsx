@@ -30,7 +30,7 @@ const CommentInPost = () => {
     } 
     }, [inView])
 
-    console.log(data.pages[0].posts);
+    // console.log(data.pages[0].posts);
 
     return (
     <CommentInPostWrapper>
@@ -45,8 +45,8 @@ const CommentInPost = () => {
         <CardList>
             {data.pages.map((page, index) => (
                 <Page key={index}>
-                    {page.posts.map((data) => (
-                        <CommentInPostCard key={data.posting_id} data={data}/>
+                    {page.posts.map((data, index) => (
+                        <CommentInPostCard key={index} data={data}/>
                     ))}
                 </Page>
             ))}
