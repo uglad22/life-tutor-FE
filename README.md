@@ -7,11 +7,11 @@
 5. styled-components
 6. react-icons
 7. react-intersection-observer
-8. moment
-9. Material UI
-10. stompjs
-11. sockjs-client
-12. net
-13. framer-motion
+8. Material UI
+9. stompjs
+10. sockjs-client
+11. net
+12. framer-motion
+13. lodash
 
 PR하시면 저한테 말씀해주세요!
