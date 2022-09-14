@@ -46,7 +46,7 @@ const PageTitle = ({ title, isAction }) => {
         // return queryClient.invalidateQueries(["postings"]);
     }
 
-    const postEditNavigateHandler = async () => {
+    const postEditNavigateHandler = () => {
         navigate(`/posting/edit/${postingId}`);  
     };
 
@@ -95,7 +95,7 @@ const PageTitle = ({ title, isAction }) => {
         if (pathname===`/detail/posting/${postingId}`) {
             navigate("/viewer/posting/list");
         }
-        else if(pathname.includes('/detail/room')) navigate("/viewer/room");
+        // else if(pathname.includes('/detail/room')) navigate("/viewer/room");
          else {
             navigate(-1);
         }
