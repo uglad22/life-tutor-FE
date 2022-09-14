@@ -139,10 +139,12 @@ const ChatRoom = () => {
     useEffect(()=> {
         window.addEventListener("beforeunload", reloadFunction);
         window.addEventListener("unload", disConnect); // 브라우저를 닫았을 때
+        window.addEventListener("pagehide", disConnect);
         
         return(()=> {
             window.removeEventListener("beforeunload", reloadFunction);
             window.removeEventListener("unload", disConnect);
+            window.removeEventListener("pagehide", disConnect);
         })
     }, [])
 
