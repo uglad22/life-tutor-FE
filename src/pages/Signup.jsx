@@ -132,9 +132,9 @@ const Signup = () => {
             alert ('비밀번호를 다시 입력하세요!')
         } else if (userType === null) {
             alert ('유저 타입을 선택해주세요!')
-        } else if (idduple === false) {
+        } else if (idduple === null) {
             alert ('아이디 확인이 필요해요!')
-        } else if (nicknameduple === false) {
+        } else if (nicknameduple === null) {
             alert ('닉네임 확인이 필요해요!')
         }
  
@@ -177,7 +177,7 @@ const Signup = () => {
                 <input
                     placeholder="이메일 형식"
                     ref={email_ref}
-                    onBlur={idCheck}
+                    onChange={idCheck}
                 />
                 <button 
                     className={(emailcheck == null) ? ('btnstart') : 
@@ -195,7 +195,7 @@ const Signup = () => {
                     type="password"
                     placeholder="영문/숫자 8-20자, 특수문자(!@#$%^&.*)포함 "
                     ref={pw_ref}
-                    onBlur={pwCheck}
+                    onChange={pwCheck}
                 />
                 {(pwcheck == null) ? (<None />) : pwcheck? (<None />)
                 : (<Fail><p>특수문자를 포함 영문/숫자(8-20자)으로 작성해주세요!</p></Fail>)}
@@ -203,7 +203,7 @@ const Signup = () => {
                     type="password"
                     placeholder="비밀번호 확인"
                     ref={pwcheck_ref}
-                    onBlur={pwReCheck}
+                    onChange={pwReCheck}
                 />
                 {(pwrecheck == null) ? (<None />) : pwrecheck? (<None />)
                 : (<Fail><p>입력하신 비밀번호와 다릅니다!</p></Fail>)}
@@ -214,7 +214,7 @@ const Signup = () => {
                 <input
                     placeholder="한글/영문/숫자, 2-10자리 이하"
                     ref={nickname_ref}
-                    onBlur={nickNameCheck}
+                    onChange={nickNameCheck}
                 />
                 <button 
                     className={(nicknamecheck == null) ? ('btnstart') : 
@@ -235,9 +235,7 @@ const Signup = () => {
 
             <SignupBottom>
                 <button
-                    className={ (idduple || nicknameduple == null) ? ('btnstart') :
-                    (idduple || nicknameduple) ? '' : 'btnfalse'}
-                    disabled={(idduple || nicknameduple)? false : true}
+                    className={ (idduple && nicknameduple) ? '' : 'btnfalse'}
                     type="submit"
                     onClick={submitSignup}
                 >가입하기</button>
