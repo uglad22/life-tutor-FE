@@ -2,7 +2,7 @@ import React, { useRef, useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { userContext } from "../components/context/UserProvider";
+import { userContext } from "../context/UserProvider";
 import Header from '../components/header/Header';
 import instance from '../shared/axios';
 import { Helmet } from 'react-helmet'

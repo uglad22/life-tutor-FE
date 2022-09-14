@@ -8,7 +8,7 @@ import { IoChatboxEllipsesOutline } from 'react-icons/io5';
 
 import instance from "../shared/axios";
 import NomalBadge from '../components/hashtag/NomalBadge';
-import { userContext } from "../components/context/UserProvider";
+import { userContext } from "../context/UserProvider";
 
 import { userTypeTrans } from "../shared/sharedFn";
 import CommentCard from "../components/card/CommentCard";

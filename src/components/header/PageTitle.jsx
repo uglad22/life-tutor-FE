@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { submitDataContext } from '../context/SubmitDataProvider';
+import { submitDataContext } from '../../context/SubmitDataProvider';
 import styled, { css } from 'styled-components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';

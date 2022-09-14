@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { userContext } from '../context/UserProvider';
+import { userContext } from '../../context/UserProvider';
 import IndexInfo from './NavIndexInfo';
 
 const Navigation = () => {

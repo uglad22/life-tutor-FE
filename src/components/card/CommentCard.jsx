@@ -6,7 +6,7 @@ import { AiOutlineLike } from "react-icons/ai";
 import { editPostingTime } from '../../shared/sharedFn'
 
 import instance from "../../shared/axios";
-import { userContext } from "../context/UserProvider";
+import { userContext } from "../../context/UserProvider";
 
 const CommentCard = ({ data, postingId, commentEditStateForSubmit, setCommentEditStateForSubmit }) => {
   const commentEditInput = useRef();

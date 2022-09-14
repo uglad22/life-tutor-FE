@@ -14,7 +14,7 @@ import KakaoLogin from './components/KakaoLogin';
 import GlobalStyle from './style/GlobalStyle';
 import theme from './style/theme';
 import Mypage from './pages/Mypage';
-import { userContext } from './components/context/UserProvider';
+import { userContext } from './context/UserProvider';
 import Splash from './pages/Splash';
 import { AnimatePresence } from 'framer-motion';
 import RoomViewer from './pages/RoomViewer';

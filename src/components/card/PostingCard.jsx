@@ -6,7 +6,7 @@ import { userTypeTrans } from '../../shared/sharedFn';
 import { editPostingTime } from '../../shared/sharedFn';
 import { AiOutlineLike } from 'react-icons/ai';
 import { IoChatboxEllipsesOutline } from 'react-icons/io5';
-import { userContext } from '../context/UserProvider';
+import { userContext } from '../../context/UserProvider';
 
 const PostingCard = ({post}) => {
     const context = useContext(userContext);

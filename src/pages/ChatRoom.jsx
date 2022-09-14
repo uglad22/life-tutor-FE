@@ -4,7 +4,7 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import SockJS from 'sockjs-client';
 import * as StompJS from 'stompjs'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { userContext } from '../components/context/UserProvider';
+import { userContext } from '../context/UserProvider';
 import { chatroomAPI } from '../shared/api';
 import { Helmet } from 'react-helmet'
 
