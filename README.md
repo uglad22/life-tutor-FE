@@ -38,7 +38,6 @@
 
 ## 🔧 기술적 의사 결정
 
-## Front-End
 
 | 사용 기술 | 기술 설명 |
 | --- | --- |
@@ -52,7 +51,6 @@
 
 ## 😵‍💫 트러블슈팅
 
-## Front-End
 
 ### ✅ react-query 쿼리 무효화 문제
 
@@ -104,11 +102,11 @@
 
 |포지션|이름|담당|깃허브|
 |---|---|---|---|
+|Front-End_(React)|권익주|게시글/채팅방 불러오기 및 무한스크롤, 게시글/채팅방 해시태그 기반 검색 기능, 검색어 자동완성, 채팅 기능, 리프레시 토큰, 게시글 작성, 내가 쓴 글 모아보기, HTTPS배포 |[https://github.com/nggoong](https://github.com/nggoong)|
+|Front-End_(React)|설승운|게시글 상세페이지, 게시글 수정&삭제&공감, 댓글 작성&수정&삭제&공감, 마이페이지, 마이페이지 개인정보 변경, 비밀번호 변경, 댓글 단 글|[https://github.com/s-woon](https://github.com/s-woon)|
+|Front-End_(React)|김다희|회원가입, 로그인 페이지, 소셜로그인|[https://github.com/uglad22](https://github.com/uglad22)|
 |Back-End_(Spring)|문철현|로그인,회원가입, 마이페이지, 리프레시 토큰|[https://github.com/MoonDoorKing](https://github.com/MoonDoorKing)|
 |Back-End_(Spring)|안병규|게시글 API, NGINX 구현 및 설정, CI/CD|[https://github.com/fox9d](https://github.com/fox9d)|
 |Back-End_(Spring)|박주영|채팅, 게시글 공감, 댓글, 댓글 공감, 채팅방 해시태그 검색(하이버네이트 2차 캐시 사용)|[https://github.com/ju-ei8ht](https://github.com/ju-ei8ht)|
-|Front-End_(React)|권익주|게시글 불러오기, 게시글 작성, 채팅 기능, 내가 쓴 글 기능 구현, 게시글/채팅방 해시태그 기반 검색 기능, 검색어 자동완성, HTTPS배포, 리프레시 토큰 구현|[https://github.com/nggoong](https://github.com/nggoong)|
-|Front-End_(React)|설승운|게시글 상세페이지, 게시글 수정&삭제&공감, 댓글 작성&수정&삭제&공감, 마이페이지, 마이페이지 개인정보 변경, 비밀번호 변경, 댓글 단 글|[https://github.com/s-woon](https://github.com/s-woon)|
-|Front-End_(React)|김다희|회원가입, 로그인 페이지, 소셜로그인|[https://github.com/uglad22](https://github.com/uglad22)|
 |Designer|정유진|디자인 담당✨||
 
