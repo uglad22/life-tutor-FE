@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import Header from "../components/header/Header";
 import ManagementCard from "../components/card/ManagementCard";
-import { userContext } from "../components/context/UserProvider";
+import { userContext } from "../context/UserProvider";
 import { userTypeTrans } from "../shared/sharedFn";
 
 import { useNavigate } from 'react-router-dom';

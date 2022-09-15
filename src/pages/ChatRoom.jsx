@@ -4,7 +4,7 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import SockJS from 'sockjs-client';
 import * as StompJS from 'stompjs'
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { userContext } from '../components/context/UserProvider';
+import { userContext } from '../context/UserProvider';
 import { chatroomAPI } from '../shared/api';
 import { Helmet } from 'react-helmet'
 
@@ -139,10 +139,12 @@ const ChatRoom = () => {
     useEffect(()=> {
         window.addEventListener("beforeunload", reloadFunction);
         window.addEventListener("unload", disConnect); // 브라우저를 닫았을 때
+        window.addEventListener("pagehide", disConnect);
         
         return(()=> {
             window.removeEventListener("beforeunload", reloadFunction);
             window.removeEventListener("unload", disConnect);
+            window.removeEventListener("pagehide", disConnect);
         })
     }, [])
 

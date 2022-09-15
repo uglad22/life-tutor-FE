@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
-import { submitDataContext } from '../context/SubmitDataProvider';
+import { submitDataContext } from '../../context/SubmitDataProvider';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 

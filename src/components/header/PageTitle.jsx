@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { submitDataContext } from '../context/SubmitDataProvider';
+import { submitDataContext } from '../../context/SubmitDataProvider';
 import styled, { css } from 'styled-components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -46,7 +46,7 @@ const PageTitle = ({ title, isAction }) => {
         // return queryClient.invalidateQueries(["postings"]);
     }
 
-    const postEditNavigateHandler = async () => {
+    const postEditNavigateHandler = () => {
         navigate(`/posting/edit/${postingId}`);  
     };
 
@@ -95,7 +95,7 @@ const PageTitle = ({ title, isAction }) => {
         if (pathname===`/detail/posting/${postingId}`) {
             navigate("/viewer/posting/list");
         }
-        else if(pathname.includes('/detail/room')) navigate("/viewer/room");
+        // else if(pathname.includes('/detail/room')) navigate("/viewer/room");
          else {
             navigate(-1);
         }

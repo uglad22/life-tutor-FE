@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import instance from '../shared/axios';
-import kakao_login from '../components/images/kakao_login.png';
+import kakao_login from '../assets/images/kakao_login.png';
 import { Link, useNavigate } from "react-router-dom";
 
-import { userContext } from '../components/context/UserProvider';
+import { userContext } from '../context/UserProvider';
 import { Helmet } from 'react-helmet'
 
 

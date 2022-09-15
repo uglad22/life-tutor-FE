@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import instance from '../shared/axios';
 
 import Header from '../components/header/Header';
-import { userContext } from '../components/context/UserProvider';
+import { userContext } from '../context/UserProvider';
 import { Helmet } from 'react-helmet'
 
 const MyInfoManage = () => {
